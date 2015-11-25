@@ -15,7 +15,6 @@ import com.ankamagames.dofus.harvey.interfaces.composite.ICompositeRandomVariabl
 import com.ankamagames.dofus.harvey.interfaces.composite.IParentedRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -25,10 +24,10 @@ import org.eclipse.jdt.annotation.Nullable;
 @NonNullByDefault
 public abstract class AbstractCompositeRandomVariable
 <
-Data,
-ParentType extends ICompositeRandomVariable<Data, ?, ?>,
-ChildType extends IParentedRandomVariable<Data, ?>,
-ProbabilityStrategy extends IProbabilityStrategy
+	Data,
+	ParentType extends ICompositeRandomVariable<Data, ?, ?>,
+	ChildType extends IParentedRandomVariable<Data, ?>,
+	ProbabilityStrategy extends IProbabilityStrategy
 >
 extends ParentedRandomVariable<Data, ParentType, ChildType, ProbabilityStrategy>
 implements ICompositeRandomVariable<Data, ParentType, ChildType>

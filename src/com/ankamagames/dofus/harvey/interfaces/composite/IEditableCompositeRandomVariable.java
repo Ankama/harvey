@@ -16,7 +16,7 @@ public interface IEditableCompositeRandomVariable
 <
 	Data,
 	ParentType extends IEditableCompositeRandomVariable<Data, ?, ?>,
-	ChildType extends IParentedRandomVariable<Data, ?>
+	ChildType extends IEditableParentedRandomVariable<Data, ?>
 >
 extends IEditableParentedRandomVariable<Data, ParentType>,
 ICompositeRandomVariable<Data, ParentType, ChildType>,

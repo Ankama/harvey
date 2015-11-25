@@ -11,7 +11,6 @@ import com.ankamagames.dofus.harvey.interfaces.IRandomVariable;
 import com.ankamagames.dofus.harvey.interfaces.composite.IEditableParentedRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -19,7 +18,12 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 @NonNullByDefault
-public class ParentedRandomVariableEditor<Data, ParentType extends IRandomVariable<Data>, Bridged extends IEditableParentedRandomVariable<Data, ParentType>&IIRandomVariableDecorator<Data, ? extends IEditableRandomVariable<Data>>>
+public class ParentedRandomVariableEditor
+<
+	Data,
+	ParentType extends IRandomVariable<Data>,
+	Bridged extends IEditableParentedRandomVariable<Data, ParentType>&IIRandomVariableDecorator<Data, ? extends IEditableRandomVariable<Data>>
+>
 implements IRandomVariableEditor<Data>
 {
 	protected Bridged _bridged;
