@@ -4,11 +4,11 @@
 package com.ankamagames.dofus.harvey.engine.probabilitystrategies.dynamicstrategies;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
-import com.ankamagames.dofus.harvey.engine.base.interfaces.IRandomVariableWithProbabilityStrategy;
+import com.ankamagames.dofus.harvey.engine.inetrfaces.composite.IParentedRandomVariableWithProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IMergeableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
-import com.ankamagames.dofus.harvey.interfaces.ICompositeRandomVariable;
-import com.ankamagames.dofus.harvey.interfaces.IRandomVariable;
+import com.ankamagames.dofus.harvey.interfaces.composite.ICompositeRandomVariable;
+import com.ankamagames.dofus.harvey.interfaces.composite.IParentedRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -18,12 +18,12 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 @NonNullByDefault
-public class FillingProbability<Data, ParentType extends ICompositeRandomVariable<Data, ?, ?>&Iterable<? extends IRandomVariableWithProbabilityStrategy<Data, ?, ?>>>
+public class FillingProbability<Data, ParentType extends ICompositeRandomVariable<Data, ?, ? extends IParentedRandomVariableWithProbabilityStrategy<Data, ?, ?>>>
 	implements IDynamicProbabilityStrategy, IMergeableProbabilityStrategy
 {
-	protected @Nullable IRandomVariable<Data, ParentType> _set;
+	protected @Nullable IParentedRandomVariable<Data, ParentType> _set;
 
-	public FillingProbability(final @Nullable IRandomVariable<Data, ParentType> set)
+	public FillingProbability(final @Nullable IParentedRandomVariable<Data, ParentType> set)
 	{
 		_set = set;
 	}
@@ -33,7 +33,7 @@ public class FillingProbability<Data, ParentType extends ICompositeRandomVariabl
 		_set = null;
 	}
 
-	public void init(final @Nullable IRandomVariable<Data, ParentType> set)
+	public void init(final @Nullable IParentedRandomVariable<Data, ParentType> set)
 	{
 		_set = set;
 	}
@@ -44,7 +44,7 @@ public class FillingProbability<Data, ParentType extends ICompositeRandomVariabl
 	@Override
 	public int getProbability()
 	{
-		final IRandomVariable<Data, ParentType> set = _set;
+		final IParentedRandomVariable<Data, ParentType> set = _set;
 		if(set==null)
 			return 0;
 		final ParentType parent = set.getParent();
@@ -53,14 +53,14 @@ public class FillingProbability<Data, ParentType extends ICompositeRandomVariabl
 
 		int nbFill = 0;
 		long cumuledProba = 0;
-		for(final IRandomVariableWithProbabilityStrategy<Data, ?, ?> bro:parent)
+		for(final  IParentedRandomVariableWithProbabilityStrategy<Data, ?, ?> bro:parent)
 		{
 			if(bro.getProbabilityStrategy() instanceof FillingProbability)
 			{
 				nbFill++;
 			}
 			else
-				cumuledProba += bro.getProbability(parent);
+				cumuledProba += bro.getProbability();
 		}
 		return (int) ((RandomVariableUtils.ONE-cumuledProba)/nbFill);
 	}

@@ -4,14 +4,14 @@
 package com.ankamagames.dofus.harvey.engine.probabilitystrategies.dynamicstrategies;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
-import com.ankamagames.dofus.harvey.engine.base.interfaces.IRandomVariableWithProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.exceptions.OverOneProbabilityException;
+import com.ankamagames.dofus.harvey.engine.inetrfaces.composite.IParentedRandomVariableWithProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IMergeableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IModifiableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.staticstrategies.IStaticProbabilityStrategy;
-import com.ankamagames.dofus.harvey.interfaces.ICompositeRandomVariable;
-import com.ankamagames.dofus.harvey.interfaces.IRandomVariable;
+import com.ankamagames.dofus.harvey.interfaces.composite.ICompositeRandomVariable;
+import com.ankamagames.dofus.harvey.interfaces.composite.IParentedRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -21,19 +21,19 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 @NonNullByDefault
-public class ScalingProbability<Data, ParentType extends ICompositeRandomVariable<Data, ?, ?>&Iterable<? extends IRandomVariableWithProbabilityStrategy<Data, ?, ?>>>
+public class ScalingProbability<Data, ParentType extends ICompositeRandomVariable<Data, ?, ? extends IParentedRandomVariableWithProbabilityStrategy<Data, ?, ?>>>
 	implements IDynamicProbabilityStrategy, IModifiableProbabilityStrategy, IMergeableProbabilityStrategy
 {
-	protected @Nullable IRandomVariable<Data, ParentType> _set;
+	protected @Nullable IParentedRandomVariable<Data, ParentType> _set;
 	protected int _probability;
 
-	public ScalingProbability(final IRandomVariable<Data, ParentType> set, final int probability)
+	public ScalingProbability(final IParentedRandomVariable<Data, ParentType> set, final int probability)
 	{
 		_set = set;
 		_probability = probability;
 	}
 
-	public ScalingProbability(final IRandomVariable<Data, ParentType> set)
+	public ScalingProbability(final IParentedRandomVariable<Data, ParentType> set)
 	{
 		this(set, RandomVariableUtils.ONE);
 	}
@@ -49,7 +49,7 @@ public class ScalingProbability<Data, ParentType extends ICompositeRandomVariabl
 		this(RandomVariableUtils.ONE);
 	}
 
-	public void init(final IRandomVariable<Data, ParentType> set)
+	public void init(final IParentedRandomVariable<Data, ParentType> set)
 	{
 		_set = set;
 	}
@@ -60,7 +60,7 @@ public class ScalingProbability<Data, ParentType extends ICompositeRandomVariabl
 	@Override
 	public int getProbability()
 	{
-		final IRandomVariable<Data, ParentType> set = _set;
+		final IParentedRandomVariable<Data, ParentType> set = _set;
 		if(set==null)
 			return 0;
 
@@ -70,12 +70,12 @@ public class ScalingProbability<Data, ParentType extends ICompositeRandomVariabl
 
 		long scalingProba = 0;
 		long cumuledProba = 0;
-		for(final IRandomVariableWithProbabilityStrategy<Data, ?, ?> bro:parent)
+		for(final IParentedRandomVariableWithProbabilityStrategy<Data, ?, ?> bro:parent)
 		{
 			final IProbabilityStrategy broProbaStrat = bro.getProbabilityStrategy();
 			if((broProbaStrat instanceof IStaticProbabilityStrategy)||(broProbaStrat instanceof FittingProbability))
 			{
-				cumuledProba += bro.getProbability(parent);
+				cumuledProba += bro.getProbability();
 			}
 			else if(broProbaStrat instanceof ScalingProbability)
 				scalingProba += ((ScalingProbability<?,?>)broProbaStrat).getRawProbability();

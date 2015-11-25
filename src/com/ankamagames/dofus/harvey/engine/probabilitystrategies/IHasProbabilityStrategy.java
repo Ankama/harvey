@@ -11,8 +11,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  *
  */
 @NonNullByDefault
-public interface IMergeableProbabilityStrategy
-	extends IProbabilityStrategy
+public interface IHasProbabilityStrategy<ProbabilityStrategy extends IProbabilityStrategy>
 {
-	boolean merge(IProbabilityStrategy other);
+	ProbabilityStrategy getProbabilityStrategy();
 }

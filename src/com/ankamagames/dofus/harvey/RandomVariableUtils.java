@@ -5,6 +5,7 @@ package com.ankamagames.dofus.harvey;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
+
 /**
  * @author sgros
  *
