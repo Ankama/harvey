@@ -3,7 +3,7 @@
  */
 package com.ankamagames.dofus.harvey.engine.inetrfaces;
 
-import com.ankamagames.dofus.harvey.engine.exceptions.OverOneProbabilityException;
+import com.ankamagames.dofus.harvey.engine.exceptions.ProbabilityOutOfBoundException;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -16,7 +16,7 @@ import org.eclipse.jdt.annotation.Nullable;
 @NonNullByDefault
 public interface IIEditableRandomVariable<Data>
 {
-	void setProbabilityOf(@Nullable Data value, int probability) throws OverOneProbabilityException;
+	void setProbabilityOf(@Nullable Data value, int probability) throws ProbabilityOutOfBoundException;
 	boolean remove(@Nullable Data value);
 	void add(@Nullable Data value, int probability);
 	void addProbabilityTo(@Nullable Data value, int delta);

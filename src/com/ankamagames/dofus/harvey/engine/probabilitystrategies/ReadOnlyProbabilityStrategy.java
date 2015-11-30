@@ -3,7 +3,7 @@
  */
 package com.ankamagames.dofus.harvey.engine.probabilitystrategies;
 
-import com.ankamagames.dofus.harvey.engine.exceptions.OverOneProbabilityException;
+import com.ankamagames.dofus.harvey.engine.exceptions.ProbabilityOutOfBoundException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.staticstrategies.FixedProbability;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -23,7 +23,7 @@ public final class ReadOnlyProbabilityStrategy
 		try
 		{
 			return new ReadOnlyProbabilityStrategy(new FixedProbability(0));
-		} catch (final OverOneProbabilityException e)
+		} catch (final ProbabilityOutOfBoundException e)
 		{
 			throw new RuntimeException(e);
 		}

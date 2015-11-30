@@ -3,7 +3,10 @@
  */
 package com.ankamagames.dofus.harvey.interfaces.composite;
 
-import com.ankamagames.dofus.harvey.engine.inetrfaces.composite.IIEditableCompositeRandomVariable;
+import com.ankamagames.dofus.harvey.engine.inetrfaces.parentedwithprobability.IEditableParentedRandomVariableWithProbabilityStrategy;
+import com.ankamagames.dofus.harvey.engine.inetrfaces.withprobability.IEditableRandomVariableWithProbabilityStrategy;
+import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IModifiableProbabilityStrategy;
+import com.ankamagames.dofus.harvey.interfaces.parenting.IEditableParentingRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -15,10 +18,11 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 public interface IEditableCompositeRandomVariable
 <
 	Data,
-	ParentType extends IEditableCompositeRandomVariable<Data, ?, ?>,
-	ChildType extends IEditableParentedRandomVariable<Data, ?>
+	ParentType extends IEditableParentingRandomVariable<Data, ?>,
+	ChildType extends IEditableParentedRandomVariableWithProbabilityStrategy<Data, ParentType, ?>,
+	ProbabilityStrategy extends IModifiableProbabilityStrategy
 >
-extends IEditableParentedRandomVariable<Data, ParentType>,
-ICompositeRandomVariable<Data, ParentType, ChildType>,
-IIEditableCompositeRandomVariable<Data, ChildType>
+extends ICompositeRandomVariable<Data, ParentType, ChildType>,
+IEditableRandomVariableWithProbabilityStrategy<Data, ProbabilityStrategy>,
+IEditableParentingRandomVariable<Data, ChildType>
 {}

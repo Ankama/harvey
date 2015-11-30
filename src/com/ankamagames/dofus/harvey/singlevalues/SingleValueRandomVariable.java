@@ -42,7 +42,7 @@ public class SingleValueRandomVariable<Data>
 	@Override
 	public int getProbabilityOf(final @Nullable Data value)
 	{
-		return contains(_value)?RandomVariableUtils.ONE:0;
+		return contains(value)?RandomVariableUtils.ONE:0;
 	}
 
 	/* (non-Javadoc)

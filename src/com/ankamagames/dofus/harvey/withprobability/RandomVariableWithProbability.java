@@ -1,17 +1,15 @@
 /**
  *
  */
-package com.ankamagames.dofus.harvey.composite;
+package com.ankamagames.dofus.harvey.withprobability;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
 import com.ankamagames.dofus.harvey.engine.inetrfaces.IIRandomVariableDecorator;
-import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IHasProbabilityStrategy;
+import com.ankamagames.dofus.harvey.engine.inetrfaces.withprobability.IRandomVariableWithProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.interfaces.IRandomVariable;
-import com.ankamagames.dofus.harvey.interfaces.composite.IParentedRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -19,24 +17,21 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 @NonNullByDefault
-public class ParentedRandomVariable
+public class RandomVariableWithProbability
 <
 	Data,
-	ParentType extends IRandomVariable<Data>,
 	ChildType extends IRandomVariable<Data>,
 	ProbabilityStrategy extends IProbabilityStrategy
 >
-implements IParentedRandomVariable<Data, ParentType>,
-IHasProbabilityStrategy<ProbabilityStrategy>, IIRandomVariableDecorator<Data, ChildType>
+implements IRandomVariableWithProbabilityStrategy<Data, ProbabilityStrategy>,
+IIRandomVariableDecorator<Data, ChildType>
 {
 	protected ChildType _heldRandomVariable;
-	protected @Nullable ParentType _parent;
 	protected ProbabilityStrategy _probabilityStrategy;
 
-	public ParentedRandomVariable(final ChildType heldRandomVariable, final @Nullable ParentType parent, final ProbabilityStrategy probabilityStrategy)
+	public RandomVariableWithProbability(final ChildType heldRandomVariable, final ProbabilityStrategy probabilityStrategy)
 	{
 		_heldRandomVariable = heldRandomVariable;
-		_parent = parent;
 		_probabilityStrategy = probabilityStrategy;
 	}
 
@@ -68,12 +63,6 @@ IHasProbabilityStrategy<ProbabilityStrategy>, IIRandomVariableDecorator<Data, Ch
 	public boolean isEmpty()
 	{
 		return _heldRandomVariable.isEmpty();
-	}
-
-	@Override
-	public @Nullable ParentType getParent()
-	{
-		return _parent;
 	}
 
 	@Override

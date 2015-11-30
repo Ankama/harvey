@@ -3,9 +3,9 @@
  */
 package com.ankamagames.dofus.harvey.engine.editors;
 
-import com.ankamagames.dofus.harvey.engine.inetrfaces.composite.IIEditableCompositeRandomVariable;
-import com.ankamagames.dofus.harvey.engine.inetrfaces.composite.IIEditableParentedRandomVariable;
-import com.ankamagames.dofus.harvey.interfaces.IRandomVariable;
+import com.ankamagames.dofus.harvey.engine.inetrfaces.parentedwithprobability.IEditableParentedRandomVariableWithProbabilityStrategy;
+import com.ankamagames.dofus.harvey.engine.inetrfaces.parenting.IIEditableParentingRandomVariable;
+import com.ankamagames.dofus.harvey.interfaces.composite.IEditableCompositeRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -17,7 +17,8 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 public interface ICompositeRandomVariableEditor
 <
 	Data,
-	ChildType extends IRandomVariable<Data>&IIEditableParentedRandomVariable<Data, ?>
+	ChildType extends IEditableParentedRandomVariableWithProbabilityStrategy<Data, ?, ?>,
+	Bridged extends IEditableCompositeRandomVariable<Data, ?, ChildType, ?>
 >
-	extends IRandomVariableEditor<Data>, IIEditableCompositeRandomVariable<Data, ChildType>
+extends IEditor<Data, Bridged>, IRandomVariableEditor<Data>, IIEditableParentingRandomVariable<Data, ChildType>
 {}

@@ -11,7 +11,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  *
  */
 @NonNullByDefault
-public class OverOneProbabilityException
+public class ProbabilityOutOfBoundException
 	extends Exception
 {
 	/**

@@ -4,7 +4,7 @@
 package com.ankamagames.dofus.harvey.engine.probabilitystrategies.staticstrategies;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
-import com.ankamagames.dofus.harvey.engine.exceptions.OverOneProbabilityException;
+import com.ankamagames.dofus.harvey.engine.exceptions.ProbabilityOutOfBoundException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IMergeableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IModifiableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
@@ -27,16 +27,16 @@ public class FixedProbability
 	 * loss). To get it as a float, use {@link RandomVariableUtils.convertToFloat}
 	 *
 	 * @param probability
-	 * @throws OverOneProbabilityException
+	 * @throws ProbabilityOutOfBoundException
 	 */
-	public FixedProbability(final int probability) throws OverOneProbabilityException
+	public FixedProbability(final int probability) throws ProbabilityOutOfBoundException
 	{
 		if(probability>RandomVariableUtils.ONE)
-			throw new OverOneProbabilityException();
+			throw new ProbabilityOutOfBoundException();
 		_probability = probability;
 	}
 
-	public FixedProbability() throws OverOneProbabilityException
+	public FixedProbability() throws ProbabilityOutOfBoundException
 	{
 		this(RandomVariableUtils.ONE);
 	}
@@ -60,10 +60,10 @@ public class FixedProbability
 	}
 
 	@Override
-	public void setProbability(final int probability) throws OverOneProbabilityException
+	public void setProbability(final int probability) throws ProbabilityOutOfBoundException
 	{
 		if(probability>RandomVariableUtils.ONE)
-			throw new OverOneProbabilityException();
+			throw new ProbabilityOutOfBoundException();
 		_probability = probability;
 	}
 
@@ -73,11 +73,11 @@ public class FixedProbability
 	}
 
 	@Override
-	public void addProbability(final int probability) throws OverOneProbabilityException
+	public void addProbability(final int probability) throws ProbabilityOutOfBoundException
 	{
 		final long newProbability = _probability + (long)probability;
 		if((newProbability > RandomVariableUtils.ONE)||(newProbability < 0))
-			throw new OverOneProbabilityException();
+			throw new ProbabilityOutOfBoundException();
 
 		_probability = (int) newProbability;
 	}
@@ -96,5 +96,16 @@ public class FixedProbability
 		_setProbabilityNoCheck(newProba);
 
 		return true;
+	}
+
+	@Override
+	public void removeProbability(final int probability)
+			throws ProbabilityOutOfBoundException
+	{
+		final long newProbability = _probability - (long)probability;
+		if((newProbability > RandomVariableUtils.ONE)||(newProbability < 0))
+			throw new ProbabilityOutOfBoundException();
+
+		_probability = (int) newProbability;
 	}
 }
