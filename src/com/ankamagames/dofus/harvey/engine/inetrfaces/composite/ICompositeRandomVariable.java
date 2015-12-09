@@ -1,12 +1,17 @@
+/**
+ *
+ */
 package com.ankamagames.dofus.harvey.engine.inetrfaces.composite;
 
 import com.ankamagames.dofus.harvey.interfaces.IRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
+/**
+ * @author sgros
+ *
+ */
 @NonNullByDefault
-public interface IICompositeRandomVariable<Data>
-{
-	int getProbabilityOf(IRandomVariable<Data> value);
-	boolean contains(IRandomVariable<Data> value);
-}
+public interface ICompositeRandomVariable<Data>
+extends IRandomVariable<Data>, IICompositeRandomVariable<Data>
+{}

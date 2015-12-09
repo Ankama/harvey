@@ -1,7 +1,8 @@
+package com.ankamagames.dofus.harvey.engine.inetrfaces;
 /**
  *
  */
-package com.ankamagames.dofus.harvey.engine.inetrfaces;
+
 
 import com.ankamagames.dofus.harvey.interfaces.IOrderedRandomVariable;
 

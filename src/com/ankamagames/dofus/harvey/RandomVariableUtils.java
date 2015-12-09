@@ -15,6 +15,7 @@ public class RandomVariableUtils
 {
 	public static final int CONVERTION_FACTOR = 1000000000;//(int) Float.intBitsToFloat(Float.floatToIntBits(Integer.MAX_VALUE)-1);
 	public static final int ONE = CONVERTION_FACTOR;
+	public static final int SMALLEST = 1;
 
 	public static float convertToFloat(final int fixedPrecisionProbability)
 	{

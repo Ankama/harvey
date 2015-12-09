@@ -3,8 +3,8 @@
  */
 package com.ankamagames.dofus.harvey.engine.probabilitystrategies;
 
-import com.ankamagames.dofus.harvey.engine.exceptions.ProbabilityOutOfBoundException;
-import com.ankamagames.dofus.harvey.engine.probabilitystrategies.staticstrategies.FixedProbability;
+import com.ankamagames.dofus.harvey.engine.probabilitystrategies.staticstrategies.OneProbability;
+import com.ankamagames.dofus.harvey.engine.probabilitystrategies.staticstrategies.ZeroProbability;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -17,16 +17,16 @@ public final class ReadOnlyProbabilityStrategy
 	implements IProbabilityStrategy
 {
 	public static final ReadOnlyProbabilityStrategy ZERO_PROBABILITY = getZeroConst();
+	public static final ReadOnlyProbabilityStrategy ONE_PROBABILITY = getOneConst();
 
 	private static ReadOnlyProbabilityStrategy getZeroConst()
 	{
-		try
-		{
-			return new ReadOnlyProbabilityStrategy(new FixedProbability(0));
-		} catch (final ProbabilityOutOfBoundException e)
-		{
-			throw new RuntimeException(e);
-		}
+		return new ReadOnlyProbabilityStrategy(ZeroProbability.getInstance());
+	}
+
+	private static ReadOnlyProbabilityStrategy getOneConst()
+	{
+		return new ReadOnlyProbabilityStrategy(OneProbability.getInstance());
 	}
 
 	IProbabilityStrategy _probabilityStrategy;

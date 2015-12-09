@@ -1,12 +1,10 @@
+package com.ankamagames.dofus.harvey.engine.inetrfaces;
 /**
  *
  */
-package com.ankamagames.dofus.harvey.engine.inetrfaces;
 
-import com.ankamagames.dofus.harvey.engine.exceptions.ProbabilityOutOfBoundException;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -16,9 +14,11 @@ import org.eclipse.jdt.annotation.Nullable;
 @NonNullByDefault
 public interface IIEditableRandomVariable<Data>
 {
-	void setProbabilityOf(@Nullable Data value, int probability) throws ProbabilityOutOfBoundException;
+	boolean containsOnly(@Nullable Data value);
+	boolean setProbabilityOf(@Nullable Data value, int probability);
 	boolean remove(@Nullable Data value);
-	void add(@Nullable Data value, int probability);
-	void addProbabilityTo(@Nullable Data value, int delta);
-	void removeProbabilityTo(@Nullable Data value, int delta);
+	boolean add(@Nullable Data value, int probability);
+	boolean addProbabilityTo(@Nullable Data value, int delta);
+	boolean removeProbabilityTo(@Nullable Data value, int delta);
+	void clear();
 }

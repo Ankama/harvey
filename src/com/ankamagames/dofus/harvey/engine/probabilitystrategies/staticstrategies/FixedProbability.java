@@ -5,8 +5,8 @@ package com.ankamagames.dofus.harvey.engine.probabilitystrategies.staticstrategi
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
 import com.ankamagames.dofus.harvey.engine.exceptions.ProbabilityOutOfBoundException;
+import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IMergeableProbabilityStrategy;
-import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IModifiableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -17,7 +17,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  */
 @NonNullByDefault
 public class FixedProbability
-	implements IStaticProbabilityStrategy, IModifiableProbabilityStrategy, IMergeableProbabilityStrategy
+	implements IStaticProbabilityStrategy, IEditableProbabilityStrategy, IMergeableProbabilityStrategy
 {
 	protected int _probability;
 
@@ -29,14 +29,12 @@ public class FixedProbability
 	 * @param probability
 	 * @throws ProbabilityOutOfBoundException
 	 */
-	public FixedProbability(final int probability) throws ProbabilityOutOfBoundException
+	public FixedProbability(final int probability)
 	{
-		if(probability>RandomVariableUtils.ONE)
-			throw new ProbabilityOutOfBoundException();
 		_probability = probability;
 	}
 
-	public FixedProbability() throws ProbabilityOutOfBoundException
+	public FixedProbability()
 	{
 		this(RandomVariableUtils.ONE);
 	}
@@ -60,10 +58,8 @@ public class FixedProbability
 	}
 
 	@Override
-	public void setProbability(final int probability) throws ProbabilityOutOfBoundException
+	public void setProbability(final int probability)
 	{
-		if(probability>RandomVariableUtils.ONE)
-			throw new ProbabilityOutOfBoundException();
 		_probability = probability;
 	}
 
@@ -73,13 +69,19 @@ public class FixedProbability
 	}
 
 	@Override
-	public void addProbability(final int probability) throws ProbabilityOutOfBoundException
+	public void addProbability(final int probability)
 	{
 		final long newProbability = _probability + (long)probability;
-		if((newProbability > RandomVariableUtils.ONE)||(newProbability < 0))
+		if((newProbability > Integer.MAX_VALUE)||(newProbability < Integer.MIN_VALUE))
 			throw new ProbabilityOutOfBoundException();
 
 		_probability = (int) newProbability;
+	}
+
+	@Override
+	public void removeProbability(final int probability)
+	{
+		addProbability(-probability);
 	}
 
 	@Override
@@ -96,16 +98,5 @@ public class FixedProbability
 		_setProbabilityNoCheck(newProba);
 
 		return true;
-	}
-
-	@Override
-	public void removeProbability(final int probability)
-			throws ProbabilityOutOfBoundException
-	{
-		final long newProbability = _probability - (long)probability;
-		if((newProbability > RandomVariableUtils.ONE)||(newProbability < 0))
-			throw new ProbabilityOutOfBoundException();
-
-		_probability = (int) newProbability;
 	}
 }

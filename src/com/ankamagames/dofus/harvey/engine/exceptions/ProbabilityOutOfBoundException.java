@@ -12,9 +12,10 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  */
 @NonNullByDefault
 public class ProbabilityOutOfBoundException
-	extends Exception
+	extends RuntimeException
 {
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = -286443038117125403L;}
+	private static final long serialVersionUID = -286443038117125403L;
+}

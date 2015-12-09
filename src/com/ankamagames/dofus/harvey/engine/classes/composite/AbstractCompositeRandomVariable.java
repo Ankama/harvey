@@ -3,17 +3,10 @@
  */
 package com.ankamagames.dofus.harvey.engine.classes.composite;
 
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 
-import com.ankamagames.dofus.harvey.RandomVariableUtils;
-import com.ankamagames.dofus.harvey.engine.classes.parentedwithprobability.ParentedRandomVariableWithProbability;
-import com.ankamagames.dofus.harvey.engine.exceptions.WrongContextException;
-import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.interfaces.IRandomVariable;
-import com.ankamagames.dofus.harvey.interfaces.composite.ICompositeRandomVariable;
-import com.ankamagames.dofus.harvey.interfaces.parentedwithprobability.IParentedRandomVariableWithProbability;
-import com.ankamagames.dofus.harvey.interfaces.parenting.IParentingRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -23,76 +16,44 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 @NonNullByDefault
-public class AbstractCompositeRandomVariable
+public abstract class AbstractCompositeRandomVariable
 <
 	Data,
-	ParentType extends ICompositeRandomVariable<Data, ParentType, ?>,
-	HeldType extends IParentingRandomVariable<Data, ChildType>,
-	ChildType extends IParentedRandomVariableWithProbability<Data, ?>,
-	ProbabilityStrategy extends IProbabilityStrategy
+	ChildType extends BaseRandomVariableWrapper<Data, ?, ?, ?>
 >
-extends ParentedRandomVariableWithProbability<Data, ParentType, HeldType, ProbabilityStrategy>
-implements ICompositeRandomVariable<Data, ParentType, ChildType>
+implements IRandomVariable<Data>
 {
-	public AbstractCompositeRandomVariable(final @Nullable ParentType parent,
-			final HeldType heldRandomVariable, final ProbabilityStrategy probabilityStrategy)
+	abstract protected Collection<ChildType> getElements();
+
+	protected Iterator<ChildType> iterator()
 	{
-		super(parent, heldRandomVariable, probabilityStrategy);
+		return getElements().iterator();
 	}
 
 	@Override
-	public int getProbability(final @Nullable IRandomVariable<Data> context)
+	public int getProbabilityOf(@Nullable final Data value)
 	{
-		if(context==this)
-			return RandomVariableUtils.ONE;
-		if(context != null)
-		{
-			int probability = getProbability();
-			ICompositeRandomVariable<Data, ParentType, ?> curParent = getParent();
-			while((!context.equals(curParent))&&(curParent!=null))
-			{
-				probability = RandomVariableUtils.multiplyFixedPrecision(probability, curParent.getProbability());
-				curParent = curParent.getParent();
-			}
-			if(context.equals(curParent))
-				return probability;
-			else
-				throw new WrongContextException();
-		}
-		else
-		{
-			int probability = getProbability();
-			ICompositeRandomVariable<Data, ParentType, ?> curParent = getParent();
-			while(curParent!=null)
-			{
-				probability = RandomVariableUtils.multiplyFixedPrecision(probability, curParent.getProbability());
-				curParent = curParent.getParent();
-			}
-		}
-		return 0;
+		int r = 0;
+		for(final ChildType element:getElements())
+			r+=element.getProbabilityOf(value);
+		return r;
 	}
 
 	@Override
-	public int getProbabilityOf(final @Nullable Data value, final @Nullable IRandomVariable<Data> context)
+	public boolean contains(@Nullable final Data value)
 	{
-		return RandomVariableUtils.multiplyFixedPrecision(getProbability(context), _heldRandomVariable.getProbabilityOf(value));
+		for(final ChildType element:getElements())
+			if(element.contains(value))
+				return true;
+		return false;
 	}
 
 	@Override
-	public Set<ChildType> getSubVariables()
+	public boolean isEmpty()
 	{
-		return _heldRandomVariable.getSubVariables();
-	}
-
-	@Override
-	public int size()
-	{
-		return _heldRandomVariable.size();
-	}
-
-	@Override
-	public Iterator<ChildType> iterator()
-	{
-		return _heldRandomVariable.iterator();
+		for(final ChildType element:getElements())
+			if(!element.isEmpty())
+				return false;
+		return true;
 	}
 }
