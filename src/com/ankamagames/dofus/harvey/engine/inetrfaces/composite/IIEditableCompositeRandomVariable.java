@@ -14,9 +14,9 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 @NonNullByDefault
-public interface IIEditableCompositeRandomVariable<Data, ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>>
+public interface IIEditableCompositeRandomVariable<Data, WrappableRandomVariableType extends IEditableRandomVariable<Data>, ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>>
 {
 	void add(@Nullable Data value, int probability, ProbabilityStrategiesEnum probabilityStrategy);
-	void add(IEditableRandomVariable<Data> randomVariable, int probability, ProbabilityStrategiesEnum probabilityStrategy);
-	boolean remove(final IEditableRandomVariable<Data> randomVariable);
+	void add(WrappableRandomVariableType randomVariable, int probability, ProbabilityStrategiesEnum probabilityStrategy);
+	boolean remove(final WrappableRandomVariableType randomVariable);
 }

@@ -22,7 +22,7 @@ extends AbstractCompositeRandomVariable<Data, ChildType>
 {
 	protected HashSet<ChildType> _elements;
 
-	public BaseUnorderedCompositeRandomVariable(final Collection<ChildType> elements)
+	protected BaseUnorderedCompositeRandomVariable(final Collection<? extends ChildType> elements)
 	{
 		_elements = new HashSet<ChildType>(elements);
 	}

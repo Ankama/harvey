@@ -13,7 +13,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  *
  */
 @NonNullByDefault
-public interface IEditableCompositeRandomVariable<Data, ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>>
-	extends IEditableRandomVariable<Data>,
-	IIEditableCompositeRandomVariable<Data, ProbabilityStrategiesEnum>
+public interface IEditableCompositeRandomVariable<Data, WrappableRandomVariableType extends IEditableRandomVariable<Data>, ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>>
+extends IEditableRandomVariable<Data>,
+IIEditableCompositeRandomVariable<Data, WrappableRandomVariableType, ProbabilityStrategiesEnum>
 {}

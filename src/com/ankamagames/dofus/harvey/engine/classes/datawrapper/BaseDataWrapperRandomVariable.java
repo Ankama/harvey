@@ -15,7 +15,7 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 @NonNullByDefault
 public class BaseDataWrapperRandomVariable<Data, ProbabilityStrategy extends IProbabilityStrategy>
-	implements IRandomVariable<Data>
+implements IRandomVariable<Data>
 {
 	protected @Nullable Data _value;
 	protected ProbabilityStrategy _probabilityStrategy;

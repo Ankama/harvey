@@ -15,14 +15,14 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 @NonNullByDefault
-public class BridgedDefaultCompositeRandomVariableEditor
+public class BridgedDefaultUnorderedCompositeRandomVariableEditor
 <
 	Data,
 	Bridged extends AbstractEditableUnorderedCompositeRandomVariable<Data, BaseEditableRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies>
 >
-extends BridgedAbstractCompositeRandomVariableEditor<Data, BaseEditableRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies, Bridged>
+extends BridgedAbstractUnorderedCompositeRandomVariableEditor<Data, BaseEditableRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies, Bridged>
 {
-	public BridgedDefaultCompositeRandomVariableEditor(final Bridged bridged)
+	public BridgedDefaultUnorderedCompositeRandomVariableEditor(final Bridged bridged)
 	{
 		super(bridged);
 	}

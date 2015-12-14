@@ -4,12 +4,13 @@
 package com.ankamagames.dofus.harvey.engine.classes.composite;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.Iterator;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
 import com.ankamagames.dofus.harvey.engine.classes.composite.probabilityfactories.IBridgedProbabilityStrategyFactory;
 import com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable;
+import com.ankamagames.dofus.harvey.engine.inetrfaces.composite.IEditableCompositeRandomVariable;
 import com.ankamagames.dofus.harvey.engine.inetrfaces.composite.IIEditableCompositeRandomVariable;
 import com.ankamagames.dofus.harvey.interfaces.IEditableRandomVariable;
 
@@ -24,11 +25,12 @@ import org.eclipse.jdt.annotation.Nullable;
 public abstract class BridgedAbstractCompositeRandomVariableEditor
 <
 	Data,
-	ChildType extends BaseEditableRandomVariableWrapper<Data, ?, ?, ?>,
+	WrappableRandomVariableType extends IEditableRandomVariable<Data>,
+	ChildType extends BaseRandomVariableWrapper<Data, ?, ?, ?>&IEditableRandomVariable<Data>,
 	ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>,
-	Bridged extends AbstractEditableUnorderedCompositeRandomVariable<Data, ChildType, ProbabilityStrategiesEnum>
+	Bridged extends AbstractCompositeRandomVariable<Data, ChildType>&IEditableCompositeRandomVariable<Data, WrappableRandomVariableType, ProbabilityStrategiesEnum>
 >
-implements IIEditableRandomVariable<Data>,IIEditableCompositeRandomVariable<Data, ProbabilityStrategiesEnum>
+implements IIEditableRandomVariable<Data>,IIEditableCompositeRandomVariable<Data, WrappableRandomVariableType, ProbabilityStrategiesEnum>
 {
 	protected Bridged _bridged;
 
@@ -38,7 +40,7 @@ implements IIEditableRandomVariable<Data>,IIEditableCompositeRandomVariable<Data
 	}
 
 	protected abstract ChildType getNewChild(final @Nullable Data value, final int probability, final @Nullable ProbabilityStrategiesEnum probabilityStrategy);
-	protected abstract ChildType getNewChild(final IEditableRandomVariable<Data> randomVariable, final int probability, final @Nullable ProbabilityStrategiesEnum probabilityStrategy);
+	protected abstract ChildType getNewChild(final WrappableRandomVariableType randomVariable, final int probability, final @Nullable ProbabilityStrategiesEnum probabilityStrategy);
 
 	@Override
 	public boolean containsOnly(@Nullable final Data value)
@@ -59,7 +61,7 @@ implements IIEditableRandomVariable<Data>,IIEditableCompositeRandomVariable<Data
 	}
 
 	@Override
-	public void add(final IEditableRandomVariable<Data> randomVariable,
+	public void add(final WrappableRandomVariableType randomVariable,
 			final int probability, final ProbabilityStrategiesEnum probabilityStrategy)
 	{
 		_bridged.getElements().add(getNewChild(randomVariable, probability, probabilityStrategy));
@@ -72,7 +74,7 @@ implements IIEditableRandomVariable<Data>,IIEditableCompositeRandomVariable<Data
 	}
 
 	@Override
-	public boolean remove(final IEditableRandomVariable<Data> randomVariable)
+	public boolean remove(final WrappableRandomVariableType randomVariable)
 	{
 		boolean r = false;
 		final Iterator<ChildType> it = _bridged.getElements().iterator();
@@ -91,9 +93,9 @@ implements IIEditableRandomVariable<Data>,IIEditableCompositeRandomVariable<Data
 	@Override
 	public boolean setProbabilityOf(@Nullable final Data value, final int probability)
 	{
-		final HashSet<? extends BaseEditableRandomVariableWrapper<Data, ?, ?, ?>> elements = _bridged.getElements();
-		final ArrayList<BaseEditableRandomVariableWrapper<Data, ?, ?, ?>> containing = new ArrayList<BaseEditableRandomVariableWrapper<Data,?,?,?>>(elements.size());
-		for(final BaseEditableRandomVariableWrapper<Data, ?, ?, ?> element:elements)
+		final Collection<ChildType> elements = _bridged.getElements();
+		final ArrayList<ChildType> containing = new ArrayList<ChildType>(elements.size());
+		for(final ChildType element:elements)
 		{
 			if(element.contains(value))
 				containing.add(element);
@@ -105,7 +107,7 @@ implements IIEditableRandomVariable<Data>,IIEditableCompositeRandomVariable<Data
 			final int diviedProbability = probability/nbContaining;
 			int remain = probability-diviedProbability*nbContaining;
 
-			for(final BaseEditableRandomVariableWrapper<Data, ?, ?, ?> item:containing)
+			for(final ChildType item:containing)
 			{
 				r |= item.setProbabilityOf(value, (remain-->0)?diviedProbability+RandomVariableUtils.SMALLEST:diviedProbability);
 			}
@@ -124,10 +126,10 @@ implements IIEditableRandomVariable<Data>,IIEditableCompositeRandomVariable<Data
 	public boolean remove(@Nullable final Data value)
 	{
 		boolean r = false;
-		final Iterator<? extends BaseEditableRandomVariableWrapper<Data, ?, ?, ?>> it = _bridged.getElements().iterator();
+		final Iterator<ChildType> it = _bridged.getElements().iterator();
 		while(it.hasNext())
 		{
-			final BaseEditableRandomVariableWrapper<Data, ?, ?, ?> element = it.next();
+			final ChildType element = it.next();
 			if(element.remove(value))
 			{
 				r = true;
@@ -150,9 +152,9 @@ implements IIEditableRandomVariable<Data>,IIEditableCompositeRandomVariable<Data
 	@Override
 	public boolean addProbabilityTo(@Nullable final Data value, final int delta)
 	{
-		final HashSet<? extends BaseEditableRandomVariableWrapper<Data, ?, ?, ?>> elements = _bridged.getElements();
-		final ArrayList<BaseEditableRandomVariableWrapper<Data, ?, ?, ?>> containing = new ArrayList<BaseEditableRandomVariableWrapper<Data,?,?,?>>(elements.size());
-		for(final BaseEditableRandomVariableWrapper<Data, ?, ?, ?> element:elements)
+		final Collection<ChildType> elements = _bridged.getElements();
+		final ArrayList<ChildType> containing = new ArrayList<ChildType>(elements.size());
+		for(final ChildType element:elements)
 		{
 			if(element.contains(value))
 				containing.add(element);
@@ -164,7 +166,7 @@ implements IIEditableRandomVariable<Data>,IIEditableCompositeRandomVariable<Data
 			final int diviedDelta = delta/nbContaining;
 			int remain = delta-diviedDelta*nbContaining;
 
-			for(final BaseEditableRandomVariableWrapper<Data, ?, ?, ?> item:containing)
+			for(final ChildType item:containing)
 			{
 				r |= item.addProbabilityTo(value, (remain-->0)?diviedDelta+RandomVariableUtils.SMALLEST:diviedDelta);
 			}

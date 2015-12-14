@@ -5,8 +5,8 @@ package com.ankamagames.dofus.harvey.composite;
 
 import com.ankamagames.dofus.harvey.engine.classes.composite.AbstractEditableUnorderedCompositeRandomVariable;
 import com.ankamagames.dofus.harvey.engine.classes.composite.BaseEditableRandomVariableWrapper;
-import com.ankamagames.dofus.harvey.engine.classes.composite.BridgedAbstractCompositeRandomVariableEditor;
-import com.ankamagames.dofus.harvey.engine.classes.composite.BridgedDefaultCompositeRandomVariableEditor;
+import com.ankamagames.dofus.harvey.engine.classes.composite.BridgedAbstractUnorderedCompositeRandomVariableEditor;
+import com.ankamagames.dofus.harvey.engine.classes.composite.BridgedDefaultUnorderedCompositeRandomVariableEditor;
 import com.ankamagames.dofus.harvey.engine.classes.composite.probabilityfactories.ProbabilityStrategies;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -19,16 +19,16 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 public class DefaultUnorderedCompositeRandomVariable<Data>
 extends AbstractEditableUnorderedCompositeRandomVariable<Data, BaseEditableRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies>
 {
-	protected BridgedDefaultCompositeRandomVariableEditor<Data, ? extends AbstractEditableUnorderedCompositeRandomVariable<Data, BaseEditableRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies>> _editor;
+	protected BridgedDefaultUnorderedCompositeRandomVariableEditor<Data, ? extends AbstractEditableUnorderedCompositeRandomVariable<Data, BaseEditableRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies>> _editor;
 
 	public DefaultUnorderedCompositeRandomVariable()
 	{
 		super();
-		_editor = new BridgedDefaultCompositeRandomVariableEditor<Data, AbstractEditableUnorderedCompositeRandomVariable<Data,BaseEditableRandomVariableWrapper<Data,?,?,?>, ProbabilityStrategies>>(this);
+		_editor = new BridgedDefaultUnorderedCompositeRandomVariableEditor<Data, AbstractEditableUnorderedCompositeRandomVariable<Data,BaseEditableRandomVariableWrapper<Data,?,?,?>, ProbabilityStrategies>>(this);
 	}
 
 	@Override
-	protected BridgedAbstractCompositeRandomVariableEditor<Data, BaseEditableRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies, ?> getEditor()
+	protected BridgedAbstractUnorderedCompositeRandomVariableEditor<Data, BaseEditableRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies, ?> getEditor()
 	{
 		return _editor;
 	}

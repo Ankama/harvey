@@ -12,14 +12,14 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  *
  */
 @NonNullByDefault
-public class BridgedScalingDefaultCompositeRandomVariableEditor
+public class BridgedFittingDefaultOrderedCompositeRandomVariableEditor
 <
 	Data,
-	Bridged extends AbstractEditableUnorderedCompositeRandomVariable<Data, BaseEditableRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies>
+	Bridged extends AbstractEditableOrderedCompositeRandomVariable<Data, BaseEditableOrderedRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies>
 >
-extends BridgedDefaultCompositeRandomVariableEditor<Data, Bridged>
+extends BridgedDefaultOrderedCompositeRandomVariableEditor<Data, Bridged>
 {
-	public BridgedScalingDefaultCompositeRandomVariableEditor(final Bridged bridged)
+	public BridgedFittingDefaultOrderedCompositeRandomVariableEditor(final Bridged bridged)
 	{
 		super(bridged);
 	}
@@ -28,6 +28,6 @@ extends BridgedDefaultCompositeRandomVariableEditor<Data, Bridged>
 	protected IBridgedEditableProbabilityStrategy<? super BaseRandomVariableWrapper<?, ?, ?, ?>> getDefaultProbabilityStrategy(
 			final int probability)
 	{
-		return ProbabilityStrategies.SCALING.getNewProbabilityStrategy(probability);
+		return ProbabilityStrategies.FITTING.getNewProbabilityStrategy(probability);
 	}
 }

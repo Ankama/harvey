@@ -27,7 +27,7 @@ extends AbstractCompositeRandomVariable
 
 	public ReadOnlyUnorderedCompositeRandomVariable(final AbstractCompositeRandomVariable<Data, ?> base)
 	{
-		_elements = getReadOnlyCopy((Collection<? extends BaseRandomVariableWrapper<Data, ?, ?, ?>>) base.getElements());
+		_elements = getReadOnlyCopy(base.getElements());
 	}
 
 	@Override

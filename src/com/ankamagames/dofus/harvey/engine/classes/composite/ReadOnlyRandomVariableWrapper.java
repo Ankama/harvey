@@ -14,7 +14,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  */
 @NonNullByDefault
 public final class ReadOnlyRandomVariableWrapper<Data>
-	extends BaseRandomVariableWrapper<Data, IRandomVariable<Data>, AbstractCompositeRandomVariable<Data, ?>, ReadOnlyProbabilityStrategy>
+extends BaseRandomVariableWrapper<Data, IRandomVariable<Data>, AbstractCompositeRandomVariable<Data, ?>, ReadOnlyProbabilityStrategy>
 {
 	public ReadOnlyRandomVariableWrapper(final BaseRandomVariableWrapper<Data, ?, ?, ?> base)
 	{

@@ -13,5 +13,5 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  */
 @NonNullByDefault
 public interface IOrderedRandomVariable<Data>
-	extends IRandomVariable<Data>, IIOrderedRandomVariable<Data>
+extends IRandomVariable<Data>, IIOrderedRandomVariable<Data>
 {}

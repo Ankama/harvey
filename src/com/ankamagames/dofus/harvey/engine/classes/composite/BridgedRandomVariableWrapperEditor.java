@@ -1,8 +1,10 @@
 /**
  *
  */
-package com.ankamagames.dofus.harvey.engine.classes.datawrapper;
+package com.ankamagames.dofus.harvey.engine.classes.composite;
 
+import com.ankamagames.dofus.harvey.RandomVariableUtils;
+import com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.interfaces.IEditableRandomVariable;
 
@@ -14,22 +16,24 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 @NonNullByDefault
-public class BaseEditableDataWrapperRandomVariable<Data, ProbabilityStrategy extends IEditableProbabilityStrategy>
-extends BaseDataWrapperRandomVariable<Data, ProbabilityStrategy>
-implements IEditableRandomVariable<Data>
+public class BridgedRandomVariableWrapperEditor
+<
+	Data,
+	Bridged extends BaseRandomVariableWrapper<Data, ? extends IEditableRandomVariable<Data>, ?, ? extends IEditableProbabilityStrategy>&IEditableRandomVariable<Data>
+>
+implements IIEditableRandomVariable<Data>
 {
-	BridgedDataWrapperRandomVariableEditor<Data, ?> _editor;
+	Bridged _bridged;
 
-	public BaseEditableDataWrapperRandomVariable(final @Nullable Data value, final ProbabilityStrategy probabilityStrategy)
+	public BridgedRandomVariableWrapperEditor(final Bridged bridged)
 	{
-		super(value, probabilityStrategy);
-		_editor = new BridgedDataWrapperRandomVariableEditor<Data, BaseEditableDataWrapperRandomVariable<Data, ProbabilityStrategy>>(this);
+		_bridged = bridged;
 	}
 
 	@Override
 	public boolean containsOnly(@Nullable final Data value)
 	{
-		return _editor.containsOnly(value);
+		return _bridged._element.containsOnly(value);
 	}
 
 	/* (non-Javadoc)
@@ -38,7 +42,12 @@ implements IEditableRandomVariable<Data>
 	@Override
 	public boolean setProbabilityOf(@Nullable final Data value, final int probability)
 	{
-		return _editor.setProbabilityOf(value, probability);
+		if(_bridged._element.containsOnly(value))
+		{
+			_bridged._probabilityStrategy.setProbability(probability);
+			return true;
+		}
+		return _bridged._element.setProbabilityOf(value, RandomVariableUtils.divideFixedPrecision(probability, _bridged._probabilityStrategy.getProbability()));
 	}
 
 	/* (non-Javadoc)
@@ -47,7 +56,7 @@ implements IEditableRandomVariable<Data>
 	@Override
 	public boolean remove(@Nullable final Data value)
 	{
-		return _editor.remove(value);
+		return _bridged._element.remove(value);
 	}
 
 	/* (non-Javadoc)
@@ -56,7 +65,7 @@ implements IEditableRandomVariable<Data>
 	@Override
 	public boolean add(@Nullable final Data value, final int probability)
 	{
-		return _editor.add(value, probability);
+		return _bridged._element.add(value, RandomVariableUtils.divideFixedPrecision(probability, _bridged._probabilityStrategy.getProbability()));
 	}
 
 	/* (non-Javadoc)
@@ -65,7 +74,12 @@ implements IEditableRandomVariable<Data>
 	@Override
 	public boolean addProbabilityTo(@Nullable final Data value, final int delta)
 	{
-		return _editor.addProbabilityTo(value, delta);
+		if(_bridged._element.containsOnly(value))
+		{
+			_bridged._probabilityStrategy.addProbability(delta);
+			return true;
+		}
+		return _bridged._element.addProbabilityTo(value, RandomVariableUtils.divideFixedPrecision(delta, _bridged._probabilityStrategy.getProbability()));
 	}
 
 	/* (non-Javadoc)
@@ -74,7 +88,12 @@ implements IEditableRandomVariable<Data>
 	@Override
 	public boolean removeProbabilityTo(@Nullable final Data value, final int delta)
 	{
-		return _editor.removeProbabilityTo(value, delta);
+		if(_bridged._element.containsOnly(value))
+		{
+			_bridged._probabilityStrategy.removeProbability(delta);
+			return true;
+		}
+		return _bridged._element.removeProbabilityTo(value, RandomVariableUtils.divideFixedPrecision(delta, _bridged._probabilityStrategy.getProbability()));
 	}
 
 	/* (non-Javadoc)
@@ -83,6 +102,6 @@ implements IEditableRandomVariable<Data>
 	@Override
 	public void clear()
 	{
-		_editor.clear();
+		_bridged._element.clear();
 	}
 }
