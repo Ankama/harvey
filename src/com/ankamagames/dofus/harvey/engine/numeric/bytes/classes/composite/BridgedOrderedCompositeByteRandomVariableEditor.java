@@ -13,7 +13,7 @@ public class BridgedOrderedCompositeByteRandomVariableEditor
 <
 	Bridged extends AbstractEditableOrderedCompositeByteRandomVariable<BaseEditableOrderedByteRandomVariableWrapper<?, ?, ?>, ProbabilityStrategies>
 >
-extends AbstractBridgedOrderedCompositeByteRandomVariableEditor<BaseEditableOrderedByteRandomVariableWrapper<?, ?, ?>, ProbabilityStrategies, Bridged>
+extends AbstractBridgedCompositeByteRandomVariableEditor<IEditableOrderedByteRandomVariable, BaseEditableOrderedByteRandomVariableWrapper<?, ?, ?>, ProbabilityStrategies, Bridged>
 {
 	protected ProbabilityStrategies _defaultProbabilityStrategy;
 

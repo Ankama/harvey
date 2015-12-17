@@ -34,7 +34,7 @@ implements IEditableCompositeByteRandomVariable<IEditableOrderedByteRandomVariab
 		super();
 	}
 
-	protected abstract AbstractBridgedOrderedCompositeByteRandomVariableEditor<ChildType, ProbabilityStrategiesEnum, ?> getEditor();
+	protected abstract AbstractBridgedCompositeByteRandomVariableEditor<IEditableOrderedByteRandomVariable, ChildType, ProbabilityStrategiesEnum, ?> getEditor();
 
 	@Override
 	public void add(final IEditableOrderedByteRandomVariable randomVariable, final int probability, final ProbabilityStrategiesEnum probabilityStrategy)

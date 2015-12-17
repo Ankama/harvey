@@ -21,7 +21,7 @@ public class BridgedUnorderedCompositeGenericRandomVariableEditor
 	Data,
 	Bridged extends AbstractEditableUnorderedCompositeGenericRandomVariable<Data, BaseEditableGenericRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies>
 >
-extends AbstractBridgedUnorderedCompositeGenericRandomVariableEditor<Data, BaseEditableGenericRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies, Bridged>
+extends AbstractBridgedCompositeGenericRandomVariableEditor<Data, IEditableGenericRandomVariable<Data>, BaseEditableGenericRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies, Bridged>
 {
 	protected ProbabilityStrategies _defaultProbabilityStrategy;
 

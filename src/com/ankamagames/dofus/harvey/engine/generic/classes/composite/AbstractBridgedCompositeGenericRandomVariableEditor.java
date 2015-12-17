@@ -40,8 +40,6 @@ implements IIEditableGenericRandomVariable<Data>,IIEditableCompositeGenericRando
 	}
 
 	protected abstract ChildType getNewChild(final @Nullable Data value, final int probability, final @Nullable ProbabilityStrategiesEnum probabilityStrategy);
-	@Override
-	protected abstract ChildType getNewChild(final WrappableRandomVariableType randomVariable, final int probability, final @Nullable ProbabilityStrategiesEnum probabilityStrategy);
 
 	@Override
 	public boolean containsOnly(@Nullable final Data value)

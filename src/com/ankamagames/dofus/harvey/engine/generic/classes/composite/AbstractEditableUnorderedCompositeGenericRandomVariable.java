@@ -36,7 +36,7 @@ implements IEditableCompositeGenericRandomVariable<Data, IEditableGenericRandomV
 		super();
 	}
 
-	protected abstract AbstractBridgedUnorderedCompositeGenericRandomVariableEditor<Data, ChildType, ProbabilityStrategiesEnum, ?> getEditor();
+	protected abstract AbstractBridgedCompositeGenericRandomVariableEditor<Data, IEditableGenericRandomVariable<Data>, ChildType, ProbabilityStrategiesEnum, ?> getEditor();
 
 	@Override
 	public void add(final IEditableGenericRandomVariable<Data> randomVariable, final int probability, final ProbabilityStrategiesEnum probabilityStrategy)
