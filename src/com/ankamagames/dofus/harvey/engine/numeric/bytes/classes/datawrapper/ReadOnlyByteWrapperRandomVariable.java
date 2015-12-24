@@ -18,6 +18,6 @@ extends BaseByteWrapperRandomVariable<IProbabilityStrategy>
 {
 	public ReadOnlyByteWrapperRandomVariable(final BaseByteWrapperRandomVariable<?> base)
 	{
-		super(base._value, new ReadOnlyProbabilityStrategy(base._probabilityStrategy));
+		super(base._value, new ReadOnlyProbabilityStrategy(base.getProbabilityStrategy()));
 	}
 }

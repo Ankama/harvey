@@ -44,12 +44,6 @@ implements IEditableOrderedGenericRandomVariable<Data>
 		}
 
 		@Override
-		public boolean containsOnly(@Nullable final Data value)
-		{
-			return _editor.containsOnly(value);
-		}
-
-		@Override
 		public boolean setProbabilityOf(@Nullable final Data value, final int probability)
 		{
 			return _editor.setProbabilityOf(value, probability);
@@ -59,12 +53,6 @@ implements IEditableOrderedGenericRandomVariable<Data>
 		public boolean remove(@Nullable final Data value)
 		{
 			return _editor.remove(value);
-		}
-
-		@Override
-		public boolean add(@Nullable final Data value, final int probability)
-		{
-			return _editor.add(value, probability);
 		}
 
 		@Override
@@ -100,12 +88,6 @@ implements IEditableOrderedGenericRandomVariable<Data>
 		}
 
 		@Override
-		public boolean containsOnly(@Nullable final Data value)
-		{
-			return _editor.containsOnly(value);
-		}
-
-		@Override
 		public boolean setProbabilityOf(@Nullable final Data value, final int probability)
 		{
 			return _editor.setProbabilityOf(value, probability);
@@ -115,12 +97,6 @@ implements IEditableOrderedGenericRandomVariable<Data>
 		public boolean remove(@Nullable final Data value)
 		{
 			return _editor.remove(value);
-		}
-
-		@Override
-		public boolean add(@Nullable final Data value, final int probability)
-		{
-			return _editor.add(value, probability);
 		}
 
 		@Override
@@ -158,12 +134,6 @@ implements IEditableOrderedGenericRandomVariable<Data>
 	public boolean remove(final @Nullable Data value)
 	{
 		return getInner().remove(value);
-	}
-
-	@Override
-	public boolean add(final @Nullable Data value, final int probability)
-	{
-		return getInner().add(value, probability);
 	}
 
 	@Override

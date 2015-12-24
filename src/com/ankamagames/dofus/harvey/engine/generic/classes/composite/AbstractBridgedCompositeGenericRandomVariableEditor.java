@@ -34,30 +34,12 @@ public abstract class AbstractBridgedCompositeGenericRandomVariableEditor
 extends AbstractBridgedCompositeRandomVariableEditor<WrappableRandomVariableType, ChildType, ProbabilityStrategiesEnum, Bridged>
 implements IIEditableGenericRandomVariable<Data>,IIEditableCompositeGenericRandomVariable<Data, WrappableRandomVariableType, ProbabilityStrategiesEnum>
 {
-	public AbstractBridgedCompositeGenericRandomVariableEditor(final Bridged bridged)
+	public AbstractBridgedCompositeGenericRandomVariableEditor(final Bridged bridged, final ProbabilityStrategiesEnum defaultProbabilityStrategy)
 	{
-		super(bridged);
+		super(bridged, defaultProbabilityStrategy);
 	}
 
-	protected abstract ChildType getNewChild(final @Nullable Data value, final int probability, final @Nullable ProbabilityStrategiesEnum probabilityStrategy);
-
-	@Override
-	public boolean containsOnly(@Nullable final Data value)
-	{
-		boolean contains = false;
-		for(final ChildType element:_bridged.getElements())
-		{
-			if(element.contains(value))
-			{
-				contains = true;
-				if(!element.containsOnly(value))
-					return false;
-			}
-			else if(!element.isEmpty())
-				return false;
-		}
-		return contains;
-	}
+	protected abstract ChildType getNewChild(final @Nullable Data value, final int probability, final ProbabilityStrategiesEnum probabilityStrategy);
 
 	@Override
 	public void add(@Nullable final Data value, final int probability, final ProbabilityStrategiesEnum probabilityStrategy)
@@ -111,7 +93,8 @@ implements IIEditableGenericRandomVariable<Data>,IIEditableCompositeGenericRando
 			return containing.get(0).setProbabilityOf(value, probability);
 		}
 
-		return add(value, probability);
+		_bridged.getElements().add(getNewChild(value, probability, getDefaultProbabilityStrategy()));
+		return true;
 	}
 
 	@Override
@@ -125,20 +108,13 @@ implements IIEditableGenericRandomVariable<Data>,IIEditableCompositeGenericRando
 			if(element.remove(value))
 			{
 				r = true;
-				if(element.isEmpty())
+				if(element.isUnknown())
 				{
 					it.remove();
 				}
 			}
 		}
 		return r;
-	}
-
-	@Override
-	public boolean add(final @Nullable Data value, final int probability)
-	{
-		_bridged.getElements().add(getNewChild(value, probability, null));
-		return true;
 	}
 
 	@Override
@@ -170,7 +146,8 @@ implements IIEditableGenericRandomVariable<Data>,IIEditableCompositeGenericRando
 			return containing.get(0).addProbabilityTo(value, delta);
 		}
 
-		return add(value, delta);
+		_bridged.getElements().add(getNewChild(value, delta, getDefaultProbabilityStrategy()));
+		return true;
 	}
 
 	@Override

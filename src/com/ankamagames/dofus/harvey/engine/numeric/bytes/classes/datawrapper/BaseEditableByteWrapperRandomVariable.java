@@ -25,12 +25,6 @@ implements IEditableByteRandomVariable
 		_editor = new BridgedByteWrapperRandomVariableEditor<BaseEditableByteWrapperRandomVariable<ProbabilityStrategy>>(this);
 	}
 
-	@Override
-	public boolean containsOnly(final byte value)
-	{
-		return _editor.containsOnly(value);
-	}
-
 	/* (non-Javadoc)
 	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#setProbabilityOf(java.lang.Object, int)
 	 */
@@ -47,15 +41,6 @@ implements IEditableByteRandomVariable
 	public boolean remove(final byte value)
 	{
 		return _editor.remove(value);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#add(java.lang.Object, int)
-	 */
-	@Override
-	public boolean add(final byte value, final int probability)
-	{
-		return _editor.add(value, probability);
 	}
 
 	/* (non-Javadoc)

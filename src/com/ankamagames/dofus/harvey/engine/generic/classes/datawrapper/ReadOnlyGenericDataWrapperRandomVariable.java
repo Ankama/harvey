@@ -18,6 +18,6 @@ extends BaseGenericDataWrapperRandomVariable<Data, IProbabilityStrategy>
 {
 	public ReadOnlyGenericDataWrapperRandomVariable(final BaseGenericDataWrapperRandomVariable<Data, ?> base)
 	{
-		super(base._value, new ReadOnlyProbabilityStrategy(base._probabilityStrategy));
+		super(base._value, new ReadOnlyProbabilityStrategy(base.getProbabilityStrategy()));
 	}
 }

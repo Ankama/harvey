@@ -16,22 +16,14 @@ public class BridgedOrderedCompositeGenericRandomVariableEditor
 >
 extends AbstractBridgedCompositeGenericRandomVariableEditor<Data, IEditableOrderedGenericRandomVariable<Data>, BaseEditableOrderedGenericRandomVariableWrapper<Data, ?, ?, ?>, ProbabilityStrategies, Bridged>
 {
-	protected ProbabilityStrategies _defaultProbabilityStrategy;
-
 	public BridgedOrderedCompositeGenericRandomVariableEditor(final Bridged bridged, final ProbabilityStrategies defaultProbabilityStrategy)
 	{
-		super(bridged);
-		_defaultProbabilityStrategy = defaultProbabilityStrategy;
+		super(bridged, defaultProbabilityStrategy);
 	}
 
 	public BridgedOrderedCompositeGenericRandomVariableEditor(final Bridged bridged)
 	{
 		this(bridged, ProbabilityStrategies.FIXED);
-	}
-
-	protected ProbabilityStrategies getDefaultProbabilityStrategy()
-	{
-		return _defaultProbabilityStrategy;
 	}
 
 	@Override

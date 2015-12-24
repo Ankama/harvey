@@ -3,7 +3,7 @@
  */
 package com.ankamagames.dofus.harvey.generic.interfaces;
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableBasicCollection;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
 import com.ankamagames.dofus.harvey.engine.generic.inetrfaces.IIEditableGenericRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -14,5 +14,5 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  */
 @NonNullByDefault
 public interface IEditableGenericRandomVariable<Data>
-	extends IGenericRandomVariable<Data>, IEditableBasicCollection, IIEditableGenericRandomVariable<Data>
+	extends IGenericRandomVariable<Data>, IEditableRandomVariable, IIEditableGenericRandomVariable<Data>
 {}

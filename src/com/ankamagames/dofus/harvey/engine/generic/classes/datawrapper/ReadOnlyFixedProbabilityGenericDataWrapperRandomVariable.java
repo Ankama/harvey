@@ -19,7 +19,7 @@ extends BaseGenericDataWrapperRandomVariable<Data, ReadOnlyProbabilityStrategy>
 {
 	public ReadOnlyFixedProbabilityGenericDataWrapperRandomVariable(final BaseGenericDataWrapperRandomVariable<Data, ? extends FixedProbability> base)
 	{
-		super(base._value, new ReadOnlyProbabilityStrategy(base._probabilityStrategy));
+		super(base._value, new ReadOnlyProbabilityStrategy(base.getProbabilityStrategy()));
 	}
 
 	public ReadOnlyFixedProbabilityGenericDataWrapperRandomVariable(@Nullable final Data value, final int probability)

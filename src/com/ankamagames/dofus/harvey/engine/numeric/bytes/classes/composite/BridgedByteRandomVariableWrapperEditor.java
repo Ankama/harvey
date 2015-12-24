@@ -4,9 +4,11 @@
 package com.ankamagames.dofus.harvey.engine.numeric.bytes.classes.composite;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
-import com.ankamagames.dofus.harvey.engine.common.classes.composite.BridgedBasicCollectionWrapperEditor;
+import com.ankamagames.dofus.harvey.engine.common.classes.composite.BridgedRandomVariableWrapperEditor;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
 import com.ankamagames.dofus.harvey.engine.numeric.bytes.inetrfaces.IIEditableByteRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
+import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IByteRandomVariable;
 import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IEditableByteRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -18,20 +20,14 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public class BridgedByteRandomVariableWrapperEditor
 <
-	Bridged extends BaseByteRandomVariableWrapper<? extends IEditableByteRandomVariable, ?, ? extends IEditableProbabilityStrategy>&IEditableByteRandomVariable
+	Bridged extends BaseByteRandomVariableWrapper<?, ?, ? extends IEditableProbabilityStrategy>&IEditableByteRandomVariable
 >
-extends BridgedBasicCollectionWrapperEditor<Bridged>
+extends BridgedRandomVariableWrapperEditor<Bridged>
 implements IIEditableByteRandomVariable
 {
 	public BridgedByteRandomVariableWrapperEditor(final Bridged bridged)
 	{
 		super(bridged);
-	}
-
-	@Override
-	public boolean containsOnly(final byte value)
-	{
-		return getBridged().getElement().containsOnly(value);
 	}
 
 	/* (non-Javadoc)
@@ -40,12 +36,15 @@ implements IIEditableByteRandomVariable
 	@Override
 	public boolean setProbabilityOf(final byte value, final int probability)
 	{
-		if(getBridged().getElement().containsOnly(value))
+		final IByteRandomVariable element = getBridged().getElement();
+		if(element.containsOnly(value))
 		{
 			getBridged().getProbabilityStrategy().setProbability(probability);
 			return true;
 		}
-		return getBridged().getElement().setProbabilityOf(value, RandomVariableUtils.divideFixedPrecision(probability, getBridged().getProbabilityStrategy().getProbability()));
+		if(element instanceof IEditableRandomVariable)
+			return ((IEditableByteRandomVariable)(element)).setProbabilityOf(value, RandomVariableUtils.divideFixedPrecision(probability, getBridged().getProbabilityStrategy().getProbability()));
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -54,16 +53,19 @@ implements IIEditableByteRandomVariable
 	@Override
 	public boolean remove(final byte value)
 	{
-		return getBridged().getElement().remove(value);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#add(java.lang.Object, int)
-	 */
-	@Override
-	public boolean add(final byte value, final int probability)
-	{
-		return getBridged().getElement().add(value, RandomVariableUtils.divideFixedPrecision(probability, getBridged().getProbabilityStrategy().getProbability()));
+		final IByteRandomVariable element = getBridged().getElement();
+		if(element.containsOnly(value))
+		{
+			clear();
+			return true;
+		}
+		if(element.contains(value))
+		{
+			if(element instanceof IEditableRandomVariable)
+				return ((IEditableByteRandomVariable)(element)).remove(value);
+			return false;
+		}
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -72,12 +74,15 @@ implements IIEditableByteRandomVariable
 	@Override
 	public boolean addProbabilityTo(final byte value, final int delta)
 	{
-		if(getBridged().getElement().containsOnly(value))
+		final IByteRandomVariable element = getBridged().getElement();
+		if(element.containsOnly(value))
 		{
 			getBridged().getProbabilityStrategy().addProbability(delta);
 			return true;
 		}
-		return getBridged().getElement().addProbabilityTo(value, RandomVariableUtils.divideFixedPrecision(delta, getBridged().getProbabilityStrategy().getProbability()));
+		if(element instanceof IEditableRandomVariable)
+			return ((IEditableByteRandomVariable)(element)).addProbabilityTo(value, RandomVariableUtils.divideFixedPrecision(delta, getBridged().getProbabilityStrategy().getProbability()));
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -86,11 +91,14 @@ implements IIEditableByteRandomVariable
 	@Override
 	public boolean removeProbabilityTo(final byte value, final int delta)
 	{
-		if(getBridged().getElement().containsOnly(value))
+		final IByteRandomVariable element = getBridged().getElement();
+		if(element.containsOnly(value))
 		{
 			getBridged().getProbabilityStrategy().removeProbability(delta);
 			return true;
 		}
-		return getBridged().getElement().removeProbabilityTo(value, RandomVariableUtils.divideFixedPrecision(delta, getBridged().getProbabilityStrategy().getProbability()));
+		if(element instanceof IEditableRandomVariable)
+			return ((IEditableByteRandomVariable)(element)).removeProbabilityTo(value, RandomVariableUtils.divideFixedPrecision(delta, getBridged().getProbabilityStrategy().getProbability()));
+		return false;
 	}
 }

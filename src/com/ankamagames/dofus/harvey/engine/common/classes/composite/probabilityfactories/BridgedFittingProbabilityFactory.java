@@ -4,7 +4,7 @@
 package com.ankamagames.dofus.harvey.engine.common.classes.composite.probabilityfactories;
 
 
-import com.ankamagames.dofus.harvey.engine.common.classes.composite.BasicCollectionWrapper;
+import com.ankamagames.dofus.harvey.engine.common.classes.composite.RandomVariableWrapper;
 import com.ankamagames.dofus.harvey.engine.common.classes.composite.BridgedFittingProbability;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedProbabilityStrategyFactory;
 
@@ -16,7 +16,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  */
 @NonNullByDefault
 public class BridgedFittingProbabilityFactory
-implements IBridgedProbabilityStrategyFactory<BasicCollectionWrapper<?, ?, ?>, BridgedFittingProbability<BasicCollectionWrapper<?, ?, ?>>>
+implements IBridgedProbabilityStrategyFactory<RandomVariableWrapper<?, ?, ?>, BridgedFittingProbability<RandomVariableWrapper<?, ?, ?>>>
 {
 	static protected BridgedFittingProbabilityFactory _instance = new BridgedFittingProbabilityFactory();
 
@@ -29,8 +29,8 @@ implements IBridgedProbabilityStrategyFactory<BasicCollectionWrapper<?, ?, ?>, B
 	{	}
 
 	@Override
-	public BridgedFittingProbability<BasicCollectionWrapper<?, ?, ?>> getNewProbabilityStrategy(final int probability)
+	public BridgedFittingProbability<RandomVariableWrapper<?, ?, ?>> getNewProbabilityStrategy(final int probability)
 	{
-		return new BridgedFittingProbability<BasicCollectionWrapper<?, ?, ?>>(probability);
+		return new BridgedFittingProbability<RandomVariableWrapper<?, ?, ?>>(probability);
 	}
 }

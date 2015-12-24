@@ -3,7 +3,7 @@
  */
 package com.ankamagames.dofus.harvey.engine.common.classes.composite;
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableBasicCollection;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedProbabilityStrategyFactory;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IEditableCompositeRandomVariable;
 
@@ -16,8 +16,8 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public abstract class AbstractEditableCompositeRandomVariable
 <
-	WrappableBaseCollectionType extends IEditableBasicCollection,
-	ChildType extends EditableBasicCollectionWrapper<?, ?, ?>,
+	WrappableBaseCollectionType extends IEditableRandomVariable,
+	ChildType extends EditableRandomVariableWrapper<?, ?, ?>,
 	ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>
 >
 extends AbstractCompositeRandomVariable<ChildType>

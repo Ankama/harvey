@@ -4,7 +4,7 @@ package com.ankamagames.dofus.harvey.engine.numeric.bytes.inetrfaces;
  */
 
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IIEditableBasicCollection;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.IIEditableRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -14,12 +14,10 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  */
 @NonNullByDefault
 public interface IIEditableByteRandomVariable
-extends IIEditableBasicCollection
+extends IIEditableRandomVariable
 {
-	boolean containsOnly(byte value);
 	boolean setProbabilityOf(byte value, int probability);
 	boolean remove(byte value);
-	boolean add(byte value, int probability);
 	boolean addProbabilityTo(byte value, int delta);
 	boolean removeProbabilityTo(byte value, int delta);
 }

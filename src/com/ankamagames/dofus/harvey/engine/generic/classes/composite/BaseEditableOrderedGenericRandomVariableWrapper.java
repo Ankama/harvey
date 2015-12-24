@@ -41,12 +41,6 @@ implements IEditableGenericRandomVariable<Data>
 	}
 
 	@Override
-	public boolean containsOnly(@Nullable final Data value)
-	{
-		return _editor.containsOnly(value);
-	}
-
-	@Override
 	public boolean setProbabilityOf(@Nullable final Data value, final int probability)
 	{
 		return _editor.setProbabilityOf(value, probability);
@@ -56,12 +50,6 @@ implements IEditableGenericRandomVariable<Data>
 	public boolean remove(@Nullable final Data value)
 	{
 		return _editor.remove(value);
-	}
-
-	@Override
-	public boolean add(@Nullable final Data value, final int probability)
-	{
-		return _editor.add(value, probability);
 	}
 
 	@Override

@@ -1,0 +1,57 @@
+package com.ankamagames.dofus.harvey.engine.numeric.floats.classes.composite;
+
+import com.ankamagames.dofus.harvey.engine.common.classes.composite.probabilityfactories.ProbabilityStrategies;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedEditableProbabilityStrategy;
+import com.ankamagames.dofus.harvey.numeric.floats.datawrapper.FixedProbabilityOrderedFloatWrapper;
+import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IEditableOrderedFloatRandomVariable;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
+
+@NonNullByDefault
+public class BridgedOrderedCompositeFloatRandomVariableEditor
+<
+	Bridged extends AbstractEditableOrderedCompositeFloatRandomVariable<BaseEditableOrderedFloatRandomVariableWrapper<?, ?, ?>, ProbabilityStrategies>
+>
+extends AbstractBridgedCompositeFloatRandomVariableEditor<IEditableOrderedFloatRandomVariable, BaseEditableOrderedFloatRandomVariableWrapper<?, ?, ?>, ProbabilityStrategies, Bridged>
+{
+	public BridgedOrderedCompositeFloatRandomVariableEditor(final Bridged bridged, final ProbabilityStrategies defaultProbabilityStrategy)
+	{
+		super(bridged, defaultProbabilityStrategy);
+	}
+
+	public BridgedOrderedCompositeFloatRandomVariableEditor(final Bridged bridged)
+	{
+		this(bridged, ProbabilityStrategies.FIXED);
+	}
+
+	@Override
+	protected BaseEditableOrderedFloatRandomVariableWrapper<?, ?, ?> getNewChild(
+			final float value, final int probability,
+			final @Nullable ProbabilityStrategies probabilityStrategy)
+	{
+		return getNewChild(new FixedProbabilityOrderedFloatWrapper(value), probability, probabilityStrategy);
+	}
+
+	@Override
+	protected BaseEditableOrderedFloatRandomVariableWrapper<?, ?, ?> getNewChild(
+			final IEditableOrderedFloatRandomVariable randomVariable, final int probability,
+			final @Nullable ProbabilityStrategies probabilityStrategy)
+	{
+		final IBridgedEditableProbabilityStrategy<? super BaseOrderedFloatRandomVariableWrapper<?, ?, ?>> newProbabilityStrategy;
+		if(probabilityStrategy!=null)
+			newProbabilityStrategy = probabilityStrategy.getNewProbabilityStrategy(probability);
+		else
+			newProbabilityStrategy = getDefaultProbabilityStrategy(probability);
+		final BaseEditableOrderedFloatRandomVariableWrapper<IEditableOrderedFloatRandomVariable, Bridged, IBridgedEditableProbabilityStrategy<? super BaseOrderedFloatRandomVariableWrapper<?, ?, ?>>> newWrapper =
+				new BaseEditableOrderedFloatRandomVariableWrapper<IEditableOrderedFloatRandomVariable, Bridged, IBridgedEditableProbabilityStrategy<? super BaseOrderedFloatRandomVariableWrapper<?, ?, ?>>>(randomVariable, _bridged, newProbabilityStrategy);
+		newProbabilityStrategy.init(newWrapper);
+		return newWrapper;
+	}
+
+	protected IBridgedEditableProbabilityStrategy<? super BaseFloatRandomVariableWrapper<?, ?, ?>> getDefaultProbabilityStrategy(
+			final int probability)
+	{
+		return getDefaultProbabilityStrategy().getNewProbabilityStrategy(probability);
+	}
+}

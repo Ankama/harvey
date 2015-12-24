@@ -4,7 +4,8 @@
 package com.ankamagames.dofus.harvey.engine.generic.classes.composite;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
-import com.ankamagames.dofus.harvey.engine.common.classes.composite.BasicCollectionWrapper;
+import com.ankamagames.dofus.harvey.engine.common.classes.composite.RandomVariableWrapper;
+import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.generic.interfaces.IGenericRandomVariable;
 
@@ -23,7 +24,7 @@ public class BaseGenericRandomVariableWrapper
 	ParentType extends AbstractCompositeGenericRandomVariable<Data, ?>,
 	ProbabilityStrategy extends IProbabilityStrategy
 >
-extends BasicCollectionWrapper<ChildType, ParentType, ProbabilityStrategy>
+extends RandomVariableWrapper<ChildType, ParentType, ProbabilityStrategy>
 implements IGenericRandomVariable<Data>
 {
 	public BaseGenericRandomVariableWrapper(final ChildType element, final ParentType parent, final ProbabilityStrategy probabilityStrategy)
@@ -64,5 +65,17 @@ implements IGenericRandomVariable<Data>
 		if(getProbabilityStrategy().getProbability()==0)
 			return false;
 		return getElement().contains(value);
+	}
+
+	@Override
+	public @Nullable Data getOnlyValue() throws MultipleValuesException
+	{
+		return getElement().getOnlyValue();
+	}
+
+	@Override
+	public boolean containsOnly(@Nullable final Data value)
+	{
+		return getElement().containsOnly(value);
 	}
 }

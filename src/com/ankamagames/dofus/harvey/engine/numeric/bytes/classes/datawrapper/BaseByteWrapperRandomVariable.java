@@ -3,6 +3,8 @@
  */
 package com.ankamagames.dofus.harvey.engine.numeric.bytes.classes.datawrapper;
 
+import com.ankamagames.dofus.harvey.engine.common.classes.datawrapper.AbstractDataWrapperRandomVariable;
+import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IByteRandomVariable;
 
@@ -14,15 +16,21 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  */
 @NonNullByDefault
 public class BaseByteWrapperRandomVariable<ProbabilityStrategy extends IProbabilityStrategy>
+extends AbstractDataWrapperRandomVariable<ProbabilityStrategy>
 implements IByteRandomVariable
 {
 	protected byte _value;
-	protected ProbabilityStrategy _probabilityStrategy;
 
 	public BaseByteWrapperRandomVariable(final byte value,  final ProbabilityStrategy probabilityStrategy)
 	{
+		super(probabilityStrategy);
 		_value = value;
-		_probabilityStrategy = probabilityStrategy;
+	}
+
+	@Override
+	protected ProbabilityStrategy getProbabilityStrategy()
+	{
+		return super.getProbabilityStrategy();
 	}
 
 	public byte getValue()
@@ -49,15 +57,26 @@ implements IByteRandomVariable
 	@Override
 	public boolean contains(final byte value)
 	{
-		return (!isEmpty()) && (value==_value);
+		return (!isUnknown()) && (value==_value);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ankamagames.dofus.harvey.interfaces.IRandomVariable#isEmpty()
-	 */
 	@Override
-	public boolean isEmpty()
+	public byte getOnlyValue() throws MultipleValuesException
 	{
-		return _probabilityStrategy.getProbability()==0;
+		if(isKnown())
+			return _value;
+		throw new MultipleValuesException();
+	}
+
+	@Override
+	protected String toStringValues()
+	{
+		return Byte.toString(getValue());
+	}
+
+	@Override
+	public boolean containsOnly(final byte value)
+	{
+		return contains(value);
 	}
 }

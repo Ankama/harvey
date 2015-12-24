@@ -22,22 +22,15 @@ public class BridgedUnorderedCompositeByteRandomVariableEditor
 >
 extends AbstractBridgedCompositeByteRandomVariableEditor<IEditableByteRandomVariable, BaseEditableByteRandomVariableWrapper<?, ?, ?>, ProbabilityStrategies, Bridged>
 {
-	protected ProbabilityStrategies _defaultProbabilityStrategy;
 
 	public BridgedUnorderedCompositeByteRandomVariableEditor(final Bridged bridged, final ProbabilityStrategies defaultProbabilityStrategy)
 	{
-		super(bridged);
-		_defaultProbabilityStrategy = defaultProbabilityStrategy;
+		super(bridged, defaultProbabilityStrategy);
 	}
 
 	public BridgedUnorderedCompositeByteRandomVariableEditor(final Bridged bridged)
 	{
 		this(bridged, ProbabilityStrategies.FIXED);
-	}
-
-	protected ProbabilityStrategies getDefaultProbabilityStrategy()
-	{
-		return _defaultProbabilityStrategy;
 	}
 
 	@Override

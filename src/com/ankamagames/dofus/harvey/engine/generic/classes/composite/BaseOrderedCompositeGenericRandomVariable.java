@@ -8,8 +8,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import com.ankamagames.dofus.harvey.engine.generic.classes.composite.sortedintervalset.ISortedGenericIntervalSet;
 import com.ankamagames.dofus.harvey.engine.generic.classes.composite.sortedintervalset.GenericIntervalTreeSet;
+import com.ankamagames.dofus.harvey.engine.generic.classes.composite.sortedintervalset.ISortedGenericIntervalSet;
 import com.ankamagames.dofus.harvey.generic.interfaces.IOrderedGenericRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -185,11 +185,11 @@ implements IOrderedGenericRandomVariable<Data>
 		for(final ChildType element:getElements())
 		{
 			final ReadOnlyOrderedGenericRandomVariableWrapper<Data> subElements = element.getLowerThan(value);
-			if((subElements!=null)&&(!subElements.isEmpty()))
+			if((subElements!=null)&&(!subElements.isUnknown()))
 				r.add(subElements);
 			else
 			{
-				if(!element.isEmpty())
+				if(!element.isUnknown())
 					break;
 			}
 		}
@@ -205,11 +205,11 @@ implements IOrderedGenericRandomVariable<Data>
 		for(final ChildType element:getElements())
 		{
 			final ReadOnlyOrderedGenericRandomVariableWrapper<Data> subElements = element.getLowerThanOrEqualTo(value);
-			if((subElements!=null)&&(!subElements.isEmpty()))
+			if((subElements!=null)&&(!subElements.isUnknown()))
 				r.add(subElements);
 			else
 			{
-				if(!element.isEmpty())
+				if(!element.isUnknown())
 					break;
 			}
 		}
@@ -227,11 +227,11 @@ implements IOrderedGenericRandomVariable<Data>
 		{
 			final ChildType element = it.next();
 			final ReadOnlyOrderedGenericRandomVariableWrapper<Data> subElements = element.getGreaterThan(value);
-			if((subElements!=null)&&(!subElements.isEmpty()))
+			if((subElements!=null)&&(!subElements.isUnknown()))
 				r.add(subElements);
 			else
 			{
-				if(!element.isEmpty())
+				if(!element.isUnknown())
 					break;
 			}
 		}
@@ -249,11 +249,11 @@ implements IOrderedGenericRandomVariable<Data>
 		{
 			final ChildType element = it.next();
 			final ReadOnlyOrderedGenericRandomVariableWrapper<Data> subElements = element.getGreaterThanOrEqualTo(value);
-			if((subElements!=null)&&(!subElements.isEmpty()))
+			if((subElements!=null)&&(!subElements.isUnknown()))
 				r.add(subElements);
 			else
 			{
-				if(!element.isEmpty())
+				if(!element.isUnknown())
 					break;
 			}
 		}

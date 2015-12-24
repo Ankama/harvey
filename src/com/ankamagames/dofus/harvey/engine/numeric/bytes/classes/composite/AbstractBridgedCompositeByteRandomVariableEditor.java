@@ -16,7 +16,6 @@ import com.ankamagames.dofus.harvey.engine.numeric.bytes.inetrfaces.composite.II
 import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IEditableByteRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * @author sgros
@@ -33,30 +32,12 @@ public abstract class AbstractBridgedCompositeByteRandomVariableEditor
 extends AbstractBridgedCompositeRandomVariableEditor<WrappableRandomVariableType, ChildType, ProbabilityStrategiesEnum, Bridged>
 implements IIEditableByteRandomVariable,IIEditableCompositeByteRandomVariable<WrappableRandomVariableType, ProbabilityStrategiesEnum>
 {
-	public AbstractBridgedCompositeByteRandomVariableEditor(final Bridged bridged)
+	public AbstractBridgedCompositeByteRandomVariableEditor(final Bridged bridged, final ProbabilityStrategiesEnum defaultProbabilityStrategy)
 	{
-		super(bridged);
+		super(bridged, defaultProbabilityStrategy);
 	}
 
-	protected abstract ChildType getNewChild(final byte value, final int probability, final @Nullable ProbabilityStrategiesEnum probabilityStrategy);
-
-	@Override
-	public boolean containsOnly(final byte value)
-	{
-		boolean contains = false;
-		for(final ChildType element:_bridged.getElements())
-		{
-			if(element.contains(value))
-			{
-				contains = true;
-				if(!element.containsOnly(value))
-					return false;
-			}
-			else if(!element.isEmpty())
-				return false;
-		}
-		return contains;
-	}
+	protected abstract ChildType getNewChild(final byte value, final int probability, final ProbabilityStrategiesEnum probabilityStrategy);
 
 	@Override
 	public void add(final byte value, final int probability, final ProbabilityStrategiesEnum probabilityStrategy)
@@ -110,7 +91,8 @@ implements IIEditableByteRandomVariable,IIEditableCompositeByteRandomVariable<Wr
 			return containing.get(0).setProbabilityOf(value, probability);
 		}
 
-		return add(value, probability);
+		_bridged.getElements().add(getNewChild(value, probability, getDefaultProbabilityStrategy()));
+		return true;
 	}
 
 	@Override
@@ -124,20 +106,13 @@ implements IIEditableByteRandomVariable,IIEditableCompositeByteRandomVariable<Wr
 			if(element.remove(value))
 			{
 				r = true;
-				if(element.isEmpty())
+				if(element.isUnknown())
 				{
 					it.remove();
 				}
 			}
 		}
 		return r;
-	}
-
-	@Override
-	public boolean add(final byte value, final int probability)
-	{
-		_bridged.getElements().add(getNewChild(value, probability, null));
-		return true;
 	}
 
 	@Override
@@ -150,6 +125,7 @@ implements IIEditableByteRandomVariable,IIEditableCompositeByteRandomVariable<Wr
 			if(element.contains(value))
 				containing.add(element);
 		}
+
 		final int nbContaining = containing.size();
 		if(nbContaining>1)
 		{
@@ -169,7 +145,8 @@ implements IIEditableByteRandomVariable,IIEditableCompositeByteRandomVariable<Wr
 			return containing.get(0).addProbabilityTo(value, delta);
 		}
 
-		return add(value, delta);
+		_bridged.getElements().add(getNewChild(value, delta, getDefaultProbabilityStrategy()));
+		return true;
 	}
 
 	@Override

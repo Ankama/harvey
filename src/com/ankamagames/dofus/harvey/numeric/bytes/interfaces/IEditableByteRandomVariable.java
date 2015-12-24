@@ -3,7 +3,7 @@
  */
 package com.ankamagames.dofus.harvey.numeric.bytes.interfaces;
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableBasicCollection;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
 import com.ankamagames.dofus.harvey.engine.numeric.bytes.inetrfaces.IIEditableByteRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -14,5 +14,5 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  */
 @NonNullByDefault
 public interface IEditableByteRandomVariable
-extends IByteRandomVariable, IEditableBasicCollection, IIEditableByteRandomVariable
+extends IByteRandomVariable, IEditableRandomVariable, IIEditableByteRandomVariable
 {}

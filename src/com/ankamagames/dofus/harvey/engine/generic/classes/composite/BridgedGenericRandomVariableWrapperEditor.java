@@ -4,10 +4,12 @@
 package com.ankamagames.dofus.harvey.engine.generic.classes.composite;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
-import com.ankamagames.dofus.harvey.engine.common.classes.composite.BridgedBasicCollectionWrapperEditor;
+import com.ankamagames.dofus.harvey.engine.common.classes.composite.BridgedRandomVariableWrapperEditor;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
 import com.ankamagames.dofus.harvey.engine.generic.inetrfaces.IIEditableGenericRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.generic.interfaces.IEditableGenericRandomVariable;
+import com.ankamagames.dofus.harvey.generic.interfaces.IGenericRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -20,9 +22,9 @@ import org.eclipse.jdt.annotation.Nullable;
 public class BridgedGenericRandomVariableWrapperEditor
 <
 	Data,
-	Bridged extends BaseGenericRandomVariableWrapper<Data, ? extends IEditableGenericRandomVariable<Data>, ?, ? extends IEditableProbabilityStrategy>&IEditableGenericRandomVariable<Data>
+	Bridged extends BaseGenericRandomVariableWrapper<Data, ? extends IGenericRandomVariable<Data>, ?, ? extends IEditableProbabilityStrategy>&IEditableGenericRandomVariable<Data>
 >
-extends BridgedBasicCollectionWrapperEditor<Bridged>
+extends BridgedRandomVariableWrapperEditor<Bridged>
 implements IIEditableGenericRandomVariable<Data>
 {
 	public BridgedGenericRandomVariableWrapperEditor(final Bridged bridged)
@@ -30,69 +32,75 @@ implements IIEditableGenericRandomVariable<Data>
 		super(bridged);
 	}
 
-	@Override
-	public boolean containsOnly(@Nullable final Data value)
-	{
-		return getBridged().getElement().containsOnly(value);
-	}
-
 	/* (non-Javadoc)
 	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#setProbabilityOf(java.lang.Object, int)
 	 */
 	@Override
-	public boolean setProbabilityOf(@Nullable final Data value, final int probability)
+	public boolean setProbabilityOf(final @Nullable Data value, final int probability)
 	{
-		if(getBridged().getElement().containsOnly(value))
+		final IGenericRandomVariable<Data> element = getBridged().getElement();
+		if(element.containsOnly(value))
 		{
 			getBridged().getProbabilityStrategy().setProbability(probability);
 			return true;
 		}
-		return getBridged().getElement().setProbabilityOf(value, RandomVariableUtils.divideFixedPrecision(probability, getBridged().getProbabilityStrategy().getProbability()));
+		if(element instanceof IEditableRandomVariable)
+			return ((IEditableGenericRandomVariable<Data>)(element)).setProbabilityOf(value, RandomVariableUtils.divideFixedPrecision(probability, getBridged().getProbabilityStrategy().getProbability()));
+		return false;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#remove(java.lang.Object)
 	 */
 	@Override
-	public boolean remove(@Nullable final Data value)
+	public boolean remove(final @Nullable Data value)
 	{
-		return getBridged().getElement().remove(value);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#add(java.lang.Object, int)
-	 */
-	@Override
-	public boolean add(@Nullable final Data value, final int probability)
-	{
-		return getBridged().getElement().add(value, RandomVariableUtils.divideFixedPrecision(probability, getBridged().getProbabilityStrategy().getProbability()));
+		final IGenericRandomVariable<Data> element = getBridged().getElement();
+		if(element.containsOnly(value))
+		{
+			clear();
+			return true;
+		}
+		if(element.contains(value))
+		{
+			if(element instanceof IEditableRandomVariable)
+				return ((IEditableGenericRandomVariable<Data>)(element)).remove(value);
+			return false;
+		}
+		return true;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#addProbabilityTo(java.lang.Object, int)
 	 */
 	@Override
-	public boolean addProbabilityTo(@Nullable final Data value, final int delta)
+	public boolean addProbabilityTo(final @Nullable Data value, final int delta)
 	{
-		if(getBridged().getElement().containsOnly(value))
+		final IGenericRandomVariable<Data> element = getBridged().getElement();
+		if(element.containsOnly(value))
 		{
 			getBridged().getProbabilityStrategy().addProbability(delta);
 			return true;
 		}
-		return getBridged().getElement().addProbabilityTo(value, RandomVariableUtils.divideFixedPrecision(delta, getBridged().getProbabilityStrategy().getProbability()));
+		if(element instanceof IEditableRandomVariable)
+			return ((IEditableGenericRandomVariable<Data>)(element)).addProbabilityTo(value, RandomVariableUtils.divideFixedPrecision(delta, getBridged().getProbabilityStrategy().getProbability()));
+		return false;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#removeProbabilityTo(java.lang.Object, int)
 	 */
 	@Override
-	public boolean removeProbabilityTo(@Nullable final Data value, final int delta)
+	public boolean removeProbabilityTo(final @Nullable Data value, final int delta)
 	{
-		if(getBridged().getElement().containsOnly(value))
+		final IGenericRandomVariable<Data> element = getBridged().getElement();
+		if(element.containsOnly(value))
 		{
 			getBridged().getProbabilityStrategy().removeProbability(delta);
 			return true;
 		}
-		return getBridged().getElement().removeProbabilityTo(value, RandomVariableUtils.divideFixedPrecision(delta, getBridged().getProbabilityStrategy().getProbability()));
+		if(element instanceof IEditableRandomVariable)
+			return ((IEditableGenericRandomVariable<Data>)(element)).removeProbabilityTo(value, RandomVariableUtils.divideFixedPrecision(delta, getBridged().getProbabilityStrategy().getProbability()));
+		return false;
 	}
 }

@@ -57,27 +57,12 @@ implements IEditableCompositeGenericRandomVariable<Data, IEditableOrderedGeneric
 	}
 
 	/* (non-Javadoc)
-	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#add(java.lang.Object, int)
-	 */
-	@Override
-	public boolean add(final @Nullable Data value, final int probability)
-	{
-		return getEditor().add(value, probability);
-	}
-
-	/* (non-Javadoc)
 	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#remove(java.lang.Object)
 	 */
 	@Override
 	public boolean remove(final @Nullable Data value)
 	{
 		return getEditor().remove(value);
-	}
-
-	@Override
-	public boolean containsOnly(@Nullable final Data value)
-	{
-		return getEditor().containsOnly(value);
 	}
 
 	/* (non-Javadoc)

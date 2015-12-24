@@ -4,6 +4,7 @@
 package com.ankamagames.dofus.harvey.engine.numeric.bytes.classes.composite;
 
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
+import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IByteRandomVariable;
 import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IEditableByteRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -15,7 +16,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public class BaseEditableByteRandomVariableWrapper
 <
-	ChildType extends IEditableByteRandomVariable,
+	ChildType extends IByteRandomVariable,
 	ParentType extends AbstractCompositeByteRandomVariable<?>&IEditableByteRandomVariable,
 	ProbabilityStrategy extends IEditableProbabilityStrategy
 >
@@ -28,12 +29,6 @@ implements IEditableByteRandomVariable
 	{
 		super(element, parent, probabilityStrategy);
 		_editor = new BridgedByteRandomVariableWrapperEditor<BaseEditableByteRandomVariableWrapper<ChildType, ParentType, ProbabilityStrategy>>(this);
-	}
-
-	@Override
-	public boolean containsOnly(final byte value)
-	{
-		return _editor.containsOnly(value);
 	}
 
 	/* (non-Javadoc)
@@ -52,15 +47,6 @@ implements IEditableByteRandomVariable
 	public boolean remove(final byte value)
 	{
 		return _editor.remove(value);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#add(java.lang.Object, int)
-	 */
-	@Override
-	public boolean add(final byte value, final int probability)
-	{
-		return _editor.add(value, probability);
 	}
 
 	/* (non-Javadoc)

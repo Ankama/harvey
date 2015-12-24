@@ -3,7 +3,7 @@
  */
 package com.ankamagames.dofus.harvey.engine.common.interfaces.composite;
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IBasicCollection;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.IRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -13,7 +13,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  *
  */
 @NonNullByDefault
-public interface IBridgedEditableProbabilityStrategy<BridgedType extends IBasicCollection>
+public interface IBridgedEditableProbabilityStrategy<BridgedType extends IRandomVariable>
 extends IEditableProbabilityStrategy
 {
 	void init(BridgedType bridged);

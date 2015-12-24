@@ -55,27 +55,12 @@ implements IEditableCompositeByteRandomVariable<IEditableByteRandomVariable, Pro
 	}
 
 	/* (non-Javadoc)
-	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#add(java.lang.Object, int)
-	 */
-	@Override
-	public boolean add(final byte value, final int probability)
-	{
-		return getEditor().add(value, probability);
-	}
-
-	/* (non-Javadoc)
 	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#remove(java.lang.Object)
 	 */
 	@Override
 	public boolean remove(final byte value)
 	{
 		return getEditor().remove(value);
-	}
-
-	@Override
-	public boolean containsOnly(final byte value)
-	{
-		return getEditor().containsOnly(value);
 	}
 
 	/* (non-Javadoc)

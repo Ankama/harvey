@@ -29,27 +29,21 @@ implements IIEditableGenericRandomVariable<Data>
 		_bridged = bridged;
 	}
 
-	@Override
-	public boolean containsOnly(@Nullable final Data value)
-	{
-		return _bridged.contains(value);
-	}
-
 	/* (non-Javadoc)
 	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#setProbabilityOf(java.lang.Object, int)
 	 */
 	@Override
 	public boolean setProbabilityOf(@Nullable final Data value, final int probability)
 	{
-		if(_bridged.isEmpty())
+		if(_bridged.isUnknown())
 		{
 			_bridged._value = value;
-			_bridged._probabilityStrategy.setProbability(probability);
+			_bridged.getProbabilityStrategy().setProbability(probability);
 			return true;
 		}
 		if(_bridged.contains(value))
 		{
-			_bridged._probabilityStrategy.setProbability(probability);
+			_bridged.getProbabilityStrategy().setProbability(probability);
 			return true;
 		}
 		return false;
@@ -70,20 +64,6 @@ implements IIEditableGenericRandomVariable<Data>
 	}
 
 	/* (non-Javadoc)
-	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#add(java.lang.Object, int)
-	 */
-	@Override
-	public boolean add(@Nullable final Data value, final int probability)
-	{
-		if(_bridged.contains(value))
-		{
-			_bridged._probabilityStrategy.addProbability(probability);
-			return true;
-		}
-		return false;
-	}
-
-	/* (non-Javadoc)
 	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#addProbabilityTo(java.lang.Object, int)
 	 */
 	@Override
@@ -91,7 +71,7 @@ implements IIEditableGenericRandomVariable<Data>
 	{
 		if(_bridged.contains(value))
 		{
-			_bridged._probabilityStrategy.addProbability(delta);
+			_bridged.getProbabilityStrategy().addProbability(delta);
 			return true;
 		}
 		return false;
@@ -105,7 +85,7 @@ implements IIEditableGenericRandomVariable<Data>
 	{
 		if(_bridged.contains(value))
 		{
-			_bridged._probabilityStrategy.removeProbability(delta);
+			_bridged.getProbabilityStrategy().removeProbability(delta);
 			return true;
 		}
 		return false;
@@ -117,6 +97,6 @@ implements IIEditableGenericRandomVariable<Data>
 	@Override
 	public void clear()
 	{
-		_bridged._probabilityStrategy.setProbability(0);
+		_bridged.getProbabilityStrategy().setProbability(0);
 	}
 }

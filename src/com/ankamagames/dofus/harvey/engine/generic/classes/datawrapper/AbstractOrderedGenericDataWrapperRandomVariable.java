@@ -5,6 +5,8 @@ package com.ankamagames.dofus.harvey.engine.generic.classes.datawrapper;
 
 import java.util.Comparator;
 
+import com.ankamagames.dofus.harvey.engine.common.classes.AbstractRandomVariable;
+import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.generic.classes.datawrapper.AbstractOrderedGenericDataWrapperRandomVariable.IOrderedInnerTypeDataWrapperRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.generic.interfaces.IOrderedGenericRandomVariable;
@@ -23,6 +25,7 @@ public abstract class AbstractOrderedGenericDataWrapperRandomVariable
 	ProbabilityStrategy extends IProbabilityStrategy,
 	InnerType extends IOrderedInnerTypeDataWrapperRandomVariable<Data, ProbabilityStrategy>
 >
+extends AbstractRandomVariable
 implements IOrderedGenericRandomVariable<Data>
 {
 	protected interface IOrderedInnerTypeDataWrapperRandomVariable<Data, ProbabilityStrategy extends IProbabilityStrategy>
@@ -307,9 +310,9 @@ implements IOrderedGenericRandomVariable<Data>
 	}
 
 	@Override
-	public boolean isEmpty()
+	public boolean isUnknown()
 	{
-		return getInner().isEmpty();
+		return getInner().isUnknown();
 	}
 
 	@Override
@@ -436,5 +439,36 @@ implements IOrderedGenericRandomVariable<Data>
 	public @Nullable Data getUpperBound()
 	{
 		return getInner().getUpperBound();
+	}
+
+	@Override
+	@Nullable
+	public Data getOnlyValue() throws MultipleValuesException
+	{
+		return getInner().getOnlyValue();
+	}
+
+	@Override
+	public boolean hasOnlyOneValue()
+	{
+		return getInner().hasOnlyOneValue();
+	}
+
+	@Override
+	public boolean containsOnly(@Nullable final Data value)
+	{
+		return getInner().containsOnly(value);
+	}
+
+	@Override
+	public int getKnownProbability()
+	{
+		return getInner().getKnownProbability();
+	}
+
+	@Override
+	protected String toStringValues()
+	{
+		return getInner().toString();
 	}
 }

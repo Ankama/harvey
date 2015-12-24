@@ -23,7 +23,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public class BridgedScalingProbability
 <
-	Bridged extends BasicCollectionWrapper<?, ?, ?>
+	Bridged extends RandomVariableWrapper<?, ?, ?>
 >
 implements IBridgedEditableProbabilityStrategy<Bridged>, IDynamicProbabilityStrategy, IEditableProbabilityStrategy, IMergeableProbabilityStrategy
 {
@@ -65,13 +65,13 @@ implements IBridgedEditableProbabilityStrategy<Bridged>, IDynamicProbabilityStra
 	@Override
 	public int getProbability()
 	{
-		final Iterator<? extends BasicCollectionWrapper<?, ?, ?>> iterator = _bridged.getParent().iterator();
+		final Iterator<? extends RandomVariableWrapper<?, ?, ?>> iterator = _bridged.getParent().iterator();
 		long scalingProba = 0;
 		long cumuledProba = 0;
 
 		while(iterator.hasNext())
 		{
-			final BasicCollectionWrapper<?, ?, ?> bro = iterator.next();
+			final RandomVariableWrapper<?, ?, ?> bro = iterator.next();
 			final IProbabilityStrategy broProbaStrat = bro.getProbabilityStrategy();
 			if((broProbaStrat instanceof IStaticProbabilityStrategy)||(broProbaStrat instanceof BridgedFittingProbability))
 			{

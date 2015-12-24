@@ -18,7 +18,7 @@ extends BaseByteWrapperRandomVariable<ReadOnlyProbabilityStrategy>
 {
 	public ReadOnlyFixedProbabilityByteWrapperRandomVariable(final BaseByteWrapperRandomVariable<? extends FixedProbability> base)
 	{
-		super(base._value, new ReadOnlyProbabilityStrategy(base._probabilityStrategy));
+		super(base._value, new ReadOnlyProbabilityStrategy(base.getProbabilityStrategy()));
 	}
 
 	public ReadOnlyFixedProbabilityByteWrapperRandomVariable(final byte value, final int probability)

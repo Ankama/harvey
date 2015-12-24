@@ -3,6 +3,8 @@
  */
 package com.ankamagames.dofus.harvey.engine.generic.classes.datawrapper;
 
+import com.ankamagames.dofus.harvey.engine.common.classes.datawrapper.AbstractDataWrapperRandomVariable;
+import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.generic.interfaces.IGenericRandomVariable;
 
@@ -15,15 +17,21 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 @NonNullByDefault
 public class BaseGenericDataWrapperRandomVariable<Data, ProbabilityStrategy extends IProbabilityStrategy>
+extends AbstractDataWrapperRandomVariable<ProbabilityStrategy>
 implements IGenericRandomVariable<Data>
 {
 	protected @Nullable Data _value;
-	protected ProbabilityStrategy _probabilityStrategy;
 
 	public BaseGenericDataWrapperRandomVariable(@Nullable final Data value,  final ProbabilityStrategy probabilityStrategy)
 	{
+		super(probabilityStrategy);
 		_value = value;
-		_probabilityStrategy = probabilityStrategy;
+	}
+
+	@Override
+	protected ProbabilityStrategy getProbabilityStrategy()
+	{
+		return super.getProbabilityStrategy();
 	}
 
 	public @Nullable Data getValue()
@@ -50,15 +58,30 @@ implements IGenericRandomVariable<Data>
 	@Override
 	public boolean contains(@Nullable final Data value)
 	{
-		return (!isEmpty()) && ( ((value!=null)&&(value.equals(_value)))||((value==null)&&(_value==null)) );
+		return (!isUnknown()) && ( ((value!=null)&&(value.equals(_value)))||((value==null)&&(_value==null)) );
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ankamagames.dofus.harvey.interfaces.IRandomVariable#isEmpty()
-	 */
 	@Override
-	public boolean isEmpty()
+	public boolean containsOnly(@Nullable final Data value)
 	{
-		return _probabilityStrategy.getProbability()==0;
+		return contains(value);
+	}
+
+	@Override
+	@Nullable
+	public Data getOnlyValue() throws MultipleValuesException
+	{
+		if(isKnown())
+			return _value;
+		throw new MultipleValuesException();
+	}
+
+	@Override
+	protected String toStringValues()
+	{
+		final Data value = getValue();
+		if(value==null)
+			return "null";
+		return value.toString();
 	}
 }

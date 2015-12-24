@@ -27,27 +27,21 @@ implements IIEditableByteRandomVariable
 		_bridged = bridged;
 	}
 
-	@Override
-	public boolean containsOnly(final byte value)
-	{
-		return _bridged.contains(value);
-	}
-
 	/* (non-Javadoc)
 	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#setProbabilityOf(java.lang.Object, int)
 	 */
 	@Override
 	public boolean setProbabilityOf(final byte value, final int probability)
 	{
-		if(_bridged.isEmpty())
+		if(_bridged.isUnknown())
 		{
 			_bridged._value = value;
-			_bridged._probabilityStrategy.setProbability(probability);
+			_bridged.getProbabilityStrategy().setProbability(probability);
 			return true;
 		}
 		if(_bridged.contains(value))
 		{
-			_bridged._probabilityStrategy.setProbability(probability);
+			_bridged.getProbabilityStrategy().setProbability(probability);
 			return true;
 		}
 		return false;
@@ -68,20 +62,6 @@ implements IIEditableByteRandomVariable
 	}
 
 	/* (non-Javadoc)
-	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#add(java.lang.Object, int)
-	 */
-	@Override
-	public boolean add(final byte value, final int probability)
-	{
-		if(_bridged.contains(value))
-		{
-			_bridged._probabilityStrategy.addProbability(probability);
-			return true;
-		}
-		return false;
-	}
-
-	/* (non-Javadoc)
 	 * @see com.ankamagames.dofus.harvey.engine.inetrfaces.IIEditableRandomVariable#addProbabilityTo(java.lang.Object, int)
 	 */
 	@Override
@@ -89,7 +69,7 @@ implements IIEditableByteRandomVariable
 	{
 		if(_bridged.contains(value))
 		{
-			_bridged._probabilityStrategy.addProbability(delta);
+			_bridged.getProbabilityStrategy().addProbability(delta);
 			return true;
 		}
 		return false;
@@ -103,7 +83,7 @@ implements IIEditableByteRandomVariable
 	{
 		if(_bridged.contains(value))
 		{
-			_bridged._probabilityStrategy.removeProbability(delta);
+			_bridged.getProbabilityStrategy().removeProbability(delta);
 			return true;
 		}
 		return false;
@@ -115,6 +95,6 @@ implements IIEditableByteRandomVariable
 	@Override
 	public void clear()
 	{
-		_bridged._probabilityStrategy.setProbability(0);
+		_bridged.getProbabilityStrategy().setProbability(0);
 	}
 }

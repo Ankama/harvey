@@ -5,8 +5,8 @@ package com.ankamagames.dofus.harvey.engine.common.classes.composite;
 
 import java.util.Iterator;
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableBasicCollection;
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IIEditableBasicCollection;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.IIEditableRandomVariable;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedProbabilityStrategyFactory;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IEditableCompositeRandomVariable;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IIEditableCompositeRandomVariable;
@@ -21,21 +21,28 @@ import org.eclipse.jdt.annotation.Nullable;
 @NonNullByDefault
 public abstract class AbstractBridgedCompositeRandomVariableEditor
 <
-	WrappableBaseCollectionType extends IEditableBasicCollection,
-	ChildType extends BasicCollectionWrapper<?, ?, ?>&IEditableBasicCollection,
+	WrappableBaseCollectionType extends IEditableRandomVariable,
+	ChildType extends RandomVariableWrapper<?, ?, ?>&IEditableRandomVariable,
 	ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>,
 	Bridged extends AbstractCompositeRandomVariable<ChildType>&IEditableCompositeRandomVariable<WrappableBaseCollectionType, ProbabilityStrategiesEnum>
 >
-implements IIEditableBasicCollection,IIEditableCompositeRandomVariable<WrappableBaseCollectionType, ProbabilityStrategiesEnum>
+implements IIEditableRandomVariable,IIEditableCompositeRandomVariable<WrappableBaseCollectionType, ProbabilityStrategiesEnum>
 {
 	protected Bridged _bridged;
+	protected ProbabilityStrategiesEnum _defaultProbabilityStrategy;
 
-	public AbstractBridgedCompositeRandomVariableEditor(final Bridged bridged)
+	public AbstractBridgedCompositeRandomVariableEditor(final Bridged bridged, final ProbabilityStrategiesEnum defaultProbabilityStrategy)
 	{
 		_bridged = bridged;
+		_defaultProbabilityStrategy = defaultProbabilityStrategy;
 	}
 
-	protected abstract ChildType getNewChild(final WrappableBaseCollectionType randomVariable, final int probability, final @Nullable ProbabilityStrategiesEnum probabilityStrategy);
+	protected ProbabilityStrategiesEnum getDefaultProbabilityStrategy()
+	{
+		return _defaultProbabilityStrategy;
+	}
+
+	protected abstract ChildType getNewChild(final WrappableBaseCollectionType randomVariable, final int probability, final ProbabilityStrategiesEnum probabilityStrategy);
 
 	@Override
 	public void add(final WrappableBaseCollectionType randomVariable,

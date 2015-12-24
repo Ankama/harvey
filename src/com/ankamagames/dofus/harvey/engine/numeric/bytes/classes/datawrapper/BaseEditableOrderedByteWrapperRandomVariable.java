@@ -27,12 +27,6 @@ implements IEditableOrderedByteRandomVariable
 	BridgedByteWrapperRandomVariableEditor<?> _editor;
 
 	@Override
-	public boolean containsOnly(final byte value)
-	{
-		return _editor.containsOnly(value);
-	}
-
-	@Override
 	public boolean setProbabilityOf(final byte value, final int probability)
 	{
 		return _editor.setProbabilityOf(value, probability);
@@ -42,12 +36,6 @@ implements IEditableOrderedByteRandomVariable
 	public boolean remove(final byte value)
 	{
 		return _editor.remove(value);
-	}
-
-	@Override
-	public boolean add(final byte value, final int probability)
-	{
-		return _editor.add(value, probability);
 	}
 
 	@Override

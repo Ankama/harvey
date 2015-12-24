@@ -3,7 +3,7 @@
  */
 package com.ankamagames.dofus.harvey.engine.common.classes.composite;
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IBasicCollection;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.IRandomVariable;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedEditableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.staticstrategies.FixedProbability;
 
@@ -14,7 +14,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  *
  */
 @NonNullByDefault
-public class BridgedFixedProbability<Bridged extends IBasicCollection>
+public class BridgedFixedProbability<Bridged extends IRandomVariable>
 extends FixedProbability
 implements IBridgedEditableProbabilityStrategy<Bridged>
 {

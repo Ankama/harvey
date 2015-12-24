@@ -38,12 +38,6 @@ implements IEditableByteRandomVariable
 	}
 
 	@Override
-	public boolean containsOnly(final byte value)
-	{
-		return _editor.containsOnly(value);
-	}
-
-	@Override
 	public boolean setProbabilityOf(final byte value, final int probability)
 	{
 		return _editor.setProbabilityOf(value, probability);
@@ -53,12 +47,6 @@ implements IEditableByteRandomVariable
 	public boolean remove(final byte value)
 	{
 		return _editor.remove(value);
-	}
-
-	@Override
-	public boolean add(final byte value, final int probability)
-	{
-		return _editor.add(value, probability);
 	}
 
 	@Override

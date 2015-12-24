@@ -161,11 +161,11 @@ implements IOrderedByteRandomVariable
 		for(final ChildType element:getElements())
 		{
 			final ReadOnlyOrderedByteRandomVariableWrapper subElements = element.getLowerThan(value);
-			if((subElements!=null)&&(!subElements.isEmpty()))
+			if((subElements!=null)&&(!subElements.isUnknown()))
 				r.add(subElements);
 			else
 			{
-				if(!element.isEmpty())
+				if(!element.isUnknown())
 					break;
 			}
 		}
@@ -181,11 +181,11 @@ implements IOrderedByteRandomVariable
 		for(final ChildType element:getElements())
 		{
 			final ReadOnlyOrderedByteRandomVariableWrapper subElements = element.getLowerThanOrEqualTo(value);
-			if((subElements!=null)&&(!subElements.isEmpty()))
+			if((subElements!=null)&&(!subElements.isUnknown()))
 				r.add(subElements);
 			else
 			{
-				if(!element.isEmpty())
+				if(!element.isUnknown())
 					break;
 			}
 		}
@@ -203,11 +203,11 @@ implements IOrderedByteRandomVariable
 		{
 			final ChildType element = it.next();
 			final ReadOnlyOrderedByteRandomVariableWrapper subElements = element.getGreaterThan(value);
-			if((subElements!=null)&&(!subElements.isEmpty()))
+			if((subElements!=null)&&(!subElements.isUnknown()))
 				r.add(subElements);
 			else
 			{
-				if(!element.isEmpty())
+				if(!element.isUnknown())
 					break;
 			}
 		}
@@ -225,11 +225,11 @@ implements IOrderedByteRandomVariable
 		{
 			final ChildType element = it.next();
 			final ReadOnlyOrderedByteRandomVariableWrapper subElements = element.getGreaterThanOrEqualTo(value);
-			if((subElements!=null)&&(!subElements.isEmpty()))
+			if((subElements!=null)&&(!subElements.isUnknown()))
 				r.add(subElements);
 			else
 			{
-				if(!element.isEmpty())
+				if(!element.isUnknown())
 					break;
 			}
 		}

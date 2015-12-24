@@ -4,7 +4,8 @@
 package com.ankamagames.dofus.harvey.engine.numeric.bytes.classes.composite;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
-import com.ankamagames.dofus.harvey.engine.common.classes.composite.BasicCollectionWrapper;
+import com.ankamagames.dofus.harvey.engine.common.classes.composite.RandomVariableWrapper;
+import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IByteRandomVariable;
 
@@ -21,7 +22,7 @@ public class BaseByteRandomVariableWrapper
 	ParentType extends AbstractCompositeByteRandomVariable<?>,
 	ProbabilityStrategy extends IProbabilityStrategy
 >
-extends BasicCollectionWrapper<ChildType, ParentType, ProbabilityStrategy>
+extends RandomVariableWrapper<ChildType, ParentType, ProbabilityStrategy>
 implements IByteRandomVariable
 {
 	public BaseByteRandomVariableWrapper(final ChildType element, final ParentType parent, final ProbabilityStrategy probabilityStrategy)
@@ -62,5 +63,17 @@ implements IByteRandomVariable
 		if(getProbabilityStrategy().getProbability()==0)
 			return false;
 		return getElement().contains(value);
+	}
+
+	@Override
+	public boolean containsOnly(final byte value)
+	{
+		return getElement().containsOnly(value);
+	}
+
+	@Override
+	public byte getOnlyValue() throws MultipleValuesException
+	{
+		return getElement().getOnlyValue();
 	}
 }
