@@ -5,6 +5,7 @@ package com.ankamagames.dofus.harvey.engine.generic.classes.composite;
 
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.generic.interfaces.IEditableGenericRandomVariable;
+import com.ankamagames.dofus.harvey.generic.interfaces.IGenericRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -17,7 +18,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class BaseEditableGenericRandomVariableWrapper
 <
 	Data,
-	ChildType extends IEditableGenericRandomVariable<Data>,
+	ChildType extends IGenericRandomVariable<Data>,
 	ParentType extends AbstractCompositeGenericRandomVariable<Data, ?>&IEditableGenericRandomVariable<Data>,
 	ProbabilityStrategy extends IEditableProbabilityStrategy
 >

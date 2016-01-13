@@ -4,7 +4,6 @@
 package com.ankamagames.dofus.harvey.engine.numeric.integers.classes.datawrapper;
 
 import com.ankamagames.dofus.harvey.engine.common.classes.datawrapper.AbstractDataWrapperRandomVariable;
-import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.numeric.integers.interfaces.IIntRandomVariable;
 
@@ -67,11 +66,9 @@ implements IIntRandomVariable
 	}
 
 	@Override
-	public int getOnlyValue() throws MultipleValuesException
+	public int getOnlyValue()
 	{
-		if(isKnown())
-			return _value;
-		throw new MultipleValuesException();
+		return _value;
 	}
 
 	@Override

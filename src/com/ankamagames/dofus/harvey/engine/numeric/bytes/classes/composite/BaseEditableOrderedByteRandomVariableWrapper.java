@@ -5,7 +5,7 @@ package com.ankamagames.dofus.harvey.engine.numeric.bytes.classes.composite;
 
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IEditableByteRandomVariable;
-import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IEditableOrderedByteRandomVariable;
+import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IOrderedByteRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -16,7 +16,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public class BaseEditableOrderedByteRandomVariableWrapper
 <
-	ChildType extends IEditableOrderedByteRandomVariable,
+	ChildType extends IOrderedByteRandomVariable,
 	ParentType extends AbstractCompositeByteRandomVariable<?>,
 	ProbabilityStrategy extends IEditableProbabilityStrategy
 >

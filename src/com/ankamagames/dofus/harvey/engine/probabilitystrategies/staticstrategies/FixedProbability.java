@@ -17,7 +17,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  */
 @NonNullByDefault
 public class FixedProbability
-	implements IStaticProbabilityStrategy, IEditableProbabilityStrategy, IMergeableProbabilityStrategy
+implements IStaticProbabilityStrategy, IEditableProbabilityStrategy, IMergeableProbabilityStrategy
 {
 	protected int _probability;
 

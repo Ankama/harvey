@@ -4,7 +4,6 @@
 package com.ankamagames.dofus.harvey.engine.numeric.bytes.classes.datawrapper;
 
 import com.ankamagames.dofus.harvey.engine.common.classes.datawrapper.AbstractDataWrapperRandomVariable;
-import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IByteRandomVariable;
 
@@ -61,22 +60,20 @@ implements IByteRandomVariable
 	}
 
 	@Override
-	public byte getOnlyValue() throws MultipleValuesException
+	public boolean containsOnly(final byte value)
 	{
-		if(isKnown())
-			return _value;
-		throw new MultipleValuesException();
+		return contains(value);
+	}
+
+	@Override
+	public byte getOnlyValue()
+	{
+		return _value;
 	}
 
 	@Override
 	protected String toStringValues()
 	{
 		return Byte.toString(getValue());
-	}
-
-	@Override
-	public boolean containsOnly(final byte value)
-	{
-		return contains(value);
 	}
 }

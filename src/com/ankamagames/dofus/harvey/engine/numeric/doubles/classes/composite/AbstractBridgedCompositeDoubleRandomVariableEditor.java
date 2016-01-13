@@ -3,16 +3,16 @@
  */
 package com.ankamagames.dofus.harvey.engine.numeric.doubles.classes.composite;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.ankamagames.dofus.harvey.RandomVariableUtils;
 import com.ankamagames.dofus.harvey.engine.common.classes.composite.AbstractBridgedCompositeRandomVariableEditor;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedProbabilityStrategyFactory;
 import com.ankamagames.dofus.harvey.engine.numeric.doubles.inetrfaces.IIEditableDoubleRandomVariable;
 import com.ankamagames.dofus.harvey.engine.numeric.doubles.inetrfaces.composite.IEditableCompositeDoubleRandomVariable;
 import com.ankamagames.dofus.harvey.engine.numeric.doubles.inetrfaces.composite.IIEditableCompositeDoubleRandomVariable;
+import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
+import com.ankamagames.dofus.harvey.numeric.doubles.interfaces.IDoubleRandomVariable;
 import com.ankamagames.dofus.harvey.numeric.doubles.interfaces.IEditableDoubleRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -24,8 +24,8 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public abstract class AbstractBridgedCompositeDoubleRandomVariableEditor
 <
-	WrappableRandomVariableType extends IEditableDoubleRandomVariable,
-	ChildType extends BaseDoubleRandomVariableWrapper<?, ?, ?>&IEditableDoubleRandomVariable,
+	WrappableRandomVariableType extends IDoubleRandomVariable,
+	ChildType extends BaseDoubleRandomVariableWrapper<?, ?, ? extends IEditableProbabilityStrategy>&IEditableDoubleRandomVariable,
 	ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>,
 	Bridged extends AbstractCompositeDoubleRandomVariable<ChildType>&IEditableCompositeDoubleRandomVariable<WrappableRandomVariableType, ProbabilityStrategiesEnum>
 >
@@ -42,14 +42,17 @@ implements IIEditableDoubleRandomVariable,IIEditableCompositeDoubleRandomVariabl
 	@Override
 	public void add(final double value, final int probability, final ProbabilityStrategiesEnum probabilityStrategy)
 	{
-		_bridged.getElements().add(getNewChild(value, probability, probabilityStrategy));
+		if(probabilityStrategy==getDefaultProbabilityStrategy())
+			_bridged.getDefaultElements().add(getNewChild(value, probability, probabilityStrategy));
+		else
+			_bridged.getOtherElements().add(getNewChild(value, probability, probabilityStrategy));
 	}
 
 	@Override
 	public boolean remove(final WrappableRandomVariableType randomVariable)
 	{
 		boolean r = false;
-		final Iterator<ChildType> it = _bridged.getElements().iterator();
+		final Iterator<ChildType> it = _bridged.iterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();
@@ -65,41 +68,52 @@ implements IIEditableDoubleRandomVariable,IIEditableCompositeDoubleRandomVariabl
 	@Override
 	public boolean setProbabilityOf(final double value, final int probability)
 	{
-		final Collection<ChildType> elements = _bridged.getElements();
-		final ArrayList<ChildType> containing = new ArrayList<ChildType>(elements.size());
+		long cumulatedProbability = 0;
+		for(final ChildType element:_bridged.getOtherElements())
+		{
+			if(element.contains(value))
+				cumulatedProbability += element.getProbabilityOf(value);
+		}
+
+		final int newProba = (int)(probability-cumulatedProbability);
+		final Collection<ChildType> defaultElements = _bridged.getDefaultElements();
+		for(final ChildType element:defaultElements)
+		{
+			if(element.contains(value))
+			{
+				return element.setProbabilityOf(value, newProba);
+			}
+		}
+
+		defaultElements.add(getNewChild(value, newProba, getDefaultProbabilityStrategy()));
+		return true;
+	}
+
+	@Override
+	public boolean addProbabilityTo(final double value, final int delta)
+	{
+		final Collection<ChildType> elements = _bridged.getDefaultElements();
 		for(final ChildType element:elements)
 		{
 			if(element.contains(value))
-				containing.add(element);
-		}
-		final int nbContaining = containing.size();
-		if(nbContaining>1)
-		{
-			boolean r = false;
-			final int diviedProbability = probability/nbContaining;
-			int remain = probability-diviedProbability*nbContaining;
-
-			for(final ChildType item:containing)
-			{
-				r |= item.setProbabilityOf(value, (remain-->0)?diviedProbability+RandomVariableUtils.SMALLEST:diviedProbability);
-			}
-			return r;
+				return element.addProbabilityTo(value, delta);
 		}
 
-		if(nbContaining==1)
-		{
-			return containing.get(0).setProbabilityOf(value, probability);
-		}
-
-		_bridged.getElements().add(getNewChild(value, probability, getDefaultProbabilityStrategy()));
+		_bridged.getDefaultElements().add(getNewChild(value, delta, getDefaultProbabilityStrategy()));
 		return true;
+	}
+
+	@Override
+	public boolean removeProbabilityTo(final double value, final int delta)
+	{
+		return addProbabilityTo(value, -delta);
 	}
 
 	@Override
 	public boolean remove(final double value)
 	{
 		boolean r = false;
-		final Iterator<ChildType> it = _bridged.getElements().iterator();
+		final Iterator<ChildType> it = _bridged.iterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();
@@ -113,44 +127,5 @@ implements IIEditableDoubleRandomVariable,IIEditableCompositeDoubleRandomVariabl
 			}
 		}
 		return r;
-	}
-
-	@Override
-	public boolean addProbabilityTo(final double value, final int delta)
-	{
-		final Collection<ChildType> elements = _bridged.getElements();
-		final ArrayList<ChildType> containing = new ArrayList<ChildType>(elements.size());
-		for(final ChildType element:elements)
-		{
-			if(element.contains(value))
-				containing.add(element);
-		}
-		final int nbContaining = containing.size();
-		if(nbContaining>1)
-		{
-			boolean r = false;
-			final int diviedDelta = delta/nbContaining;
-			int remain = delta-diviedDelta*nbContaining;
-
-			for(final ChildType item:containing)
-			{
-				r |= item.addProbabilityTo(value, (remain-->0)?diviedDelta+RandomVariableUtils.SMALLEST:diviedDelta);
-			}
-			return r;
-		}
-
-		if(nbContaining==1)
-		{
-			return containing.get(0).addProbabilityTo(value, delta);
-		}
-
-		_bridged.getElements().add(getNewChild(value, delta, getDefaultProbabilityStrategy()));
-		return true;
-	}
-
-	@Override
-	public boolean removeProbabilityTo(final double value, final int delta)
-	{
-		return addProbabilityTo(value, -delta);
 	}
 }

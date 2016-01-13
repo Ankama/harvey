@@ -23,16 +23,24 @@ extends AbstractCompositeGenericRandomVariable
 		return r;
 	}
 
-	private final HashSet<ReadOnlyGenericRandomVariableWrapper<Data>> _elements;
+	private final HashSet<ReadOnlyGenericRandomVariableWrapper<Data>> _defaultElements;
+	private final HashSet<ReadOnlyGenericRandomVariableWrapper<Data>> _otherElements;
 
 	public ReadOnlyUnorderedCompositeGenericRandomVariable(final AbstractCompositeGenericRandomVariable<Data, ?> base)
 	{
-		_elements = getReadOnlyCopy(base.getElements());
+		_defaultElements = getReadOnlyCopy(base.getDefaultElements());
+		_otherElements = getReadOnlyCopy(base.getOtherElements());
 	}
 
 	@Override
-	protected Collection<ReadOnlyGenericRandomVariableWrapper<Data>> getElements()
+	protected HashSet<ReadOnlyGenericRandomVariableWrapper<Data>> getDefaultElements()
 	{
-		return _elements;
+		return _defaultElements;
+	}
+
+	@Override
+	protected HashSet<ReadOnlyGenericRandomVariableWrapper<Data>> getOtherElements()
+	{
+		return _otherElements;
 	}
 }

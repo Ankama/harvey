@@ -51,9 +51,9 @@ implements IByteRandomVariable
 	@Override
 	public int getProbabilityOf(final byte value)
 	{
-		final int proba = getElement().getProbabilityOf(value);
+		final int proba = getProbabilityStrategy().getProbability();
 		if(proba!=0)
-			return RandomVariableUtils.multiplyFixedPrecision(proba, getProbabilityStrategy().getProbability());
+			return RandomVariableUtils.multiplyFixedPrecision(proba, getElement().getProbabilityOf(value));
 		return 0;
 	}
 
@@ -68,6 +68,8 @@ implements IByteRandomVariable
 	@Override
 	public boolean containsOnly(final byte value)
 	{
+		if(getProbabilityStrategy().getProbability()==0)
+			return false;
 		return getElement().containsOnly(value);
 	}
 

@@ -30,11 +30,13 @@ extends BaseOrderedCompositeFloatRandomVariable<ReadOnlyOrderedFloatRandomVariab
 
 	public ReadOnlyOrderedCompositeFloatRandomVariable(final BaseOrderedCompositeFloatRandomVariable<?> base)
 	{
-		super(getReadOnlyCopy(base.getElements()));
+		super(getReadOnlyCopy(base.getDefaultElements()), getReadOnlyCopy(base.getOtherElements()));
 	}
 
-	protected ReadOnlyOrderedCompositeFloatRandomVariable(final BaseOrderedCompositeFloatRandomVariable<?> base, final Collection<? extends ReadOnlyOrderedFloatRandomVariableWrapper> elements)
+	protected ReadOnlyOrderedCompositeFloatRandomVariable(final BaseOrderedCompositeFloatRandomVariable<?> base,
+			final Collection<? extends ReadOnlyOrderedFloatRandomVariableWrapper> defaultElements,
+			final Collection<? extends ReadOnlyOrderedFloatRandomVariableWrapper> otherElements)
 	{
-		super(elements);
+		super(defaultElements, otherElements);
 	}
 }

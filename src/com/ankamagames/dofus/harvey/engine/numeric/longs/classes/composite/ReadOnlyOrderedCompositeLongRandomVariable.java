@@ -30,11 +30,13 @@ extends BaseOrderedCompositeLongRandomVariable<ReadOnlyOrderedLongRandomVariable
 
 	public ReadOnlyOrderedCompositeLongRandomVariable(final BaseOrderedCompositeLongRandomVariable<?> base)
 	{
-		super(getReadOnlyCopy(base.getElements()));
+		super(getReadOnlyCopy(base.getDefaultElements()), getReadOnlyCopy(base.getOtherElements()));
 	}
 
-	protected ReadOnlyOrderedCompositeLongRandomVariable(final BaseOrderedCompositeLongRandomVariable<?> base, final Collection<? extends ReadOnlyOrderedLongRandomVariableWrapper> elements)
+	protected ReadOnlyOrderedCompositeLongRandomVariable(final BaseOrderedCompositeLongRandomVariable<?> base,
+			final Collection<? extends ReadOnlyOrderedLongRandomVariableWrapper> defaultElements,
+			final Collection<? extends ReadOnlyOrderedLongRandomVariableWrapper> otherElements)
 	{
-		super(elements);
+		super(defaultElements, otherElements);
 	}
 }

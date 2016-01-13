@@ -156,6 +156,12 @@ implements ISortedGenericIntervalSet<Interval, E>
 	}
 
 	@Override
+	public Comparator<? super Interval> reversecomparator()
+	{
+		return _byUpperBounds.comparator();
+	}
+
+	@Override
 	public Interval first()
 	{
 		return _byLowerBounds.first();
@@ -191,6 +197,7 @@ implements ISortedGenericIntervalSet<Interval, E>
 		return _byLowerBounds.iterator();
 	}
 
+	@Override
 	public Iterator<Interval> reverseIterator()
 	{
 		return _byUpperBounds.iterator();

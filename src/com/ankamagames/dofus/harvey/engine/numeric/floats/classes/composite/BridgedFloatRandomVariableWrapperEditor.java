@@ -8,8 +8,8 @@ import com.ankamagames.dofus.harvey.engine.common.classes.composite.BridgedRando
 import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
 import com.ankamagames.dofus.harvey.engine.numeric.floats.inetrfaces.IIEditableFloatRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
-import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IEditableFloatRandomVariable;
 import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IFloatRandomVariable;
+import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IEditableFloatRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 

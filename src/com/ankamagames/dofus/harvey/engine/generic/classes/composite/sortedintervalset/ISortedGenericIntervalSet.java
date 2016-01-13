@@ -22,6 +22,7 @@ extends SortedSet<Interval>
 {
 	@Nullable Comparator<? super E> getElementComparator();
 
+	Comparator<? super Interval> reversecomparator();
 	Iterator<Interval> reverseIterator();
 
 	@Override

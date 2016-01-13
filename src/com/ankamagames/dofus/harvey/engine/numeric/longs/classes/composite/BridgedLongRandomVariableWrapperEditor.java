@@ -8,8 +8,8 @@ import com.ankamagames.dofus.harvey.engine.common.classes.composite.BridgedRando
 import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
 import com.ankamagames.dofus.harvey.engine.numeric.longs.inetrfaces.IIEditableLongRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
-import com.ankamagames.dofus.harvey.numeric.longs.interfaces.IEditableLongRandomVariable;
 import com.ankamagames.dofus.harvey.numeric.longs.interfaces.ILongRandomVariable;
+import com.ankamagames.dofus.harvey.numeric.longs.interfaces.IEditableLongRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -20,7 +20,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public class BridgedLongRandomVariableWrapperEditor
 <
-	Bridged extends BaseLongRandomVariableWrapper<? extends IEditableLongRandomVariable, ?, ? extends IEditableProbabilityStrategy>&IEditableLongRandomVariable
+	Bridged extends BaseLongRandomVariableWrapper<?, ?, ? extends IEditableProbabilityStrategy>&IEditableLongRandomVariable
 >
 extends BridgedRandomVariableWrapperEditor<Bridged>
 implements IIEditableLongRandomVariable

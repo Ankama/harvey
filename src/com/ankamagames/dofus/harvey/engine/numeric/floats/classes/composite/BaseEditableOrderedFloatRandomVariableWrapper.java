@@ -5,7 +5,7 @@ package com.ankamagames.dofus.harvey.engine.numeric.floats.classes.composite;
 
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IEditableFloatRandomVariable;
-import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IEditableOrderedFloatRandomVariable;
+import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IOrderedFloatRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -16,7 +16,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public class BaseEditableOrderedFloatRandomVariableWrapper
 <
-	ChildType extends IEditableOrderedFloatRandomVariable,
+	ChildType extends IOrderedFloatRandomVariable,
 	ParentType extends AbstractCompositeFloatRandomVariable<?>,
 	ProbabilityStrategy extends IEditableProbabilityStrategy
 >

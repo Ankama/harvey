@@ -26,9 +26,9 @@ public abstract class AbstractEditableUnorderedCompositeGenericRandomVariable
 extends BaseUnorderedCompositeGenericRandomVariable<Data, ChildType>
 implements IEditableCompositeGenericRandomVariable<Data, IEditableGenericRandomVariable<Data>, ProbabilityStrategiesEnum>
 {
-	protected AbstractEditableUnorderedCompositeGenericRandomVariable(final Collection<? extends ChildType> elements)
+	protected AbstractEditableUnorderedCompositeGenericRandomVariable(final Collection<? extends ChildType> defaultElements, final Collection<? extends ChildType> otherElements)
 	{
-		super(elements);
+		super(defaultElements, otherElements);
 	}
 
 	public AbstractEditableUnorderedCompositeGenericRandomVariable()

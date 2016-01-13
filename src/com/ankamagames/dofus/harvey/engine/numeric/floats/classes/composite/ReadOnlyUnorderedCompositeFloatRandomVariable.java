@@ -9,26 +9,34 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 public final class ReadOnlyUnorderedCompositeFloatRandomVariable
 extends AbstractCompositeFloatRandomVariable<ReadOnlyFloatRandomVariableWrapper>
 {
-	static <Data> HashSet<ReadOnlyFloatRandomVariableWrapper> getReadOnlyCopy(final Collection<? extends BaseFloatRandomVariableWrapper<?, ?, ?>> base)
+	static <Data> HashSet<ReadOnlyFloatRandomVariableWrapper> getReadOnlyCopy(final Collection<? extends BaseFloatRandomVariableWrapper<?, ?, ?>> elements)
 	{
 		final HashSet<ReadOnlyFloatRandomVariableWrapper> r = new HashSet<ReadOnlyFloatRandomVariableWrapper>();
-		for(final BaseFloatRandomVariableWrapper<?, ?, ?> elmt:base)
+		for(final BaseFloatRandomVariableWrapper<?, ?, ?> elmt:elements)
 		{
 			r.add(new ReadOnlyFloatRandomVariableWrapper(elmt));
 		}
 		return r;
 	}
 
-	private final HashSet<ReadOnlyFloatRandomVariableWrapper> _elements;
+	private final HashSet<ReadOnlyFloatRandomVariableWrapper> _defaultElements;
+	private final HashSet<ReadOnlyFloatRandomVariableWrapper> _otherElements;
 
 	public ReadOnlyUnorderedCompositeFloatRandomVariable(final AbstractCompositeFloatRandomVariable<?> base)
 	{
-		_elements = getReadOnlyCopy(base.getElements());
+		_defaultElements = getReadOnlyCopy(base.getDefaultElements());
+		_otherElements = getReadOnlyCopy(base.getOtherElements());
 	}
 
 	@Override
-	protected Collection<ReadOnlyFloatRandomVariableWrapper> getElements()
+	protected HashSet<ReadOnlyFloatRandomVariableWrapper> getDefaultElements()
 	{
-		return _elements;
+		return _defaultElements;
+	}
+
+	@Override
+	protected HashSet<ReadOnlyFloatRandomVariableWrapper> getOtherElements()
+	{
+		return _otherElements;
 	}
 }

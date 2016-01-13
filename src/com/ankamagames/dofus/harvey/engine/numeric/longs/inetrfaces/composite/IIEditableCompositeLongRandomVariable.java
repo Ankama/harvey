@@ -5,7 +5,7 @@ package com.ankamagames.dofus.harvey.engine.numeric.longs.inetrfaces.composite;
 
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedProbabilityStrategyFactory;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IIEditableCompositeRandomVariable;
-import com.ankamagames.dofus.harvey.numeric.longs.interfaces.IEditableLongRandomVariable;
+import com.ankamagames.dofus.harvey.numeric.longs.interfaces.ILongRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -16,7 +16,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public interface IIEditableCompositeLongRandomVariable
 <
-	WrappableRandomVariableType extends IEditableLongRandomVariable,
+	WrappableRandomVariableType extends ILongRandomVariable,
 	ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>
 >
 extends IIEditableCompositeRandomVariable<WrappableRandomVariableType, ProbabilityStrategiesEnum>

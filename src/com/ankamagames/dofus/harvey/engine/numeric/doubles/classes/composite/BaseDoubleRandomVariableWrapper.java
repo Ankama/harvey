@@ -5,6 +5,7 @@ package com.ankamagames.dofus.harvey.engine.numeric.doubles.classes.composite;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
 import com.ankamagames.dofus.harvey.engine.common.classes.composite.RandomVariableWrapper;
+import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.numeric.doubles.interfaces.IDoubleRandomVariable;
 
@@ -50,9 +51,9 @@ implements IDoubleRandomVariable
 	@Override
 	public int getProbabilityOf(final double value)
 	{
-		final int proba = getElement().getProbabilityOf(value);
+		final int proba = getProbabilityStrategy().getProbability();
 		if(proba!=0)
-			return RandomVariableUtils.multiplyFixedPrecision(proba, getProbabilityStrategy().getProbability());
+			return RandomVariableUtils.multiplyFixedPrecision(proba, getElement().getProbabilityOf(value));
 		return 0;
 	}
 
@@ -67,11 +68,13 @@ implements IDoubleRandomVariable
 	@Override
 	public boolean containsOnly(final double value)
 	{
+		if(getProbabilityStrategy().getProbability()==0)
+			return false;
 		return getElement().containsOnly(value);
 	}
 
 	@Override
-	public double getOnlyValue()
+	public double getOnlyValue() throws MultipleValuesException
 	{
 		return getElement().getOnlyValue();
 	}

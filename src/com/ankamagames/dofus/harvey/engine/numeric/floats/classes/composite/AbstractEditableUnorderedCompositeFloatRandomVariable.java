@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedProbabilityStrategyFactory;
 import com.ankamagames.dofus.harvey.engine.numeric.floats.inetrfaces.composite.IEditableCompositeFloatRandomVariable;
-import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IEditableFloatRandomVariable;
+import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IFloatRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -22,11 +22,11 @@ public abstract class AbstractEditableUnorderedCompositeFloatRandomVariable
 	ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>
 >
 extends BaseUnorderedCompositeFloatRandomVariable<ChildType>
-implements IEditableCompositeFloatRandomVariable<IEditableFloatRandomVariable, ProbabilityStrategiesEnum>
+implements IEditableCompositeFloatRandomVariable<IFloatRandomVariable, ProbabilityStrategiesEnum>
 {
-	protected AbstractEditableUnorderedCompositeFloatRandomVariable(final Collection<? extends ChildType> elements)
+	protected AbstractEditableUnorderedCompositeFloatRandomVariable(final Collection<? extends ChildType> defaultElements, final Collection<? extends ChildType> otherElements)
 	{
-		super(elements);
+		super(defaultElements, otherElements);
 	}
 
 	public AbstractEditableUnorderedCompositeFloatRandomVariable()
@@ -34,16 +34,16 @@ implements IEditableCompositeFloatRandomVariable<IEditableFloatRandomVariable, P
 		super();
 	}
 
-	protected abstract AbstractBridgedCompositeFloatRandomVariableEditor<IEditableFloatRandomVariable, ChildType, ProbabilityStrategiesEnum, ?> getEditor();
+	protected abstract AbstractBridgedCompositeFloatRandomVariableEditor<IFloatRandomVariable, ChildType, ProbabilityStrategiesEnum, ?> getEditor();
 
 	@Override
-	public void add(final IEditableFloatRandomVariable randomVariable, final int probability, final ProbabilityStrategiesEnum probabilityStrategy)
+	public void add(final IFloatRandomVariable randomVariable, final int probability, final ProbabilityStrategiesEnum probabilityStrategy)
 	{
 		getEditor().add(randomVariable, probability, probabilityStrategy);
 	}
 
 	@Override
-	public boolean remove(final IEditableFloatRandomVariable randomVariable)
+	public boolean remove(final IFloatRandomVariable randomVariable)
 	{
 		return getEditor().remove(randomVariable);
 	}

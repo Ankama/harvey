@@ -4,7 +4,6 @@
 package com.ankamagames.dofus.harvey.engine.numeric.doubles.classes.datawrapper;
 
 import com.ankamagames.dofus.harvey.engine.common.classes.datawrapper.AbstractDataWrapperRandomVariable;
-import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.numeric.doubles.interfaces.IDoubleRandomVariable;
 
@@ -69,9 +68,7 @@ implements IDoubleRandomVariable
 	@Override
 	public double getOnlyValue()
 	{
-		if(isKnown())
-			return _value;
-		throw new MultipleValuesException();
+		return _value;
 	}
 
 	@Override

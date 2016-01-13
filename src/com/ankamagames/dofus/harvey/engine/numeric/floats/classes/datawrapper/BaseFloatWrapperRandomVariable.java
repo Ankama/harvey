@@ -4,7 +4,6 @@
 package com.ankamagames.dofus.harvey.engine.numeric.floats.classes.datawrapper;
 
 import com.ankamagames.dofus.harvey.engine.common.classes.datawrapper.AbstractDataWrapperRandomVariable;
-import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IFloatRandomVariable;
 
@@ -69,14 +68,12 @@ implements IFloatRandomVariable
 	@Override
 	public float getOnlyValue()
 	{
-		if(isKnown())
-			return _value;
-		throw new MultipleValuesException();
+		return _value;
 	}
 
 	@Override
 	protected String toStringValues()
 	{
-		return Float.toHexString(getValue());
+		return Float.toString(getValue());
 	}
 }

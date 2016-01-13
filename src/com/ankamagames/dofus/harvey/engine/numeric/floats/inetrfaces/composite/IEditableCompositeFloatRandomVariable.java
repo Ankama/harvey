@@ -5,6 +5,7 @@ package com.ankamagames.dofus.harvey.engine.numeric.floats.inetrfaces.composite;
 
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedProbabilityStrategyFactory;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IEditableCompositeRandomVariable;
+import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IFloatRandomVariable;
 import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IEditableFloatRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -16,7 +17,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public interface IEditableCompositeFloatRandomVariable
 <
-	WrappableRandomVariableType extends IEditableFloatRandomVariable,
+	WrappableRandomVariableType extends IFloatRandomVariable,
 	ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>
 >
 extends IEditableFloatRandomVariable,

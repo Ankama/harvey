@@ -4,7 +4,6 @@
 package com.ankamagames.dofus.harvey.engine.generic.classes.datawrapper;
 
 import com.ankamagames.dofus.harvey.engine.common.classes.datawrapper.AbstractDataWrapperRandomVariable;
-import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.generic.interfaces.IGenericRandomVariable;
 
@@ -68,12 +67,9 @@ implements IGenericRandomVariable<Data>
 	}
 
 	@Override
-	@Nullable
-	public Data getOnlyValue() throws MultipleValuesException
+	public @Nullable Data getOnlyValue()
 	{
-		if(isKnown())
-			return _value;
-		throw new MultipleValuesException();
+		return _value;
 	}
 
 	@Override

@@ -82,6 +82,12 @@ implements ISortedByteIntervalSet<Interval>
 	}
 
 	@Override
+	public Comparator<? super Interval> reversecomparator()
+	{
+		return _byUpperBounds.comparator();
+	}
+
+	@Override
 	public Interval first()
 	{
 		return _byLowerBounds.first();

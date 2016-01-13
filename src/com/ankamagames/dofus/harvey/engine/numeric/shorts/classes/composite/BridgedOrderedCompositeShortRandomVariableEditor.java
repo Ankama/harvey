@@ -2,8 +2,9 @@ package com.ankamagames.dofus.harvey.engine.numeric.shorts.classes.composite;
 
 import com.ankamagames.dofus.harvey.engine.common.classes.composite.probabilityfactories.ProbabilityStrategies;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedEditableProbabilityStrategy;
-import com.ankamagames.dofus.harvey.numeric.shorts.datawrapper.FixedProbabilityOrderedShortWrapper;
-import com.ankamagames.dofus.harvey.numeric.shorts.interfaces.IEditableOrderedShortRandomVariable;
+import com.ankamagames.dofus.harvey.engine.numeric.shorts.classes.datawrapper.BaseOrderedShortWrapperRandomVariable;
+import com.ankamagames.dofus.harvey.engine.probabilitystrategies.staticstrategies.OneProbability;
+import com.ankamagames.dofus.harvey.numeric.shorts.interfaces.IOrderedShortRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -13,7 +14,7 @@ public class BridgedOrderedCompositeShortRandomVariableEditor
 <
 	Bridged extends AbstractEditableOrderedCompositeShortRandomVariable<BaseEditableOrderedShortRandomVariableWrapper<?, ?, ?>, ProbabilityStrategies>
 >
-extends AbstractBridgedCompositeShortRandomVariableEditor<IEditableOrderedShortRandomVariable, BaseEditableOrderedShortRandomVariableWrapper<?, ?, ?>, ProbabilityStrategies, Bridged>
+extends AbstractBridgedCompositeShortRandomVariableEditor<IOrderedShortRandomVariable, BaseEditableOrderedShortRandomVariableWrapper<?, ?, ?>, ProbabilityStrategies, Bridged>
 {
 	public BridgedOrderedCompositeShortRandomVariableEditor(final Bridged bridged, final ProbabilityStrategies defaultProbabilityStrategy)
 	{
@@ -30,12 +31,12 @@ extends AbstractBridgedCompositeShortRandomVariableEditor<IEditableOrderedShortR
 			final short value, final int probability,
 			final @Nullable ProbabilityStrategies probabilityStrategy)
 	{
-		return getNewChild(new FixedProbabilityOrderedShortWrapper(value), probability, probabilityStrategy);
+		return getNewChild(new BaseOrderedShortWrapperRandomVariable<OneProbability>(value, OneProbability.getInstance()), probability, probabilityStrategy);
 	}
 
 	@Override
 	protected BaseEditableOrderedShortRandomVariableWrapper<?, ?, ?> getNewChild(
-			final IEditableOrderedShortRandomVariable randomVariable, final int probability,
+			final IOrderedShortRandomVariable randomVariable, final int probability,
 			final @Nullable ProbabilityStrategies probabilityStrategy)
 	{
 		final IBridgedEditableProbabilityStrategy<? super BaseOrderedShortRandomVariableWrapper<?, ?, ?>> newProbabilityStrategy;
@@ -43,8 +44,8 @@ extends AbstractBridgedCompositeShortRandomVariableEditor<IEditableOrderedShortR
 			newProbabilityStrategy = probabilityStrategy.getNewProbabilityStrategy(probability);
 		else
 			newProbabilityStrategy = getDefaultProbabilityStrategy(probability);
-		final BaseEditableOrderedShortRandomVariableWrapper<IEditableOrderedShortRandomVariable, Bridged, IBridgedEditableProbabilityStrategy<? super BaseOrderedShortRandomVariableWrapper<?, ?, ?>>> newWrapper =
-				new BaseEditableOrderedShortRandomVariableWrapper<IEditableOrderedShortRandomVariable, Bridged, IBridgedEditableProbabilityStrategy<? super BaseOrderedShortRandomVariableWrapper<?, ?, ?>>>(randomVariable, _bridged, newProbabilityStrategy);
+		final BaseEditableOrderedShortRandomVariableWrapper<IOrderedShortRandomVariable, Bridged, IBridgedEditableProbabilityStrategy<? super BaseOrderedShortRandomVariableWrapper<?, ?, ?>>> newWrapper =
+				new BaseEditableOrderedShortRandomVariableWrapper<IOrderedShortRandomVariable, Bridged, IBridgedEditableProbabilityStrategy<? super BaseOrderedShortRandomVariableWrapper<?, ?, ?>>>(randomVariable, _bridged, newProbabilityStrategy);
 		newProbabilityStrategy.init(newWrapper);
 		return newWrapper;
 	}

@@ -20,7 +20,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public class BridgedDoubleRandomVariableWrapperEditor
 <
-	Bridged extends BaseDoubleRandomVariableWrapper<? extends IEditableDoubleRandomVariable, ?, ? extends IEditableProbabilityStrategy>&IEditableDoubleRandomVariable
+	Bridged extends BaseDoubleRandomVariableWrapper<?, ?, ? extends IEditableProbabilityStrategy>&IEditableDoubleRandomVariable
 >
 extends BridgedRandomVariableWrapperEditor<Bridged>
 implements IIEditableDoubleRandomVariable

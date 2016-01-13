@@ -4,6 +4,7 @@
 package com.ankamagames.dofus.harvey.engine.generic.classes.composite;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import com.ankamagames.dofus.harvey.engine.common.classes.composite.AbstractCompositeRandomVariable;
 import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
@@ -26,13 +27,24 @@ extends AbstractCompositeRandomVariable<ChildType>
 implements IGenericRandomVariable<Data>
 {
 	@Override
-	abstract protected Collection<ChildType> getElements();
+	abstract protected Collection<ChildType> getDefaultElements();
+
+	@Override
+	abstract protected Collection<ChildType> getOtherElements();
+
+	@Override
+	protected Iterator<ChildType> iterator()
+	{
+		return super.iterator();
+	}
 
 	@Override
 	public int getProbabilityOf(@Nullable final Data value)
 	{
 		int r = 0;
-		for(final ChildType element:getElements())
+		for(final ChildType element:getDefaultElements())
+			r+=element.getProbabilityOf(value);
+		for(final ChildType element:getOtherElements())
 			r+=element.getProbabilityOf(value);
 		return r;
 	}
@@ -40,7 +52,10 @@ implements IGenericRandomVariable<Data>
 	@Override
 	public boolean contains(@Nullable final Data value)
 	{
-		for(final ChildType element:getElements())
+		for(final ChildType element:getDefaultElements())
+			if(element.contains(value))
+				return true;
+		for(final ChildType element:getOtherElements())
 			if(element.contains(value))
 				return true;
 		return false;
@@ -60,8 +75,10 @@ implements IGenericRandomVariable<Data>
 	public boolean containsOnly(final @Nullable Data value)
 	{
 		boolean contains = false;
-		for(final ChildType element:getElements())
+		final Iterator<ChildType> it = iterator();
+		while(it.hasNext())
 		{
+			final ChildType element = it.next();
 			if(element.contains(value))
 			{
 				contains = true;
@@ -77,8 +94,9 @@ implements IGenericRandomVariable<Data>
 	@Override
 	public @Nullable Data getOnlyValue() throws MultipleValuesException
 	{
-		if(isKnown())
-			return getElements().iterator().next().getOnlyValue();
+		final ChildType onlyValue = _getOnlyValue();
+		if(onlyValue!=null)
+			return onlyValue.getOnlyValue();
 		throw new MultipleValuesException();
 	}
 }

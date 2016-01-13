@@ -13,7 +13,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  *
  */
 @NonNullByDefault
-public final class ReadOnlyFloatWrapperRandomVariable<Data>
+public final class ReadOnlyFloatWrapperRandomVariable
 extends BaseFloatWrapperRandomVariable<IProbabilityStrategy>
 {
 	public ReadOnlyFloatWrapperRandomVariable(final BaseFloatWrapperRandomVariable<?> base)

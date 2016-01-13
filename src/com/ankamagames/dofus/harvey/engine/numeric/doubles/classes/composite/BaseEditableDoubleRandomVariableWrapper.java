@@ -4,6 +4,7 @@
 package com.ankamagames.dofus.harvey.engine.numeric.doubles.classes.composite;
 
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
+import com.ankamagames.dofus.harvey.numeric.doubles.interfaces.IDoubleRandomVariable;
 import com.ankamagames.dofus.harvey.numeric.doubles.interfaces.IEditableDoubleRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -15,7 +16,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public class BaseEditableDoubleRandomVariableWrapper
 <
-	ChildType extends IEditableDoubleRandomVariable,
+	ChildType extends IDoubleRandomVariable,
 	ParentType extends AbstractCompositeDoubleRandomVariable<?>&IEditableDoubleRandomVariable,
 	ProbabilityStrategy extends IEditableProbabilityStrategy
 >

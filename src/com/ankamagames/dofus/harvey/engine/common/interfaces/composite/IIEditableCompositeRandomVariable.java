@@ -3,7 +3,7 @@
  */
 package com.ankamagames.dofus.harvey.engine.common.interfaces.composite;
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.IRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -14,7 +14,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public interface IIEditableCompositeRandomVariable
 <
-	WrappableBaseCollectionType extends IEditableRandomVariable,
+	WrappableBaseCollectionType extends IRandomVariable,
 	ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>
 >
 {

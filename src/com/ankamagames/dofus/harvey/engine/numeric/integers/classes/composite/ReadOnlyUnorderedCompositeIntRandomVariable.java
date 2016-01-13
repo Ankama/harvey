@@ -9,26 +9,34 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 public final class ReadOnlyUnorderedCompositeIntRandomVariable
 extends AbstractCompositeIntRandomVariable<ReadOnlyIntRandomVariableWrapper>
 {
-	static <Data> HashSet<ReadOnlyIntRandomVariableWrapper> getReadOnlyCopy(final Collection<? extends BaseIntRandomVariableWrapper<?, ?, ?>> base)
+	static <Data> HashSet<ReadOnlyIntRandomVariableWrapper> getReadOnlyCopy(final Collection<? extends BaseIntRandomVariableWrapper<?, ?, ?>> elements)
 	{
 		final HashSet<ReadOnlyIntRandomVariableWrapper> r = new HashSet<ReadOnlyIntRandomVariableWrapper>();
-		for(final BaseIntRandomVariableWrapper<?, ?, ?> elmt:base)
+		for(final BaseIntRandomVariableWrapper<?, ?, ?> elmt:elements)
 		{
 			r.add(new ReadOnlyIntRandomVariableWrapper(elmt));
 		}
 		return r;
 	}
 
-	private final HashSet<ReadOnlyIntRandomVariableWrapper> _elements;
+	private final HashSet<ReadOnlyIntRandomVariableWrapper> _defaultElements;
+	private final HashSet<ReadOnlyIntRandomVariableWrapper> _otherElements;
 
 	public ReadOnlyUnorderedCompositeIntRandomVariable(final AbstractCompositeIntRandomVariable<?> base)
 	{
-		_elements = getReadOnlyCopy(base.getElements());
+		_defaultElements = getReadOnlyCopy(base.getDefaultElements());
+		_otherElements = getReadOnlyCopy(base.getOtherElements());
 	}
 
 	@Override
-	protected Collection<ReadOnlyIntRandomVariableWrapper> getElements()
+	protected HashSet<ReadOnlyIntRandomVariableWrapper> getDefaultElements()
 	{
-		return _elements;
+		return _defaultElements;
+	}
+
+	@Override
+	protected HashSet<ReadOnlyIntRandomVariableWrapper> getOtherElements()
+	{
+		return _otherElements;
 	}
 }

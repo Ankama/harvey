@@ -4,6 +4,7 @@
 package com.ankamagames.dofus.harvey.engine.numeric.longs.classes.composite;
 
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
+import com.ankamagames.dofus.harvey.numeric.longs.interfaces.ILongRandomVariable;
 import com.ankamagames.dofus.harvey.numeric.longs.interfaces.IEditableLongRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -15,7 +16,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public class BaseEditableLongRandomVariableWrapper
 <
-	ChildType extends IEditableLongRandomVariable,
+	ChildType extends ILongRandomVariable,
 	ParentType extends AbstractCompositeLongRandomVariable<?>&IEditableLongRandomVariable,
 	ProbabilityStrategy extends IEditableProbabilityStrategy
 >

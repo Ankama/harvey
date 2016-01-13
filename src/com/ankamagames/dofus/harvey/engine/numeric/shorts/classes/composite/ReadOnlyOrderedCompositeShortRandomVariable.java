@@ -5,8 +5,8 @@ package com.ankamagames.dofus.harvey.engine.numeric.shorts.classes.composite;
 
 import java.util.Collection;
 
-import com.ankamagames.dofus.harvey.engine.numeric.shorts.classes.composite.sortedintervalset.ISortedShortIntervalSet;
 import com.ankamagames.dofus.harvey.engine.numeric.shorts.classes.composite.sortedintervalset.ShortIntervalTreeSet;
+import com.ankamagames.dofus.harvey.engine.numeric.shorts.classes.composite.sortedintervalset.ISortedShortIntervalSet;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -30,11 +30,13 @@ extends BaseOrderedCompositeShortRandomVariable<ReadOnlyOrderedShortRandomVariab
 
 	public ReadOnlyOrderedCompositeShortRandomVariable(final BaseOrderedCompositeShortRandomVariable<?> base)
 	{
-		super(getReadOnlyCopy(base.getElements()));
+		super(getReadOnlyCopy(base.getDefaultElements()), getReadOnlyCopy(base.getOtherElements()));
 	}
 
-	protected ReadOnlyOrderedCompositeShortRandomVariable(final BaseOrderedCompositeShortRandomVariable<?> base, final Collection<? extends ReadOnlyOrderedShortRandomVariableWrapper> elements)
+	protected ReadOnlyOrderedCompositeShortRandomVariable(final BaseOrderedCompositeShortRandomVariable<?> base,
+			final Collection<? extends ReadOnlyOrderedShortRandomVariableWrapper> defaultElements,
+			final Collection<? extends ReadOnlyOrderedShortRandomVariableWrapper> otherElements)
 	{
-		super(elements);
+		super(defaultElements, otherElements);
 	}
 }

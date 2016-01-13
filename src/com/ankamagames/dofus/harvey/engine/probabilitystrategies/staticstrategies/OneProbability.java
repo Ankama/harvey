@@ -14,7 +14,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  */
 @NonNullByDefault
 public class OneProbability
-	implements IProbabilityStrategy, IStaticProbabilityStrategy
+implements IProbabilityStrategy, IStaticProbabilityStrategy
 {
 	protected static OneProbability _instance = new OneProbability();
 

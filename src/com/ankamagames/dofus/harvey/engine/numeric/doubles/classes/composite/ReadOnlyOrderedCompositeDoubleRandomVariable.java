@@ -30,11 +30,13 @@ extends BaseOrderedCompositeDoubleRandomVariable<ReadOnlyOrderedDoubleRandomVari
 
 	public ReadOnlyOrderedCompositeDoubleRandomVariable(final BaseOrderedCompositeDoubleRandomVariable<?> base)
 	{
-		super(getReadOnlyCopy(base.getElements()));
+		super(getReadOnlyCopy(base.getDefaultElements()), getReadOnlyCopy(base.getOtherElements()));
 	}
 
-	protected ReadOnlyOrderedCompositeDoubleRandomVariable(final BaseOrderedCompositeDoubleRandomVariable<?> base, final Collection<? extends ReadOnlyOrderedDoubleRandomVariableWrapper> elements)
+	protected ReadOnlyOrderedCompositeDoubleRandomVariable(final BaseOrderedCompositeDoubleRandomVariable<?> base,
+			final Collection<? extends ReadOnlyOrderedDoubleRandomVariableWrapper> defaultElements,
+			final Collection<? extends ReadOnlyOrderedDoubleRandomVariableWrapper> otherElements)
 	{
-		super(elements);
+		super(defaultElements, otherElements);
 	}
 }

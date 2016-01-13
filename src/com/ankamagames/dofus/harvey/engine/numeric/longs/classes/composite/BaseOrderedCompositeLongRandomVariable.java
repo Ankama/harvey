@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.ankamagames.dofus.harvey.engine.numeric.longs.classes.composite.sortedintervalset.ISortedLongIntervalSet;
+import com.ankamagames.dofus.harvey.engine.common.classes.composite.sortedintervalset.MergeSortedIterator;
 import com.ankamagames.dofus.harvey.engine.numeric.longs.classes.composite.sortedintervalset.LongIntervalTreeSet;
+import com.ankamagames.dofus.harvey.engine.numeric.longs.classes.composite.sortedintervalset.ISortedLongIntervalSet;
 import com.ankamagames.dofus.harvey.numeric.longs.interfaces.IOrderedLongRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -26,58 +27,80 @@ public class BaseOrderedCompositeLongRandomVariable
 extends AbstractCompositeLongRandomVariable<ChildType>
 implements IOrderedLongRandomVariable
 {
-	ISortedLongIntervalSet<ChildType> _elements;
+	ISortedLongIntervalSet<ChildType> _defaultElements;
+	ISortedLongIntervalSet<ChildType> _otherElements;
 
-	protected BaseOrderedCompositeLongRandomVariable(final Collection<? extends ChildType> elements)
+	protected BaseOrderedCompositeLongRandomVariable(final Collection<? extends ChildType> defaultElements, final Collection<? extends ChildType> otherElements)
 	{
-		_elements = new LongIntervalTreeSet<ChildType>(elements);
+		_defaultElements = new LongIntervalTreeSet<ChildType>(defaultElements);
+		_otherElements = new LongIntervalTreeSet<ChildType>(otherElements);
 	}
 
 	public BaseOrderedCompositeLongRandomVariable()
 	{
-		_elements = new LongIntervalTreeSet<ChildType>();
+		_defaultElements = new LongIntervalTreeSet<ChildType>();
+		_otherElements = new LongIntervalTreeSet<ChildType>();
 	}
 
 	@Override
-	protected ISortedLongIntervalSet<ChildType> getElements()
+	protected ISortedLongIntervalSet<ChildType> getDefaultElements()
 	{
-		return _elements;
+		return _defaultElements;
+	}
+
+	@Override
+	protected ISortedLongIntervalSet<ChildType> getOtherElements()
+	{
+		return _otherElements;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Iterator<ChildType> iterator()
+	{
+		return new MergeSortedIterator<ChildType>(getDefaultElements(), getOtherElements());
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Iterator<ChildType> reverseIterator()
+	{
+		return new MergeSortedIterator<ChildType>(getDefaultElements().reversecomparator(), getDefaultElements().reverseIterator(), getOtherElements().reverseIterator());
 	}
 
 	@Override
 	public long getLowerBound()
 	{
-		return getElements().first().getLowerBound();
+		return iterator().next().getLowerBound();
 	}
 
 	@Override
 	public long getUpperBound()
 	{
-		return getElements().last().getUpperBound();
+		return reverseIterator().next().getUpperBound();
 	}
 
 	@Override
 	public boolean isLowerThan(final long value)
 	{
-		return getElements().last().isLowerThan(value);
+		return reverseIterator().next().isLowerThan(value);
 	}
 
 	@Override
 	public boolean isLowerThanOrEqualTo(final long value)
 	{
-		return getElements().last().isLowerThanOrEqualTo(value);
+		return reverseIterator().next().isLowerThanOrEqualTo(value);
 	}
 
 	@Override
 	public boolean isGreaterThan(final long value)
 	{
-		return getElements().first().isGreaterThan(value);
+		return iterator().next().isGreaterThan(value);
 	}
 
 	@Override
 	public boolean isGreaterThanOrEqualTo(final long value)
 	{
-		return getElements().first().isGreaterThanOrEqualTo(value);
+		return iterator().next().isGreaterThanOrEqualTo(value);
 	}
 
 	@Override
@@ -90,25 +113,25 @@ implements IOrderedLongRandomVariable
 	@Override
 	public boolean hasValueLowerThan(final long value)
 	{
-		return getElements().first().hasValueLowerThan(value);
+		return iterator().next().hasValueLowerThan(value);
 	}
 
 	@Override
 	public boolean hasValueLowerThanOrEqualTo(final long value)
 	{
-		return getElements().first().hasValueLowerThanOrEqualTo(value);
+		return iterator().next().hasValueLowerThanOrEqualTo(value);
 	}
 
 	@Override
 	public boolean hasValueGreaterThan(final long value)
 	{
-		return getElements().last().hasValueGreaterThan(value);
+		return reverseIterator().next().hasValueGreaterThan(value);
 	}
 
 	@Override
 	public boolean hasValueGreaterThanOrEqualTo(final long value)
 	{
-		return getElements().last().hasValueGreaterThanOrEqualTo(value);
+		return reverseIterator().next().hasValueGreaterThanOrEqualTo(value);
 	}
 
 	@Override
@@ -122,7 +145,9 @@ implements IOrderedLongRandomVariable
 	public int getProbabilityForLowerThan(final long value)
 	{
 		int r = 0;
-		for(final ChildType element:getElements())
+		for(final ChildType element:getDefaultElements())
+			r+=element.getProbabilityForLowerThan(value);
+		for(final ChildType element:getOtherElements())
 			r+=element.getProbabilityForLowerThan(value);
 		return r;
 	}
@@ -131,7 +156,9 @@ implements IOrderedLongRandomVariable
 	public int getProbabilityForLowerThanOrEqualTo(final long value)
 	{
 		int r = 0;
-		for(final ChildType element:getElements())
+		for(final ChildType element:getDefaultElements())
+			r+=element.getProbabilityForLowerThanOrEqualTo(value);
+		for(final ChildType element:getOtherElements())
 			r+=element.getProbabilityForLowerThanOrEqualTo(value);
 		return r;
 	}
@@ -140,7 +167,9 @@ implements IOrderedLongRandomVariable
 	public int getProbabilityForGreaterThan(final long value)
 	{
 		int r = 0;
-		for(final ChildType element:getElements())
+		for(final ChildType element:getDefaultElements())
+			r+=element.getProbabilityForGreaterThan(value);
+		for(final ChildType element:getOtherElements())
 			r+=element.getProbabilityForGreaterThan(value);
 		return r;
 	}
@@ -149,7 +178,9 @@ implements IOrderedLongRandomVariable
 	public int getProbabilityForGreaterThanOrEqualTo(final long value)
 	{
 		int r = 0;
-		for(final ChildType element:getElements())
+		for(final ChildType element:getDefaultElements())
+			r+=element.getProbabilityForGreaterThanOrEqualTo(value);
+		for(final ChildType element:getOtherElements())
 			r+=element.getProbabilityForGreaterThanOrEqualTo(value);
 		return r;
 	}
@@ -157,84 +188,144 @@ implements IOrderedLongRandomVariable
 	@Override
 	public @Nullable IOrderedLongRandomVariable getLowerThan(final long value)
 	{
-		final ArrayList<ReadOnlyOrderedLongRandomVariableWrapper> r = new ArrayList<ReadOnlyOrderedLongRandomVariableWrapper>(getElements().size());
-		for(final ChildType element:getElements())
+		final ArrayList<ReadOnlyOrderedLongRandomVariableWrapper> defaultElements = new ArrayList<ReadOnlyOrderedLongRandomVariableWrapper>(getDefaultElements().size());
+		for(final ChildType element:getDefaultElements())
 		{
 			final ReadOnlyOrderedLongRandomVariableWrapper subElements = element.getLowerThan(value);
 			if((subElements!=null)&&(!subElements.isUnknown()))
-				r.add(subElements);
+				defaultElements.add(subElements);
 			else
 			{
 				if(!element.isUnknown())
 					break;
 			}
 		}
-		if(!r.isEmpty())
-			return new ReadOnlyOrderedCompositeLongRandomVariable(this, r);
+
+		final ArrayList<ReadOnlyOrderedLongRandomVariableWrapper> otherElements = new ArrayList<ReadOnlyOrderedLongRandomVariableWrapper>(getOtherElements().size());
+		for(final ChildType element:getOtherElements())
+		{
+			final ReadOnlyOrderedLongRandomVariableWrapper subElements = element.getLowerThan(value);
+			if((subElements!=null)&&(!subElements.isUnknown()))
+				otherElements.add(subElements);
+			else
+			{
+				if(!element.isUnknown())
+					break;
+			}
+		}
+
+		if((!defaultElements.isEmpty())||(!otherElements.isEmpty()))
+			return new ReadOnlyOrderedCompositeLongRandomVariable(this, defaultElements, otherElements);
 		return null;
 	}
 
 	@Override
 	public @Nullable IOrderedLongRandomVariable getLowerThanOrEqualTo(final long value)
 	{
-		final ArrayList<ReadOnlyOrderedLongRandomVariableWrapper> r = new ArrayList<ReadOnlyOrderedLongRandomVariableWrapper>(getElements().size());
-		for(final ChildType element:getElements())
+		final ArrayList<ReadOnlyOrderedLongRandomVariableWrapper> defaultElements = new ArrayList<ReadOnlyOrderedLongRandomVariableWrapper>(getDefaultElements().size());
+		for(final ChildType element:getDefaultElements())
 		{
 			final ReadOnlyOrderedLongRandomVariableWrapper subElements = element.getLowerThanOrEqualTo(value);
 			if((subElements!=null)&&(!subElements.isUnknown()))
-				r.add(subElements);
+				defaultElements.add(subElements);
 			else
 			{
 				if(!element.isUnknown())
 					break;
 			}
 		}
-		if(!r.isEmpty())
-			return new ReadOnlyOrderedCompositeLongRandomVariable(this, r);
+
+		final ArrayList<ReadOnlyOrderedLongRandomVariableWrapper> otherElements = new ArrayList<ReadOnlyOrderedLongRandomVariableWrapper>(getOtherElements().size());
+		for(final ChildType element:getOtherElements())
+		{
+			final ReadOnlyOrderedLongRandomVariableWrapper subElements = element.getLowerThanOrEqualTo(value);
+			if((subElements!=null)&&(!subElements.isUnknown()))
+				otherElements.add(subElements);
+			else
+			{
+				if(!element.isUnknown())
+					break;
+			}
+		}
+
+		if((!defaultElements.isEmpty())||(!otherElements.isEmpty()))
+			return new ReadOnlyOrderedCompositeLongRandomVariable(this, defaultElements, otherElements);
 		return null;
 	}
 
 	@Override
 	public @Nullable IOrderedLongRandomVariable getGreaterThan(final long value)
 	{
-		final ArrayList<ReadOnlyOrderedLongRandomVariableWrapper> r = new ArrayList<ReadOnlyOrderedLongRandomVariableWrapper>(getElements().size());
-		final Iterator<ChildType> it = getElements().reverseIterator();
+		final ArrayList<ReadOnlyOrderedLongRandomVariableWrapper> defaultElements = new ArrayList<ReadOnlyOrderedLongRandomVariableWrapper>(getDefaultElements().size());
+		Iterator<ChildType> it = getDefaultElements().reverseIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();
 			final ReadOnlyOrderedLongRandomVariableWrapper subElements = element.getGreaterThan(value);
 			if((subElements!=null)&&(!subElements.isUnknown()))
-				r.add(subElements);
+				defaultElements.add(subElements);
 			else
 			{
 				if(!element.isUnknown())
 					break;
 			}
 		}
-		if(!r.isEmpty())
-			return new ReadOnlyOrderedCompositeLongRandomVariable(this, r);
+
+		final ArrayList<ReadOnlyOrderedLongRandomVariableWrapper> otherElements = new ArrayList<ReadOnlyOrderedLongRandomVariableWrapper>(getOtherElements().size());
+		it = getOtherElements().reverseIterator();
+		while(it.hasNext())
+		{
+			final ChildType element = it.next();
+			final ReadOnlyOrderedLongRandomVariableWrapper subElements = element.getGreaterThan(value);
+			if((subElements!=null)&&(!subElements.isUnknown()))
+				otherElements.add(subElements);
+			else
+			{
+				if(!element.isUnknown())
+					break;
+			}
+		}
+
+		if((!defaultElements.isEmpty())||(!otherElements.isEmpty()))
+			return new ReadOnlyOrderedCompositeLongRandomVariable(this, defaultElements, otherElements);
 		return null;
 	}
 
 	@Override
 	public @Nullable IOrderedLongRandomVariable getGreaterThanOrEqualTo(final long value)
 	{
-		final ArrayList<ReadOnlyOrderedLongRandomVariableWrapper> r = new ArrayList<ReadOnlyOrderedLongRandomVariableWrapper>(getElements().size());
-		final Iterator<ChildType> it = getElements().reverseIterator();
+		final ArrayList<ReadOnlyOrderedLongRandomVariableWrapper> defaultElements = new ArrayList<ReadOnlyOrderedLongRandomVariableWrapper>(getDefaultElements().size());
+		Iterator<ChildType> it = getDefaultElements().reverseIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();
 			final ReadOnlyOrderedLongRandomVariableWrapper subElements = element.getGreaterThanOrEqualTo(value);
 			if((subElements!=null)&&(!subElements.isUnknown()))
-				r.add(subElements);
+				defaultElements.add(subElements);
 			else
 			{
 				if(!element.isUnknown())
 					break;
 			}
 		}
-		if(!r.isEmpty())
-			return new ReadOnlyOrderedCompositeLongRandomVariable(this, r);
+
+		final ArrayList<ReadOnlyOrderedLongRandomVariableWrapper> otherElements = new ArrayList<ReadOnlyOrderedLongRandomVariableWrapper>(getOtherElements().size());
+		it = getOtherElements().reverseIterator();
+		while(it.hasNext())
+		{
+			final ChildType element = it.next();
+			final ReadOnlyOrderedLongRandomVariableWrapper subElements = element.getGreaterThanOrEqualTo(value);
+			if((subElements!=null)&&(!subElements.isUnknown()))
+				otherElements.add(subElements);
+			else
+			{
+				if(!element.isUnknown())
+					break;
+			}
+		}
+
+		if((!defaultElements.isEmpty())||(!otherElements.isEmpty()))
+			return new ReadOnlyOrderedCompositeLongRandomVariable(this, defaultElements, otherElements);
 		return null;
 	}
 }

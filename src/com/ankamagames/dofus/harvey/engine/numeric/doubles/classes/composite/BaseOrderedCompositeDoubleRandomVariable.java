@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import com.ankamagames.dofus.harvey.engine.common.classes.composite.sortedintervalset.MergeSortedIterator;
 import com.ankamagames.dofus.harvey.engine.numeric.doubles.classes.composite.sortedintervalset.DoubleIntervalTreeSet;
 import com.ankamagames.dofus.harvey.engine.numeric.doubles.classes.composite.sortedintervalset.ISortedDoubleIntervalSet;
 import com.ankamagames.dofus.harvey.numeric.doubles.interfaces.IOrderedDoubleRandomVariable;
@@ -26,58 +27,80 @@ public class BaseOrderedCompositeDoubleRandomVariable
 extends AbstractCompositeDoubleRandomVariable<ChildType>
 implements IOrderedDoubleRandomVariable
 {
-	ISortedDoubleIntervalSet<ChildType> _elements;
+	ISortedDoubleIntervalSet<ChildType> _defaultElements;
+	ISortedDoubleIntervalSet<ChildType> _otherElements;
 
-	protected BaseOrderedCompositeDoubleRandomVariable(final Collection<? extends ChildType> elements)
+	protected BaseOrderedCompositeDoubleRandomVariable(final Collection<? extends ChildType> defaultElements, final Collection<? extends ChildType> otherElements)
 	{
-		_elements = new DoubleIntervalTreeSet<ChildType>(elements);
+		_defaultElements = new DoubleIntervalTreeSet<ChildType>(defaultElements);
+		_otherElements = new DoubleIntervalTreeSet<ChildType>(otherElements);
 	}
 
 	public BaseOrderedCompositeDoubleRandomVariable()
 	{
-		_elements = new DoubleIntervalTreeSet<ChildType>();
+		_defaultElements = new DoubleIntervalTreeSet<ChildType>();
+		_otherElements = new DoubleIntervalTreeSet<ChildType>();
 	}
 
 	@Override
-	protected ISortedDoubleIntervalSet<ChildType> getElements()
+	protected ISortedDoubleIntervalSet<ChildType> getDefaultElements()
 	{
-		return _elements;
+		return _defaultElements;
+	}
+
+	@Override
+	protected ISortedDoubleIntervalSet<ChildType> getOtherElements()
+	{
+		return _otherElements;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Iterator<ChildType> iterator()
+	{
+		return new MergeSortedIterator<ChildType>(getDefaultElements(), getOtherElements());
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Iterator<ChildType> reverseIterator()
+	{
+		return new MergeSortedIterator<ChildType>(getDefaultElements().reversecomparator(), getDefaultElements().reverseIterator(), getOtherElements().reverseIterator());
 	}
 
 	@Override
 	public double getLowerBound()
 	{
-		return getElements().first().getLowerBound();
+		return iterator().next().getLowerBound();
 	}
 
 	@Override
 	public double getUpperBound()
 	{
-		return getElements().last().getUpperBound();
+		return reverseIterator().next().getUpperBound();
 	}
 
 	@Override
 	public boolean isLowerThan(final double value)
 	{
-		return getElements().last().isLowerThan(value);
+		return reverseIterator().next().isLowerThan(value);
 	}
 
 	@Override
 	public boolean isLowerThanOrEqualTo(final double value)
 	{
-		return getElements().last().isLowerThanOrEqualTo(value);
+		return reverseIterator().next().isLowerThanOrEqualTo(value);
 	}
 
 	@Override
 	public boolean isGreaterThan(final double value)
 	{
-		return getElements().first().isGreaterThan(value);
+		return iterator().next().isGreaterThan(value);
 	}
 
 	@Override
 	public boolean isGreaterThanOrEqualTo(final double value)
 	{
-		return getElements().first().isGreaterThanOrEqualTo(value);
+		return iterator().next().isGreaterThanOrEqualTo(value);
 	}
 
 	@Override
@@ -90,25 +113,25 @@ implements IOrderedDoubleRandomVariable
 	@Override
 	public boolean hasValueLowerThan(final double value)
 	{
-		return getElements().first().hasValueLowerThan(value);
+		return iterator().next().hasValueLowerThan(value);
 	}
 
 	@Override
 	public boolean hasValueLowerThanOrEqualTo(final double value)
 	{
-		return getElements().first().hasValueLowerThanOrEqualTo(value);
+		return iterator().next().hasValueLowerThanOrEqualTo(value);
 	}
 
 	@Override
 	public boolean hasValueGreaterThan(final double value)
 	{
-		return getElements().last().hasValueGreaterThan(value);
+		return reverseIterator().next().hasValueGreaterThan(value);
 	}
 
 	@Override
 	public boolean hasValueGreaterThanOrEqualTo(final double value)
 	{
-		return getElements().last().hasValueGreaterThanOrEqualTo(value);
+		return reverseIterator().next().hasValueGreaterThanOrEqualTo(value);
 	}
 
 	@Override
@@ -122,7 +145,9 @@ implements IOrderedDoubleRandomVariable
 	public int getProbabilityForLowerThan(final double value)
 	{
 		int r = 0;
-		for(final ChildType element:getElements())
+		for(final ChildType element:getDefaultElements())
+			r+=element.getProbabilityForLowerThan(value);
+		for(final ChildType element:getOtherElements())
 			r+=element.getProbabilityForLowerThan(value);
 		return r;
 	}
@@ -131,7 +156,9 @@ implements IOrderedDoubleRandomVariable
 	public int getProbabilityForLowerThanOrEqualTo(final double value)
 	{
 		int r = 0;
-		for(final ChildType element:getElements())
+		for(final ChildType element:getDefaultElements())
+			r+=element.getProbabilityForLowerThanOrEqualTo(value);
+		for(final ChildType element:getOtherElements())
 			r+=element.getProbabilityForLowerThanOrEqualTo(value);
 		return r;
 	}
@@ -140,7 +167,9 @@ implements IOrderedDoubleRandomVariable
 	public int getProbabilityForGreaterThan(final double value)
 	{
 		int r = 0;
-		for(final ChildType element:getElements())
+		for(final ChildType element:getDefaultElements())
+			r+=element.getProbabilityForGreaterThan(value);
+		for(final ChildType element:getOtherElements())
 			r+=element.getProbabilityForGreaterThan(value);
 		return r;
 	}
@@ -149,7 +178,9 @@ implements IOrderedDoubleRandomVariable
 	public int getProbabilityForGreaterThanOrEqualTo(final double value)
 	{
 		int r = 0;
-		for(final ChildType element:getElements())
+		for(final ChildType element:getDefaultElements())
+			r+=element.getProbabilityForGreaterThanOrEqualTo(value);
+		for(final ChildType element:getOtherElements())
 			r+=element.getProbabilityForGreaterThanOrEqualTo(value);
 		return r;
 	}
@@ -157,84 +188,144 @@ implements IOrderedDoubleRandomVariable
 	@Override
 	public @Nullable IOrderedDoubleRandomVariable getLowerThan(final double value)
 	{
-		final ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper> r = new ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper>(getElements().size());
-		for(final ChildType element:getElements())
+		final ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper> defaultElements = new ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper>(getDefaultElements().size());
+		for(final ChildType element:getDefaultElements())
 		{
 			final ReadOnlyOrderedDoubleRandomVariableWrapper subElements = element.getLowerThan(value);
 			if((subElements!=null)&&(!subElements.isUnknown()))
-				r.add(subElements);
+				defaultElements.add(subElements);
 			else
 			{
 				if(!element.isUnknown())
 					break;
 			}
 		}
-		if(!r.isEmpty())
-			return new ReadOnlyOrderedCompositeDoubleRandomVariable(this, r);
+
+		final ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper> otherElements = new ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper>(getOtherElements().size());
+		for(final ChildType element:getOtherElements())
+		{
+			final ReadOnlyOrderedDoubleRandomVariableWrapper subElements = element.getLowerThan(value);
+			if((subElements!=null)&&(!subElements.isUnknown()))
+				otherElements.add(subElements);
+			else
+			{
+				if(!element.isUnknown())
+					break;
+			}
+		}
+
+		if((!defaultElements.isEmpty())||(!otherElements.isEmpty()))
+			return new ReadOnlyOrderedCompositeDoubleRandomVariable(this, defaultElements, otherElements);
 		return null;
 	}
 
 	@Override
 	public @Nullable IOrderedDoubleRandomVariable getLowerThanOrEqualTo(final double value)
 	{
-		final ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper> r = new ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper>(getElements().size());
-		for(final ChildType element:getElements())
+		final ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper> defaultElements = new ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper>(getDefaultElements().size());
+		for(final ChildType element:getDefaultElements())
 		{
 			final ReadOnlyOrderedDoubleRandomVariableWrapper subElements = element.getLowerThanOrEqualTo(value);
 			if((subElements!=null)&&(!subElements.isUnknown()))
-				r.add(subElements);
+				defaultElements.add(subElements);
 			else
 			{
 				if(!element.isUnknown())
 					break;
 			}
 		}
-		if(!r.isEmpty())
-			return new ReadOnlyOrderedCompositeDoubleRandomVariable(this, r);
+
+		final ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper> otherElements = new ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper>(getOtherElements().size());
+		for(final ChildType element:getOtherElements())
+		{
+			final ReadOnlyOrderedDoubleRandomVariableWrapper subElements = element.getLowerThanOrEqualTo(value);
+			if((subElements!=null)&&(!subElements.isUnknown()))
+				otherElements.add(subElements);
+			else
+			{
+				if(!element.isUnknown())
+					break;
+			}
+		}
+
+		if((!defaultElements.isEmpty())||(!otherElements.isEmpty()))
+			return new ReadOnlyOrderedCompositeDoubleRandomVariable(this, defaultElements, otherElements);
 		return null;
 	}
 
 	@Override
 	public @Nullable IOrderedDoubleRandomVariable getGreaterThan(final double value)
 	{
-		final ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper> r = new ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper>(getElements().size());
-		final Iterator<ChildType> it = getElements().reverseIterator();
+		final ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper> defaultElements = new ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper>(getDefaultElements().size());
+		Iterator<ChildType> it = getDefaultElements().reverseIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();
 			final ReadOnlyOrderedDoubleRandomVariableWrapper subElements = element.getGreaterThan(value);
 			if((subElements!=null)&&(!subElements.isUnknown()))
-				r.add(subElements);
+				defaultElements.add(subElements);
 			else
 			{
 				if(!element.isUnknown())
 					break;
 			}
 		}
-		if(!r.isEmpty())
-			return new ReadOnlyOrderedCompositeDoubleRandomVariable(this, r);
+
+		final ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper> otherElements = new ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper>(getOtherElements().size());
+		it = getOtherElements().reverseIterator();
+		while(it.hasNext())
+		{
+			final ChildType element = it.next();
+			final ReadOnlyOrderedDoubleRandomVariableWrapper subElements = element.getGreaterThan(value);
+			if((subElements!=null)&&(!subElements.isUnknown()))
+				otherElements.add(subElements);
+			else
+			{
+				if(!element.isUnknown())
+					break;
+			}
+		}
+
+		if((!defaultElements.isEmpty())||(!otherElements.isEmpty()))
+			return new ReadOnlyOrderedCompositeDoubleRandomVariable(this, defaultElements, otherElements);
 		return null;
 	}
 
 	@Override
 	public @Nullable IOrderedDoubleRandomVariable getGreaterThanOrEqualTo(final double value)
 	{
-		final ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper> r = new ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper>(getElements().size());
-		final Iterator<ChildType> it = getElements().reverseIterator();
+		final ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper> defaultElements = new ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper>(getDefaultElements().size());
+		Iterator<ChildType> it = getDefaultElements().reverseIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();
 			final ReadOnlyOrderedDoubleRandomVariableWrapper subElements = element.getGreaterThanOrEqualTo(value);
 			if((subElements!=null)&&(!subElements.isUnknown()))
-				r.add(subElements);
+				defaultElements.add(subElements);
 			else
 			{
 				if(!element.isUnknown())
 					break;
 			}
 		}
-		if(!r.isEmpty())
-			return new ReadOnlyOrderedCompositeDoubleRandomVariable(this, r);
+
+		final ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper> otherElements = new ArrayList<ReadOnlyOrderedDoubleRandomVariableWrapper>(getOtherElements().size());
+		it = getOtherElements().reverseIterator();
+		while(it.hasNext())
+		{
+			final ChildType element = it.next();
+			final ReadOnlyOrderedDoubleRandomVariableWrapper subElements = element.getGreaterThanOrEqualTo(value);
+			if((subElements!=null)&&(!subElements.isUnknown()))
+				otherElements.add(subElements);
+			else
+			{
+				if(!element.isUnknown())
+					break;
+			}
+		}
+
+		if((!defaultElements.isEmpty())||(!otherElements.isEmpty()))
+			return new ReadOnlyOrderedCompositeDoubleRandomVariable(this, defaultElements, otherElements);
 		return null;
 	}
 }

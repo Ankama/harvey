@@ -5,6 +5,7 @@ package com.ankamagames.dofus.harvey.engine.numeric.floats.classes.composite;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
 import com.ankamagames.dofus.harvey.engine.common.classes.composite.RandomVariableWrapper;
+import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IFloatRandomVariable;
 
@@ -50,9 +51,9 @@ implements IFloatRandomVariable
 	@Override
 	public int getProbabilityOf(final float value)
 	{
-		final int proba = getElement().getProbabilityOf(value);
+		final int proba = getProbabilityStrategy().getProbability();
 		if(proba!=0)
-			return RandomVariableUtils.multiplyFixedPrecision(proba, getProbabilityStrategy().getProbability());
+			return RandomVariableUtils.multiplyFixedPrecision(proba, getElement().getProbabilityOf(value));
 		return 0;
 	}
 
@@ -67,11 +68,13 @@ implements IFloatRandomVariable
 	@Override
 	public boolean containsOnly(final float value)
 	{
+		if(getProbabilityStrategy().getProbability()==0)
+			return false;
 		return getElement().containsOnly(value);
 	}
 
 	@Override
-	public float getOnlyValue()
+	public float getOnlyValue() throws MultipleValuesException
 	{
 		return getElement().getOnlyValue();
 	}

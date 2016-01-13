@@ -16,21 +16,30 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 public class BaseUnorderedCompositeLongRandomVariable<ChildType extends BaseLongRandomVariableWrapper<?, ?, ?>>
 extends AbstractCompositeLongRandomVariable<ChildType>
 {
-	protected HashSet<ChildType> _elements;
+	protected HashSet<ChildType> _defaultElements;
+	protected HashSet<ChildType> _otherElements;
 
-	protected BaseUnorderedCompositeLongRandomVariable(final Collection<? extends ChildType> elements)
+	protected BaseUnorderedCompositeLongRandomVariable(final Collection<? extends ChildType> defaultElements, final Collection<? extends ChildType> otherElements)
 	{
-		_elements = new HashSet<ChildType>(elements);
+		_defaultElements = new HashSet<ChildType>(defaultElements);
+		_otherElements = new HashSet<ChildType>(otherElements);
 	}
 
 	public BaseUnorderedCompositeLongRandomVariable()
 	{
-		_elements = new HashSet<ChildType>();
+		_defaultElements = new HashSet<ChildType>();
+		_otherElements = new HashSet<ChildType>();
 	}
 
 	@Override
-	protected HashSet<ChildType> getElements()
+	protected HashSet<ChildType> getDefaultElements()
 	{
-		return _elements;
+		return _defaultElements;
+	}
+
+	@Override
+	protected HashSet<ChildType> getOtherElements()
+	{
+		return _otherElements;
 	}
 }

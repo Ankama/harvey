@@ -6,8 +6,8 @@ package com.ankamagames.dofus.harvey.engine.generic.classes.composite;
 import java.util.Collection;
 import java.util.Comparator;
 
-import com.ankamagames.dofus.harvey.engine.generic.classes.composite.sortedintervalset.ISortedGenericIntervalSet;
 import com.ankamagames.dofus.harvey.engine.generic.classes.composite.sortedintervalset.GenericIntervalTreeSet;
+import com.ankamagames.dofus.harvey.engine.generic.classes.composite.sortedintervalset.ISortedGenericIntervalSet;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -37,11 +37,13 @@ extends BaseOrderedCompositeGenericRandomVariable
 
 	public ReadOnlyOrderedCompositeGenericRandomVariable(final BaseOrderedCompositeGenericRandomVariable<Data, ?> base)
 	{
-		super(getReadOnlyCopy(base.getElements()), base.getComparator());
+		super(getReadOnlyCopy(base.getDefaultElements()), getReadOnlyCopy(base.getOtherElements()), base.getComparator());
 	}
 
-	protected ReadOnlyOrderedCompositeGenericRandomVariable(final BaseOrderedCompositeGenericRandomVariable<Data, ?> base, final Collection<? extends ReadOnlyOrderedGenericRandomVariableWrapper<Data>> elements)
+	protected ReadOnlyOrderedCompositeGenericRandomVariable(final BaseOrderedCompositeGenericRandomVariable<Data, ?> base,
+			final Collection<? extends ReadOnlyOrderedGenericRandomVariableWrapper<Data>> defaultElements,
+			final Collection<? extends ReadOnlyOrderedGenericRandomVariableWrapper<Data>> otherElements)
 	{
-		super(elements, base.getComparator());
+		super(defaultElements, otherElements, base.getComparator());
 	}
 }

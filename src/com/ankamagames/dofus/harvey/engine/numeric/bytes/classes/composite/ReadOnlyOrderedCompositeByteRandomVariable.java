@@ -30,11 +30,13 @@ extends BaseOrderedCompositeByteRandomVariable<ReadOnlyOrderedByteRandomVariable
 
 	public ReadOnlyOrderedCompositeByteRandomVariable(final BaseOrderedCompositeByteRandomVariable<?> base)
 	{
-		super(getReadOnlyCopy(base.getElements()));
+		super(getReadOnlyCopy(base.getDefaultElements()), getReadOnlyCopy(base.getOtherElements()));
 	}
 
-	protected ReadOnlyOrderedCompositeByteRandomVariable(final BaseOrderedCompositeByteRandomVariable<?> base, final Collection<? extends ReadOnlyOrderedByteRandomVariableWrapper> elements)
+	protected ReadOnlyOrderedCompositeByteRandomVariable(final BaseOrderedCompositeByteRandomVariable<?> base,
+			final Collection<? extends ReadOnlyOrderedByteRandomVariableWrapper> defaultElements,
+			final Collection<? extends ReadOnlyOrderedByteRandomVariableWrapper> otherElements)
 	{
-		super(elements);
+		super(defaultElements, otherElements);
 	}
 }

@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class BridgedGenericRandomVariableWrapperEditor
 <
 	Data,
-	Bridged extends BaseGenericRandomVariableWrapper<Data, ? extends IGenericRandomVariable<Data>, ?, ? extends IEditableProbabilityStrategy>&IEditableGenericRandomVariable<Data>
+	Bridged extends BaseGenericRandomVariableWrapper<Data, ?, ?, ? extends IEditableProbabilityStrategy>&IEditableGenericRandomVariable<Data>
 >
 extends BridgedRandomVariableWrapperEditor<Bridged>
 implements IIEditableGenericRandomVariable<Data>

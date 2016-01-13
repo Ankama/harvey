@@ -4,6 +4,7 @@
 package com.ankamagames.dofus.harvey.engine.numeric.floats.classes.composite;
 
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
+import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IFloatRandomVariable;
 import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IEditableFloatRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -15,7 +16,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public class BaseEditableFloatRandomVariableWrapper
 <
-	ChildType extends IEditableFloatRandomVariable,
+	ChildType extends IFloatRandomVariable,
 	ParentType extends AbstractCompositeFloatRandomVariable<?>&IEditableFloatRandomVariable,
 	ProbabilityStrategy extends IEditableProbabilityStrategy
 >

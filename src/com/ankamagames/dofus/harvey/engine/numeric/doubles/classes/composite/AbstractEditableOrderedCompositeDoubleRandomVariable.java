@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedProbabilityStrategyFactory;
 import com.ankamagames.dofus.harvey.engine.numeric.doubles.inetrfaces.composite.IEditableCompositeDoubleRandomVariable;
-import com.ankamagames.dofus.harvey.numeric.doubles.interfaces.IEditableOrderedDoubleRandomVariable;
+import com.ankamagames.dofus.harvey.numeric.doubles.interfaces.IOrderedDoubleRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -22,11 +22,11 @@ public abstract class AbstractEditableOrderedCompositeDoubleRandomVariable
 	ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>
 >
 extends BaseOrderedCompositeDoubleRandomVariable<ChildType>
-implements IEditableCompositeDoubleRandomVariable<IEditableOrderedDoubleRandomVariable, ProbabilityStrategiesEnum>
+implements IEditableCompositeDoubleRandomVariable<IOrderedDoubleRandomVariable, ProbabilityStrategiesEnum>
 {
-	protected AbstractEditableOrderedCompositeDoubleRandomVariable(final Collection<? extends ChildType> elements)
+	protected AbstractEditableOrderedCompositeDoubleRandomVariable(final Collection<? extends ChildType> defaultElements, final Collection<? extends ChildType> otherElements)
 	{
-		super(elements);
+		super(defaultElements, otherElements);
 	}
 
 	public AbstractEditableOrderedCompositeDoubleRandomVariable()
@@ -34,16 +34,16 @@ implements IEditableCompositeDoubleRandomVariable<IEditableOrderedDoubleRandomVa
 		super();
 	}
 
-	protected abstract AbstractBridgedCompositeDoubleRandomVariableEditor<IEditableOrderedDoubleRandomVariable, ChildType, ProbabilityStrategiesEnum, ?> getEditor();
+	protected abstract AbstractBridgedCompositeDoubleRandomVariableEditor<IOrderedDoubleRandomVariable, ChildType, ProbabilityStrategiesEnum, ?> getEditor();
 
 	@Override
-	public void add(final IEditableOrderedDoubleRandomVariable randomVariable, final int probability, final ProbabilityStrategiesEnum probabilityStrategy)
+	public void add(final IOrderedDoubleRandomVariable randomVariable, final int probability, final ProbabilityStrategiesEnum probabilityStrategy)
 	{
 		getEditor().add(randomVariable, probability, probabilityStrategy);
 	}
 
 	@Override
-	public boolean remove(final IEditableOrderedDoubleRandomVariable randomVariable)
+	public boolean remove(final IOrderedDoubleRandomVariable randomVariable)
 	{
 		return getEditor().remove(randomVariable);
 	}

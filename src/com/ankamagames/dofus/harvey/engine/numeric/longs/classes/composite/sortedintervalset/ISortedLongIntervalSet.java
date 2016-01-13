@@ -3,6 +3,7 @@
  */
 package com.ankamagames.dofus.harvey.engine.numeric.longs.classes.composite.sortedintervalset;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.SortedSet;
 
@@ -19,6 +20,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public interface ISortedLongIntervalSet<Interval extends ILongInterval>
 extends SortedSet<Interval>
 {
+	Comparator<? super Interval> reversecomparator();
 	Iterator<Interval> reverseIterator();
 
 	@Override

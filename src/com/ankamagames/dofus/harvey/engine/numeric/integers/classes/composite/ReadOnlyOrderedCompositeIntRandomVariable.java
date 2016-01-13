@@ -30,11 +30,13 @@ extends BaseOrderedCompositeIntRandomVariable<ReadOnlyOrderedIntRandomVariableWr
 
 	public ReadOnlyOrderedCompositeIntRandomVariable(final BaseOrderedCompositeIntRandomVariable<?> base)
 	{
-		super(getReadOnlyCopy(base.getElements()));
+		super(getReadOnlyCopy(base.getDefaultElements()), getReadOnlyCopy(base.getOtherElements()));
 	}
 
-	protected ReadOnlyOrderedCompositeIntRandomVariable(final BaseOrderedCompositeIntRandomVariable<?> base, final Collection<? extends ReadOnlyOrderedIntRandomVariableWrapper> elements)
+	protected ReadOnlyOrderedCompositeIntRandomVariable(final BaseOrderedCompositeIntRandomVariable<?> base,
+			final Collection<? extends ReadOnlyOrderedIntRandomVariableWrapper> defaultElements,
+			final Collection<? extends ReadOnlyOrderedIntRandomVariableWrapper> otherElements)
 	{
-		super(elements);
+		super(defaultElements, otherElements);
 	}
 }

@@ -7,12 +7,12 @@ import java.util.Iterator;
 
 import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.IIEditableRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.interfaces.IRandomVariable;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedProbabilityStrategyFactory;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IEditableCompositeRandomVariable;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IIEditableCompositeRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * @author sgros
@@ -21,7 +21,7 @@ import org.eclipse.jdt.annotation.Nullable;
 @NonNullByDefault
 public abstract class AbstractBridgedCompositeRandomVariableEditor
 <
-	WrappableBaseCollectionType extends IEditableRandomVariable,
+	WrappableBaseCollectionType extends IRandomVariable,
 	ChildType extends RandomVariableWrapper<?, ?, ?>&IEditableRandomVariable,
 	ProbabilityStrategiesEnum extends Enum<ProbabilityStrategiesEnum>&IBridgedProbabilityStrategyFactory<?, ?>,
 	Bridged extends AbstractCompositeRandomVariable<ChildType>&IEditableCompositeRandomVariable<WrappableBaseCollectionType, ProbabilityStrategiesEnum>
@@ -48,14 +48,14 @@ implements IIEditableRandomVariable,IIEditableCompositeRandomVariable<WrappableB
 	public void add(final WrappableBaseCollectionType randomVariable,
 			final int probability, final ProbabilityStrategiesEnum probabilityStrategy)
 	{
-		_bridged.getElements().add(getNewChild(randomVariable, probability, probabilityStrategy));
+		_bridged.getOtherElements().add(getNewChild(randomVariable, probability, probabilityStrategy));
 	}
 
 	@Override
 	public boolean remove(final WrappableBaseCollectionType randomVariable)
 	{
 		boolean r = false;
-		final Iterator<ChildType> it = _bridged.getElements().iterator();
+		final Iterator<ChildType> it = _bridged.iterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();
@@ -71,6 +71,7 @@ implements IIEditableRandomVariable,IIEditableCompositeRandomVariable<WrappableB
 	@Override
 	public void clear()
 	{
-		_bridged.getElements().clear();
+		_bridged.getDefaultElements().clear();
+		_bridged.getOtherElements().clear();
 	}
 }

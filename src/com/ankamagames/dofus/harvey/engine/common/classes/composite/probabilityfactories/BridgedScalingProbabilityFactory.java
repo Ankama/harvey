@@ -4,8 +4,8 @@
 package com.ankamagames.dofus.harvey.engine.common.classes.composite.probabilityfactories;
 
 
-import com.ankamagames.dofus.harvey.engine.common.classes.composite.RandomVariableWrapper;
 import com.ankamagames.dofus.harvey.engine.common.classes.composite.BridgedScalingProbability;
+import com.ankamagames.dofus.harvey.engine.common.classes.composite.RandomVariableWrapper;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedProbabilityStrategyFactory;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;

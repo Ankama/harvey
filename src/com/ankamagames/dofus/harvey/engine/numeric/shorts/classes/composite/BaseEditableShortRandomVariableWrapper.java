@@ -4,6 +4,7 @@
 package com.ankamagames.dofus.harvey.engine.numeric.shorts.classes.composite;
 
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
+import com.ankamagames.dofus.harvey.numeric.shorts.interfaces.IShortRandomVariable;
 import com.ankamagames.dofus.harvey.numeric.shorts.interfaces.IEditableShortRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -15,7 +16,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 @NonNullByDefault
 public class BaseEditableShortRandomVariableWrapper
 <
-	ChildType extends IEditableShortRandomVariable,
+	ChildType extends IShortRandomVariable,
 	ParentType extends AbstractCompositeShortRandomVariable<?>&IEditableShortRandomVariable,
 	ProbabilityStrategy extends IEditableProbabilityStrategy
 >

@@ -13,7 +13,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  *
  */
 @NonNullByDefault
-public final class ReadOnlyFixedProbabilityIntWrapperRandomVariable<Data>
+public final class ReadOnlyFixedProbabilityIntWrapperRandomVariable
 extends BaseIntWrapperRandomVariable<ReadOnlyProbabilityStrategy>
 {
 	public ReadOnlyFixedProbabilityIntWrapperRandomVariable(final BaseIntWrapperRandomVariable<? extends FixedProbability> base)
