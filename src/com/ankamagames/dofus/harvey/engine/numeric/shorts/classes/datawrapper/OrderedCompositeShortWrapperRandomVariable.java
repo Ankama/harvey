@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.ankamagames.dofus.harvey.engine.numeric.bytes.classes.datawrapper;
+package com.ankamagames.dofus.harvey.engine.numeric.shorts.classes.datawrapper;
 
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.staticstrategies.OneProbability;
 
@@ -12,10 +12,10 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  *
  */
 @NonNullByDefault
-public class OrderedCompositeByteWrapperRandomVariable
-extends BaseOrderedByteWrapperRandomVariable<OneProbability>
+public class OrderedCompositeShortWrapperRandomVariable
+extends BaseOrderedShortWrapperRandomVariable<OneProbability>
 {
-	public OrderedCompositeByteWrapperRandomVariable(final byte value)
+	public OrderedCompositeShortWrapperRandomVariable(final byte value)
 	{
 		super(value, OneProbability.getInstance());
 	}
