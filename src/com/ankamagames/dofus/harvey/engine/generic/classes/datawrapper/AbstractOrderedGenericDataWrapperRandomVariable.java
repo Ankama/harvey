@@ -5,7 +5,7 @@ package com.ankamagames.dofus.harvey.engine.generic.classes.datawrapper;
 
 import java.util.Comparator;
 
-import com.ankamagames.dofus.harvey.engine.common.classes.AbstractRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.classes.AbstractRandomVariable;
 import com.ankamagames.dofus.harvey.engine.exceptions.MultipleValuesException;
 import com.ankamagames.dofus.harvey.engine.generic.classes.datawrapper.AbstractOrderedGenericDataWrapperRandomVariable.IOrderedInnerTypeDataWrapperRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;

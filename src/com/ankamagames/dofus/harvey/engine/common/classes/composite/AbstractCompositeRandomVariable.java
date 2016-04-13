@@ -6,9 +6,9 @@ package com.ankamagames.dofus.harvey.engine.common.classes.composite;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.ankamagames.dofus.harvey.engine.common.classes.AbstractRandomVariable;
 import com.ankamagames.dofus.harvey.engine.common.classes.composite.sortedintervalset.MergeIterator;
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.classes.AbstractRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IRandomVariable;
 import com.ankamagames.dofus.harvey.engine.exceptions.ProbabilityOutOfBoundException;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -32,7 +32,7 @@ implements IRandomVariable
 	abstract protected boolean checkValues(ChildType firstElement, ChildType element);
 
 	@SuppressWarnings("unchecked")
-	protected Iterator<ChildType> iterator()
+	protected Iterator<ChildType> childIterator()
 	{
 		return new MergeIterator<ChildType>(getDefaultElements(), getOtherElements());
 	}
@@ -48,7 +48,7 @@ implements IRandomVariable
 	 */
 	protected @Nullable ChildType _getOnlyValue()
 	{
-		final Iterator<ChildType> it = iterator();
+		final Iterator<ChildType> it = childIterator();
 		boolean unknown = true;
 		ChildType firstElement = null;
 		while(it.hasNext())
@@ -101,7 +101,7 @@ implements IRandomVariable
 	@Override
 	protected String toStringValues()
 	{
-		final Iterator<ChildType> it = iterator();
+		final Iterator<ChildType> it = childIterator();
 
 		String r = it.next().toString();
 

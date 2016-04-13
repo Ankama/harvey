@@ -1,8 +1,8 @@
 package com.ankamagames.dofus.harvey.numeric.floats.interfaces;
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IRandomVariable;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
+
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IRandomVariable;
 
 @NonNullByDefault
 public interface IFloatRandomVariable

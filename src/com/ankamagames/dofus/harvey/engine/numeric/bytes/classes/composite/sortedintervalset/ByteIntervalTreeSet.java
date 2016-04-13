@@ -8,10 +8,10 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IByteInterval;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+
+import com.ankamagames.dofus.harvey.numeric.bytes.sets.interfaces.IByteInterval;
 
 /**
  * @author sgros

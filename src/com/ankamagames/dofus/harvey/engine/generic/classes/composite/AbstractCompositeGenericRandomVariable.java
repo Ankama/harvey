@@ -33,9 +33,9 @@ implements IGenericRandomVariable<Data>
 	abstract protected Collection<ChildType> getOtherElements();
 
 	@Override
-	protected Iterator<ChildType> iterator()
+	protected Iterator<ChildType> childIterator()
 	{
-		return super.iterator();
+		return super.childIterator();
 	}
 
 	@Override
@@ -75,7 +75,7 @@ implements IGenericRandomVariable<Data>
 	public boolean containsOnly(final @Nullable Data value)
 	{
 		boolean contains = false;
-		final Iterator<ChildType> it = iterator();
+		final Iterator<ChildType> it = childIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();

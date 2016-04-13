@@ -3,8 +3,8 @@
  */
 package com.ankamagames.dofus.harvey.engine.common.classes.composite;
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IEditableRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;

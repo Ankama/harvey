@@ -12,8 +12,8 @@ import com.ankamagames.dofus.harvey.engine.numeric.longs.inetrfaces.IIEditableLo
 import com.ankamagames.dofus.harvey.engine.numeric.longs.inetrfaces.composite.IEditableCompositeLongRandomVariable;
 import com.ankamagames.dofus.harvey.engine.numeric.longs.inetrfaces.composite.IIEditableCompositeLongRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
-import com.ankamagames.dofus.harvey.numeric.longs.interfaces.ILongRandomVariable;
 import com.ankamagames.dofus.harvey.numeric.longs.interfaces.IEditableLongRandomVariable;
+import com.ankamagames.dofus.harvey.numeric.longs.interfaces.ILongRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -52,7 +52,7 @@ implements IIEditableLongRandomVariable,IIEditableCompositeLongRandomVariable<Wr
 	public boolean remove(final WrappableRandomVariableType randomVariable)
 	{
 		boolean r = false;
-		final Iterator<ChildType> it = _bridged.iterator();
+		final Iterator<ChildType> it = _bridged.childIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();
@@ -113,7 +113,7 @@ implements IIEditableLongRandomVariable,IIEditableCompositeLongRandomVariable<Wr
 	public boolean remove(final long value)
 	{
 		boolean r = false;
-		final Iterator<ChildType> it = _bridged.iterator();
+		final Iterator<ChildType> it = _bridged.childIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();

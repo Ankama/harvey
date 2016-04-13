@@ -3,10 +3,10 @@
  */
 package com.ankamagames.dofus.harvey.engine.common.interfaces.composite;
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IRandomVariable;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
+
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IEditableRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IRandomVariable;
 
 /**
  * @author sgros

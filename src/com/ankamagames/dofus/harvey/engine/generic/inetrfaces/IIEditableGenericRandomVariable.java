@@ -4,10 +4,10 @@ package com.ankamagames.dofus.harvey.engine.generic.inetrfaces;
  */
 
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IIEditableRandomVariable;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IIEditableRandomVariable;
 
 /**
  * @author sgros

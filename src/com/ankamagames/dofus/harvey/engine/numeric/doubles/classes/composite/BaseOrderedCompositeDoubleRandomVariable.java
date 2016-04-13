@@ -56,7 +56,7 @@ implements IOrderedDoubleRandomVariable
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Iterator<ChildType> iterator()
+	protected Iterator<ChildType> childIterator()
 	{
 		return new MergeSortedIterator<ChildType>(getDefaultElements(), getOtherElements());
 	}
@@ -70,7 +70,7 @@ implements IOrderedDoubleRandomVariable
 	@Override
 	public double getLowerBound()
 	{
-		return iterator().next().getLowerBound();
+		return childIterator().next().getLowerBound();
 	}
 
 	@Override
@@ -94,13 +94,13 @@ implements IOrderedDoubleRandomVariable
 	@Override
 	public boolean isGreaterThan(final double value)
 	{
-		return iterator().next().isGreaterThan(value);
+		return childIterator().next().isGreaterThan(value);
 	}
 
 	@Override
 	public boolean isGreaterThanOrEqualTo(final double value)
 	{
-		return iterator().next().isGreaterThanOrEqualTo(value);
+		return childIterator().next().isGreaterThanOrEqualTo(value);
 	}
 
 	@Override
@@ -113,13 +113,13 @@ implements IOrderedDoubleRandomVariable
 	@Override
 	public boolean hasValueLowerThan(final double value)
 	{
-		return iterator().next().hasValueLowerThan(value);
+		return childIterator().next().hasValueLowerThan(value);
 	}
 
 	@Override
 	public boolean hasValueLowerThanOrEqualTo(final double value)
 	{
-		return iterator().next().hasValueLowerThanOrEqualTo(value);
+		return childIterator().next().hasValueLowerThanOrEqualTo(value);
 	}
 
 	@Override

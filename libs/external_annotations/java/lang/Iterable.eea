@@ -1,0 +1,4 @@
+class java/lang/Iterable
+iterator
+ ()Ljava/util/Iterator<TT;>;
+ ()Ljava/util/Iterator<TT;>;

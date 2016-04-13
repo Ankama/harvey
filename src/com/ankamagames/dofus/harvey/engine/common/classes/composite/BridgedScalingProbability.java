@@ -65,7 +65,7 @@ implements IBridgedEditableProbabilityStrategy<Bridged>, IDynamicProbabilityStra
 	@Override
 	public int getProbability()
 	{
-		final Iterator<? extends RandomVariableWrapper<?, ?, ?>> iterator = _bridged.getParent().iterator();
+		final Iterator<? extends RandomVariableWrapper<?, ?, ?>> iterator = _bridged.getParent().childIterator();
 		long scalingProba = 0;
 		long cumuledProba = 0;
 

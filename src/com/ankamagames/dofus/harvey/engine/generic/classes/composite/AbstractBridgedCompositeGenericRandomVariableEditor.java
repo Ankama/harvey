@@ -52,7 +52,7 @@ implements IIEditableGenericRandomVariable<Data>,IIEditableCompositeGenericRando
 	public boolean remove(final WrappableRandomVariableType randomVariable)
 	{
 		boolean r = false;
-		final Iterator<ChildType> it = _bridged.iterator();
+		final Iterator<ChildType> it = _bridged.childIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();
@@ -113,7 +113,7 @@ implements IIEditableGenericRandomVariable<Data>,IIEditableCompositeGenericRando
 	public boolean remove(@Nullable final Data value)
 	{
 		boolean r = false;
-		final Iterator<ChildType> it = _bridged.iterator();
+		final Iterator<ChildType> it = _bridged.childIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();

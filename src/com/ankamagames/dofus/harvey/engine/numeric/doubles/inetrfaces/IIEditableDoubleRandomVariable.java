@@ -4,9 +4,9 @@ package com.ankamagames.dofus.harvey.engine.numeric.doubles.inetrfaces;
  */
 
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IIEditableRandomVariable;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
+
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IIEditableRandomVariable;
 
 /**
  * @author sgros

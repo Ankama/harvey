@@ -5,12 +5,12 @@ package com.ankamagames.dofus.harvey.engine.common.classes.composite;
 
 import java.util.Iterator;
 
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IIEditableRandomVariable;
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IRandomVariable;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IBridgedProbabilityStrategyFactory;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IEditableCompositeRandomVariable;
 import com.ankamagames.dofus.harvey.engine.common.interfaces.composite.IIEditableCompositeRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IEditableRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IIEditableRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -55,7 +55,7 @@ implements IIEditableRandomVariable,IIEditableCompositeRandomVariable<WrappableB
 	public boolean remove(final WrappableBaseCollectionType randomVariable)
 	{
 		boolean r = false;
-		final Iterator<ChildType> it = _bridged.iterator();
+		final Iterator<ChildType> it = _bridged.childIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();

@@ -1,0 +1,4 @@
+class java/lang/Float
+toString
+ (F)Ljava/lang/String;
+ (F)L1java/lang/String;

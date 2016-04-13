@@ -5,7 +5,7 @@ package com.ankamagames.dofus.harvey.engine.numeric.floats.classes.composite;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
 import com.ankamagames.dofus.harvey.engine.common.classes.composite.BridgedRandomVariableWrapperEditor;
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IEditableRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IEditableRandomVariable;
 import com.ankamagames.dofus.harvey.engine.numeric.floats.inetrfaces.IIEditableFloatRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
 import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IFloatRandomVariable;

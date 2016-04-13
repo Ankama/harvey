@@ -3,8 +3,6 @@
  */
 package com.ankamagames.dofus.harvey.engine.numeric.bytes.inetrfaces;
 
-import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IByteInterval;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
@@ -13,7 +11,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  */
 @NonNullByDefault
 public interface IISimpleOrderedByteRandomVariable
-extends IByteInterval
+//extends IByteInterval
 {
 	int getProbabilityForLowerThan(byte value);
 	int getProbabilityForLowerThanOrEqualTo(byte value);

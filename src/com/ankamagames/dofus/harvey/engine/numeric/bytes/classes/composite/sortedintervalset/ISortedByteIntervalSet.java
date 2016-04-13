@@ -7,17 +7,17 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.SortedSet;
 
-import com.ankamagames.dofus.harvey.numeric.bytes.interfaces.IByteInterval;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+
+import com.ankamagames.dofus.harvey.numeric.bytes.sets.interfaces.IByteInterval;
 
 /**
  * @author sgros
  *
  */
 @NonNullByDefault
-public interface ISortedByteIntervalSet<Interval extends IByteInterval>
+public interface ISortedByteIntervalSet<Interval extends IByteInterval<?>>
 extends SortedSet<Interval>
 {
 	Comparator<? super Interval> reversecomparator();

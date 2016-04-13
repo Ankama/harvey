@@ -12,8 +12,8 @@ import com.ankamagames.dofus.harvey.engine.numeric.floats.inetrfaces.IIEditableF
 import com.ankamagames.dofus.harvey.engine.numeric.floats.inetrfaces.composite.IEditableCompositeFloatRandomVariable;
 import com.ankamagames.dofus.harvey.engine.numeric.floats.inetrfaces.composite.IIEditableCompositeFloatRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IEditableProbabilityStrategy;
-import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IFloatRandomVariable;
 import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IEditableFloatRandomVariable;
+import com.ankamagames.dofus.harvey.numeric.floats.interfaces.IFloatRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
@@ -52,7 +52,7 @@ implements IIEditableFloatRandomVariable,IIEditableCompositeFloatRandomVariable<
 	public boolean remove(final WrappableRandomVariableType randomVariable)
 	{
 		boolean r = false;
-		final Iterator<ChildType> it = _bridged.iterator();
+		final Iterator<ChildType> it = _bridged.childIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();
@@ -113,7 +113,7 @@ implements IIEditableFloatRandomVariable,IIEditableCompositeFloatRandomVariable<
 	public boolean remove(final float value)
 	{
 		boolean r = false;
-		final Iterator<ChildType> it = _bridged.iterator();
+		final Iterator<ChildType> it = _bridged.childIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();

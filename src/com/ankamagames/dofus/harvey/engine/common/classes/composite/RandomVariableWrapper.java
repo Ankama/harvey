@@ -4,7 +4,7 @@
 package com.ankamagames.dofus.harvey.engine.common.classes.composite;
 
 import com.ankamagames.dofus.harvey.RandomVariableUtils;
-import com.ankamagames.dofus.harvey.engine.common.interfaces.IRandomVariable;
+import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IRandomVariable;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;

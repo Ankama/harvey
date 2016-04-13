@@ -8,8 +8,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.ankamagames.dofus.harvey.engine.common.classes.composite.sortedintervalset.MergeSortedIterator;
-import com.ankamagames.dofus.harvey.engine.numeric.longs.classes.composite.sortedintervalset.LongIntervalTreeSet;
 import com.ankamagames.dofus.harvey.engine.numeric.longs.classes.composite.sortedintervalset.ISortedLongIntervalSet;
+import com.ankamagames.dofus.harvey.engine.numeric.longs.classes.composite.sortedintervalset.LongIntervalTreeSet;
 import com.ankamagames.dofus.harvey.numeric.longs.interfaces.IOrderedLongRandomVariable;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -56,7 +56,7 @@ implements IOrderedLongRandomVariable
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Iterator<ChildType> iterator()
+	protected Iterator<ChildType> childIterator()
 	{
 		return new MergeSortedIterator<ChildType>(getDefaultElements(), getOtherElements());
 	}
@@ -70,7 +70,7 @@ implements IOrderedLongRandomVariable
 	@Override
 	public long getLowerBound()
 	{
-		return iterator().next().getLowerBound();
+		return childIterator().next().getLowerBound();
 	}
 
 	@Override
@@ -94,13 +94,13 @@ implements IOrderedLongRandomVariable
 	@Override
 	public boolean isGreaterThan(final long value)
 	{
-		return iterator().next().isGreaterThan(value);
+		return childIterator().next().isGreaterThan(value);
 	}
 
 	@Override
 	public boolean isGreaterThanOrEqualTo(final long value)
 	{
-		return iterator().next().isGreaterThanOrEqualTo(value);
+		return childIterator().next().isGreaterThanOrEqualTo(value);
 	}
 
 	@Override
@@ -113,13 +113,13 @@ implements IOrderedLongRandomVariable
 	@Override
 	public boolean hasValueLowerThan(final long value)
 	{
-		return iterator().next().hasValueLowerThan(value);
+		return childIterator().next().hasValueLowerThan(value);
 	}
 
 	@Override
 	public boolean hasValueLowerThanOrEqualTo(final long value)
 	{
-		return iterator().next().hasValueLowerThanOrEqualTo(value);
+		return childIterator().next().hasValueLowerThanOrEqualTo(value);
 	}
 
 	@Override

@@ -28,9 +28,9 @@ implements IByteRandomVariable
 	abstract protected Collection<ChildType> getOtherElements();
 
 	@Override
-	protected Iterator<ChildType> iterator()
+	protected Iterator<ChildType> childIterator()
 	{
-		return super.iterator();
+		return super.childIterator();
 	}
 
 	@Override
@@ -66,7 +66,7 @@ implements IByteRandomVariable
 	public boolean containsOnly(final byte value)
 	{
 		boolean contains = false;
-		final Iterator<ChildType> it = iterator();
+		final Iterator<ChildType> it = childIterator();
 		while(it.hasNext())
 		{
 			final ChildType element = it.next();

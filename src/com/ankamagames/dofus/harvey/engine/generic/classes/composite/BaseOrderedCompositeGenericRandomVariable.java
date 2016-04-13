@@ -85,7 +85,7 @@ implements IOrderedGenericRandomVariable<Data>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Iterator<ChildType> iterator()
+	protected Iterator<ChildType> childIterator()
 	{
 		return new MergeSortedIterator<ChildType>(getDefaultElements(), getOtherElements());
 	}
@@ -105,7 +105,7 @@ implements IOrderedGenericRandomVariable<Data>
 	@Override
 	public @Nullable Data getLowerBound()
 	{
-		return iterator().next().getLowerBound();
+		return childIterator().next().getLowerBound();
 	}
 
 	@Override
@@ -129,13 +129,13 @@ implements IOrderedGenericRandomVariable<Data>
 	@Override
 	public boolean isGreaterThan(@Nullable final Data value)
 	{
-		return iterator().next().isGreaterThan(value);
+		return childIterator().next().isGreaterThan(value);
 	}
 
 	@Override
 	public boolean isGreaterThanOrEqualTo(@Nullable final Data value)
 	{
-		return iterator().next().isGreaterThanOrEqualTo(value);
+		return childIterator().next().isGreaterThanOrEqualTo(value);
 	}
 
 	@Override
@@ -148,13 +148,13 @@ implements IOrderedGenericRandomVariable<Data>
 	@Override
 	public boolean hasValueLowerThan(@Nullable final Data value)
 	{
-		return iterator().next().hasValueLowerThan(value);
+		return childIterator().next().hasValueLowerThan(value);
 	}
 
 	@Override
 	public boolean hasValueLowerThanOrEqualTo(@Nullable final Data value)
 	{
-		return iterator().next().hasValueLowerThanOrEqualTo(value);
+		return childIterator().next().hasValueLowerThanOrEqualTo(value);
 	}
 
 	@Override
