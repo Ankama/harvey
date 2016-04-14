@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -312,8 +313,8 @@ AbstractBridgedCompositeContinuousSet
 				new ArrayList<ArrayList<IContinuousGenericSet<Data>>>((j+2)-i);		//j+2 = values.length - (values.length-1 - j) + 1
 		Collections.fill(tmpBuffer, emptyArray);
 		
-		final Data[] lValues = Arrays.copyOfRange(values, i, j+1);
-		final boolean[] lIsIntervalStart = Arrays.copyOfRange(isIntervalStart, i, j+1);
+		final @NonNull Data[] lValues = Arrays.copyOfRange(values, i, j+1);
+		final @NonNull boolean[] lIsIntervalStart = Arrays.copyOfRange(isIntervalStart, i, j+1);
 		for(final ChildType child : _bridged.getChildren())
 		{
 			final List<? extends IContinuousGenericSet<Data>> childSplit = child.split(lValues, lIsIntervalStart);

@@ -25,7 +25,7 @@ public class BaseDegenerateContinuousGenericInterval<Data>
 	implements IDegenerateContinuousGenericInterval<Data>
 {
 	protected ContinuousComparator<? super Data>				_comparator;
-	BridgedDegenerateContinuousGenericSetImplementation<Data>	_bridgedImplementation	= new BridgedDegenerateContinuousGenericSetImplementation<Data>(this);
+	BridgedDegenerateContinuousGenericSetImplementation<Data, BaseDegenerateContinuousGenericInterval<Data>>	_bridgedImplementation	= new BridgedDegenerateContinuousGenericSetImplementation<Data, BaseDegenerateContinuousGenericInterval<Data>>(this);
 
 	public static <Data> BaseDegenerateContinuousGenericInterval<Data> makeInterval(@Nullable final Data value, final ContinuousComparator<? super Data> comparator)
 	{

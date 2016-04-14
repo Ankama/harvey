@@ -27,7 +27,7 @@ public class BaseDegenerateOrderedGenericSet<Data>
 {
 	@Nullable Data _value;
 	protected Comparator<? super Data> _comparator;
-	BridgedDegenerateOrderedGenericSetImplementation<Data> _bridgedImplementation = new BridgedDegenerateOrderedGenericSetImplementation<Data>(this);
+	BridgedDegenerateOrderedGenericSetImplementation<Data, BaseDegenerateOrderedGenericSet<Data>> _bridgedImplementation = new BridgedDegenerateOrderedGenericSetImplementation<Data, BaseDegenerateOrderedGenericSet<Data>>(this);
 
 	public static <Data> BaseDegenerateOrderedGenericSet<Data> makeSet(@Nullable final Data value)
 	{

@@ -22,7 +22,7 @@ public class BaseDegenerateFloatInterval
 	extends AbstractDegenerateContinuousInterval<IFloatSet, BridgedFloatBound<BaseDegenerateFloatInterval>>
 	implements IDegenerateFloatInterval
 {
-	BridgedDegenerateFloatSetImplementation _bridgedImplementation = new BridgedDegenerateFloatSetImplementation(this);
+	BridgedDegenerateFloatSetImplementation<BaseDegenerateFloatInterval> _bridgedImplementation = new BridgedDegenerateFloatSetImplementation<BaseDegenerateFloatInterval>(this);
 
 	public static BaseDegenerateFloatInterval makeInterval(final float value)
 	{
@@ -147,7 +147,7 @@ public class BaseDegenerateFloatInterval
 	}
 
 	@Override
-	public BaseFloatSet getMergedSet()
+	public BaseFloatSet<BaseDegenerateFloatInterval> getMergedSet()
 	{
 		return _bridgedImplementation.getMergedSet();
 	}

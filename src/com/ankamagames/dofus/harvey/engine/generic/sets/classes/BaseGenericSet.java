@@ -129,7 +129,7 @@ implements ICompositeGenericSet<Data, ChildType>
 				}
 
 				@Override
-				public Data next()
+				public @Nullable Data next()
 				{
 					return it.next().iterator().next();
 				}

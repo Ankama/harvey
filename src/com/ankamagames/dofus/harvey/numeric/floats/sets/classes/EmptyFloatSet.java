@@ -74,7 +74,7 @@ public final class EmptyFloatSet
 	}
 
 	@Override
-	public BaseFloatSet getMergedSet()
+	public BaseFloatSet<EmptyFloatSet> getMergedSet()
 	{
 		return BaseFloatSet.makeSet();
 	}

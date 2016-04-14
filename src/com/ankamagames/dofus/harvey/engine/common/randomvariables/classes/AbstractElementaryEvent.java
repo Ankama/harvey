@@ -7,8 +7,8 @@ import java.util.Iterator;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
-import com.ankamagames.dofus.harvey.engine.common.classes.sets.iterators.SingleValueIterator;
 import com.ankamagames.dofus.harvey.engine.common.randomvariables.interfaces.IElementaryEvent;
+import com.ankamagames.dofus.harvey.engine.common.sets.classes.iterators.SingleValueIterator;
 import com.ankamagames.dofus.harvey.engine.common.sets.interfaces.IDegenerateSet;
 import com.ankamagames.dofus.harvey.engine.common.sets.interfaces.ISet;
 import com.ankamagames.dofus.harvey.engine.probabilitystrategies.IProbabilityStrategy;

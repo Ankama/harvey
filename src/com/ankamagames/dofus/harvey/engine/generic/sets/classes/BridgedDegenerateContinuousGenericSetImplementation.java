@@ -20,11 +20,11 @@ import com.ankamagames.dofus.harvey.generic.sets.interfaces.IDegenerateContinuou
  *
  */
 @NonNullByDefault
-public class BridgedDegenerateContinuousGenericSetImplementation<Data>
-extends AbstractBridgedDegenerateContinuousSetImplementation<IContinuousGenericSet<Data>, IDegenerateContinuousGenericSet<Data>>
+public class BridgedDegenerateContinuousGenericSetImplementation<Data, BridgedType extends IDegenerateContinuousGenericSet<Data>>
+extends AbstractBridgedDegenerateContinuousSetImplementation<IContinuousGenericSet<Data>, BridgedType>
 
 {
-	public BridgedDegenerateContinuousGenericSetImplementation(final IDegenerateContinuousGenericSet<Data> bridged)
+	public BridgedDegenerateContinuousGenericSetImplementation(final BridgedType bridged)
 	{
 		super(bridged);
 	}
@@ -116,7 +116,7 @@ extends AbstractBridgedDegenerateContinuousSetImplementation<IContinuousGenericS
 		return r;
 	}
 	
-	public BaseContinuousGenericSet<Data, ?> getMergedSet()
+	public BaseContinuousGenericSet<Data, BridgedType> getMergedSet()
 	{
 		return BaseContinuousGenericSet.makeSet(_bridged, _bridged.getComparator());
 	}

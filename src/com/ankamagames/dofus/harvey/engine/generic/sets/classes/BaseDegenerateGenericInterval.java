@@ -26,7 +26,7 @@ public class BaseDegenerateGenericInterval<Data>
 	implements IDegenerateGenericInterval<Data>
 {
 	protected Comparator<? super Data>						_comparator;
-	BridgedDegenerateOrderedGenericSetImplementation<Data> _bridgedImplementation = new BridgedDegenerateOrderedGenericSetImplementation<Data>(this);
+	BridgedDegenerateOrderedGenericSetImplementation<Data, BaseDegenerateGenericInterval<Data>> _bridgedImplementation = new BridgedDegenerateOrderedGenericSetImplementation<Data, BaseDegenerateGenericInterval<Data>>(this);
 
 	public static <Data> BaseDegenerateGenericInterval<Data> makeInterval(@Nullable final Data value, final Comparator<? super Data> comparator)
 	{

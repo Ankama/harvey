@@ -21,10 +21,10 @@ import com.ankamagames.dofus.harvey.generic.sets.interfaces.IOrderedGenericSet;
  *
  */
 @NonNullByDefault
-public class BridgedDegenerateOrderedGenericSetImplementation<Data>
-	extends AbstractBridgedDegenerateOrderedSetImplementation<IOrderedGenericSet<Data>, IDegenerateOrderedGenericSet<Data>>
+public class BridgedDegenerateOrderedGenericSetImplementation<Data, BridgedType extends IDegenerateOrderedGenericSet<Data>>
+	extends AbstractBridgedDegenerateOrderedSetImplementation<IOrderedGenericSet<Data>, BridgedType>
 {
-	public BridgedDegenerateOrderedGenericSetImplementation(final IDegenerateOrderedGenericSet<Data> bridged)
+	public BridgedDegenerateOrderedGenericSetImplementation(final BridgedType bridged)
 	{
 		super(bridged);
 	}
@@ -114,7 +114,7 @@ public class BridgedDegenerateOrderedGenericSetImplementation<Data>
 		return r;
 	}
 	
-	public BaseOrderedGenericSet<Data, ? extends IDegenerateOrderedGenericSet<Data>> getMergedSet()
+	public BaseOrderedGenericSet<Data, BridgedType> getMergedSet()
 	{
 		final DefaultUncheckedIncrementableIncrementor<Data> incrementor = DefaultUncheckedIncrementableIncrementor.getInstance();
 		return BaseOrderedGenericSet.makeSet(_bridged, _bridged.getComparator(), incrementor);

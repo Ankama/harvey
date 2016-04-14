@@ -26,7 +26,7 @@ implements IDegenerateContinuousGenericSet<Data>
 {
 	@Nullable Data _value;
 	protected ContinuousComparator<? super Data> _comparator;
-	BridgedDegenerateContinuousGenericSetImplementation<Data> _bridgedImplementation = new BridgedDegenerateContinuousGenericSetImplementation<Data>(this);
+	BridgedDegenerateContinuousGenericSetImplementation<Data, BaseDegenerateContinuousGenericSet<Data>> _bridgedImplementation = new BridgedDegenerateContinuousGenericSetImplementation<Data, BaseDegenerateContinuousGenericSet<Data>>(this);
 
 	public static <Data> BaseDegenerateContinuousGenericSet<Data> makeSet(@Nullable final Data value)
 	{

@@ -8,8 +8,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.ankamagames.dofus.harvey.engine.common.classes.sets.iterators.SingleValueIterator;
 import com.ankamagames.dofus.harvey.engine.common.sets.classes.AbstractDegenerateSet;
+import com.ankamagames.dofus.harvey.engine.common.sets.classes.iterators.SingleValueIterator;
 import com.ankamagames.dofus.harvey.generic.sets.interfaces.IDegenerateGenericSet;
 import com.ankamagames.dofus.harvey.generic.sets.interfaces.IGenericSet;
 

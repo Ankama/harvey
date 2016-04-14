@@ -18,10 +18,10 @@ import com.ankamagames.dofus.harvey.numeric.floats.sets.interfaces.IFloatSet;
  *
  */
 @NonNullByDefault
-public class BridgedDegenerateFloatSetImplementation
-extends AbstractBridgedDegenerateOrderedSetImplementation<IFloatSet, IDegenerateFloatSet>
+public class BridgedDegenerateFloatSetImplementation<BridgedType extends IDegenerateFloatSet>
+extends AbstractBridgedDegenerateOrderedSetImplementation<IFloatSet, BridgedType>
 {
-	public BridgedDegenerateFloatSetImplementation(final IDegenerateFloatSet bridged)
+	public BridgedDegenerateFloatSetImplementation(final BridgedType bridged)
 	{
 		super(bridged);
 	}
@@ -102,7 +102,7 @@ extends AbstractBridgedDegenerateOrderedSetImplementation<IFloatSet, IDegenerate
 		return r;
 	}
 	
-	BaseFloatSet getMergedSet()
+	BaseFloatSet<BridgedType> getMergedSet()
 	{
 		return BaseFloatSet.makeSet(_bridged);
 	}

@@ -24,7 +24,7 @@ public class BaseDegenerateFloatSet
 	implements IDegenerateFloatSet
 {
 	float									_value;
-	BridgedDegenerateFloatSetImplementation	_bridgedImplementation	= new BridgedDegenerateFloatSetImplementation(this);
+	BridgedDegenerateFloatSetImplementation<BaseDegenerateFloatSet>	_bridgedImplementation	= new BridgedDegenerateFloatSetImplementation<BaseDegenerateFloatSet>(this);
 
 	public static BaseDegenerateFloatSet makeSet(final float value)
 	{
@@ -151,7 +151,7 @@ public class BaseDegenerateFloatSet
 	}
 
 	@Override
-	public BaseFloatSet getMergedSet()
+	public BaseFloatSet<BaseDegenerateFloatSet> getMergedSet()
 	{
 		return _bridgedImplementation.getMergedSet();
 	}

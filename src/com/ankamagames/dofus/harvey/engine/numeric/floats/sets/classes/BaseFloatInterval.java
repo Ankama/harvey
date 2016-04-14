@@ -390,7 +390,7 @@ public class BaseFloatInterval
 	}
 
 	@Override
-	public BaseFloatSet getMergedSet()
+	public BaseFloatSet<BaseFloatInterval> getMergedSet()
 	{
 		return BaseFloatSet.makeSet(this);
 	}
