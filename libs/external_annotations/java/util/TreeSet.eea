@@ -1,0 +1,4 @@
+class java/util/TreeSet
+iterator
+ ()Ljava/util/Iterator<TE;>;
+ ()L1java/util/Iterator<TE;>;

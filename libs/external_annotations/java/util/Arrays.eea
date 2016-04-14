@@ -1,0 +1,10 @@
+class java/util/Arrays
+copyOfRange
+ ([FII)[F
+ ([FII)[1F
+copyOfRange
+ ([ZII)[Z
+ ([ZII)[1Z
+copyOfRange
+ <T:Ljava/lang/Object;>([TT;II)[TT;
+ <T:Ljava/lang/Object;>([TT;II)[1TT;
