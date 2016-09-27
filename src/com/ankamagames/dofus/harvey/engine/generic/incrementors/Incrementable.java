@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.ankamagames.dofus.harvey.engine.generic.incrementors;
 
@@ -13,5 +13,5 @@ import org.eclipse.jdt.annotation.Nullable;
 @NonNullByDefault
 public interface Incrementable<Data>
 {
-	@Nullable Data getNext(int steps);
+	@Nullable Data getNextValue();
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.ankamagames.dofus.harvey.engine.generic.incrementors;
 
@@ -15,7 +15,7 @@ public class DefaultIncrementableIncrementor<Data extends Incrementable<Data>>
 	implements Incrementor<Data>
 {
 	private static DefaultIncrementableIncrementor<?> _instance = makeInstance();
-	
+
 	private static <Data extends Incrementable<Data>> DefaultIncrementableIncrementor<Data> makeInstance()
 	{
 		return new DefaultIncrementableIncrementor<Data>();
@@ -26,7 +26,7 @@ public class DefaultIncrementableIncrementor<Data extends Incrementable<Data>>
 	{
 		return (DefaultIncrementableIncrementor<Data>)_instance ;
 	}
-	
+
 	private DefaultIncrementableIncrementor()
 	{}
 
@@ -34,10 +34,10 @@ public class DefaultIncrementableIncrementor<Data extends Incrementable<Data>>
 	 * @see com.ankamagames.dofus.harvey.generic.sets.interfaces.Incrementor#getNext(java.lang.Object, int)
 	 */
 	@Override
-	public @Nullable Data getNext(@Nullable final Data value, final int steps)
+	public @Nullable Data getNextValue(@Nullable final Data value)
 	{
 		if(value==null)
 			return null;
-		return value.getNext(steps);
+		return value.getNextValue();
 	}
 }

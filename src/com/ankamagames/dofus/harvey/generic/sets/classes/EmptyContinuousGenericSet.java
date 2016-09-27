@@ -1,18 +1,23 @@
 /**
- * 
+ *
  */
 package com.ankamagames.dofus.harvey.generic.sets.classes;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import com.ankamagames.dofus.harvey.engine.common.sets.classes.AbstractEmptyContinuousSet;
+import com.ankamagames.dofus.harvey.engine.common.sets.classes.iterators.EmptyIterator;
+import com.ankamagames.dofus.harvey.generic.sets.interfaces.IContinuousGenericBound;
+import com.ankamagames.dofus.harvey.generic.sets.interfaces.IContinuousGenericInterval;
+import com.ankamagames.dofus.harvey.generic.sets.interfaces.IContinuousGenericSet;
+import com.ankamagames.dofus.harvey.generic.sets.interfaces.IElementaryContinuousGenericSet;
+import com.ankamagames.dofus.harvey.generic.sets.interfaces.IEmptyContinuousGenericSet;
+import com.ankamagames.dofus.harvey.generic.sets.interfaces.ISimpleContinuousGenericSet;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
-
-import com.ankamagames.dofus.harvey.engine.common.sets.classes.AbstractContinuousEmpty;
-import com.ankamagames.dofus.harvey.engine.generic.comparators.ContinuousComparator;
-import com.ankamagames.dofus.harvey.engine.generic.sets.classes.BaseContinuousGenericSet;
-import com.ankamagames.dofus.harvey.generic.sets.interfaces.IContinuousGenericSet;
 
 
 /**
@@ -21,70 +26,97 @@ import com.ankamagames.dofus.harvey.generic.sets.interfaces.IContinuousGenericSe
  */
 @NonNullByDefault
 public final class EmptyContinuousGenericSet<Data>
-extends AbstractContinuousEmpty<IContinuousGenericSet<Data>>
-implements IContinuousGenericSet<Data>
+extends AbstractEmptyContinuousSet<IContinuousGenericBound<Data>, IContinuousGenericSet<Data>, ISimpleContinuousGenericSet<Data>, IElementaryContinuousGenericSet<Data>, IContinuousGenericInterval<Data>, IEmptyContinuousGenericSet<Data>>
+implements IEmptyContinuousGenericSet<Data>
 {
 	@SuppressWarnings("rawtypes")
 	private static EmptyContinuousGenericSet _instance = new EmptyContinuousGenericSet();
-	
+
 	@SuppressWarnings("unchecked")
 	public static <T> EmptyContinuousGenericSet<T> getInstance()
 	{
 		return _instance;
 	}
-	
+
 	private EmptyContinuousGenericSet()
 	{}
-	
+
 	@Override
-	protected IContinuousGenericSet<Data> getThis()
+	public EmptyContinuousGenericSet<Data> getAsSet()
 	{
 		return this;
 	}
 
 	@Override
-	public @Nullable Data getLowerBound()
+	public ISimpleContinuousGenericSet<Data> getAsSimpleSet()
 	{
-		throw new UnsupportedOperationException();
+		return this;
 	}
 
 	@Override
-	public @Nullable Data getUpperBound()
+	public IElementaryContinuousGenericSet<Data> getAsElementarySet()
 	{
-		throw new UnsupportedOperationException();
+		return this;
 	}
 
 	@Override
-	public ContinuousComparator<? super Data> getComparator()
+	public IContinuousGenericInterval<Data> getAsInterval()
 	{
-		throw new UnsupportedOperationException();
+		return this;
 	}
 
 	@Override
-	public boolean contains(@Nullable final Data value)
+	public IEmptyContinuousGenericSet<Data> getAsEmptySet()
+	{
+		return this;
+	}
+
+	@Override
+	public @Nullable IContinuousGenericBound<Data> getLowerBound()
+	{
+		return null;
+	}
+
+	@Override
+	public @Nullable IContinuousGenericBound<Data> getUpperBound()
+	{
+		return null;
+	}
+
+	@Override
+	public boolean contains(final @Nullable Data value)
 	{
 		return false;
 	}
 
 	@Override
-	public ArrayList<EmptyContinuousGenericSet<Data>> split(final Data[] values, final boolean[] isIntervalStart)
+	public Iterator<EmptyContinuousGenericSet<Data>> iterator()
 	{
-		final ArrayList<EmptyContinuousGenericSet<Data>> r = new ArrayList<EmptyContinuousGenericSet<Data>>(values.length+1);
-		Collections.fill(r, this);
-		return r;
+		return EmptyIterator.getInstance();
 	}
 
 	@Override
-	public ArrayList<EmptyContinuousGenericSet<Data>> split(final Data... values)
+	public List<? extends IContinuousGenericSet<Data>> split(final Data[] values, final boolean[] isIntervalStart)
 	{
-		final ArrayList<EmptyContinuousGenericSet<Data>> r = new ArrayList<EmptyContinuousGenericSet<Data>>(values.length+1);
-		Collections.fill(r, this);
-		return r;
+		return split(values);
+	}
+
+	@SuppressWarnings("null")
+	@Override
+	public List<? extends IContinuousGenericSet<Data>> split(final Data... values)
+	{
+		return Collections.nCopies(values.length+1, this);
 	}
 
 	@Override
-	public BaseContinuousGenericSet<Data, EmptyContinuousGenericSet<Data>> getMergedSet()
+	public IEmptyContinuousGenericSet<Data> getSimpleSet()
 	{
-		return BaseContinuousGenericSet.makeSet(getComparator());
+		return this;
+	}
+
+	@Override
+	public Iterator<IContinuousGenericBound<Data>> getBoundIterator()
+	{
+		return EmptyIterator.getInstance();
 	}
 }

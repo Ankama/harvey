@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.ankamagames.dofus.harvey.engine.common.sets.interfaces;
 
@@ -11,8 +11,18 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  *
  */
 @NonNullByDefault
-public interface ICompositeSet<Set extends ISet<Set>, ChildType extends ISet<Set>>
-	extends ISet<Set>
+public interface ICompositeSet
+<
+	Set extends ISet<Set, SimpleSet, ElementarySet>,
+	SimpleSet extends ISimpleSet<Set, SimpleSet, ElementarySet>,
+	ElementarySet extends IElementarySet<Set, SimpleSet, ElementarySet>,
+	CompositeSet extends ICompositeSet<Set, SimpleSet, ElementarySet, CompositeSet, ?>,
+	ChildType extends ISet<Set, SimpleSet, ElementarySet>
+>
+extends ISet<Set, SimpleSet, ElementarySet>
 {
-	java.util.Set<ChildType> getChildren();
+	CompositeSet getAsComposite();
+	
+	int getChildrenCount();
+	Iterable<? extends ChildType> getChildren();
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.ankamagames.dofus.harvey.engine.generic.incrementors;
 
@@ -15,7 +15,7 @@ public class DefaultUncheckedIncrementableIncrementor<Data>
 	implements Incrementor<Data>
 {
 	private static DefaultUncheckedIncrementableIncrementor<?> _instance = makeInstance();
-	
+
 	private static <Data> DefaultUncheckedIncrementableIncrementor<Data> makeInstance()
 	{
 		return new DefaultUncheckedIncrementableIncrementor<Data>();
@@ -26,7 +26,7 @@ public class DefaultUncheckedIncrementableIncrementor<Data>
 	{
 		return (DefaultUncheckedIncrementableIncrementor<Data>)_instance ;
 	}
-	
+
 	private DefaultUncheckedIncrementableIncrementor()
 	{}
 
@@ -35,10 +35,10 @@ public class DefaultUncheckedIncrementableIncrementor<Data>
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public @Nullable Data getNext(@Nullable final Data value, final int steps)
+	public @Nullable Data getNextValue(@Nullable final Data value)
 	{
 		if(value==null)
 			return null;
-		return ((Incrementable<Data>)value).getNext(steps);
+		return ((Incrementable<Data>)value).getNextValue();
 	}
 }

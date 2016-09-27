@@ -1,11 +1,13 @@
 /**
- * 
+ *
  */
 package com.ankamagames.dofus.harvey.generic.sets.interfaces;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.List;
 
 import com.ankamagames.dofus.harvey.engine.common.sets.interfaces.ICompositeContinuousSet;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
  * @author sgros
@@ -13,8 +15,7 @@ import com.ankamagames.dofus.harvey.engine.common.sets.interfaces.ICompositeCont
  */
 @NonNullByDefault
 public interface ICompositeContinuousGenericSet<Data, ChildType extends IContinuousGenericSet<Data>>
-	extends IContinuousGenericSet<Data>, ICompositeContinuousSet<IContinuousGenericSet<Data>, ChildType>
+extends ICompositeContinuousSet<IContinuousGenericBound<Data>, IContinuousGenericSet<Data>, ISimpleContinuousGenericSet<Data>, IElementaryContinuousGenericSet<Data>, ICompositeContinuousGenericSet<Data, ?>, ChildType>, IContinuousGenericSet<Data>
 {
-	@Override
-	ICompositeContinuousGenericSet<Data, ?> getMergedSet();
+	public List<? extends IContinuousGenericSet<Data>> splitInParts(int parts);
 }

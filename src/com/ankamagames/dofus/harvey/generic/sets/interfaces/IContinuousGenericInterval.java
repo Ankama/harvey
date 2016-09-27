@@ -1,11 +1,11 @@
 /**
- * 
+ *
  */
 package com.ankamagames.dofus.harvey.generic.sets.interfaces;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import com.ankamagames.dofus.harvey.engine.common.sets.interfaces.IContinuousInterval;
 
-import com.ankamagames.dofus.harvey.engine.common.sets.interfaces.IInterval;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 
 
 /**
@@ -14,5 +14,10 @@ import com.ankamagames.dofus.harvey.engine.common.sets.interfaces.IInterval;
  */
 @NonNullByDefault
 public interface IContinuousGenericInterval<Data>
-	extends IContinuousGenericSet<Data>, IInterval<IContinuousGenericSet<Data>>
-{}
+extends IContinuousGenericSet<Data>,
+IContinuousInterval<IContinuousGenericBound<Data>, IContinuousGenericSet<Data>, ISimpleContinuousGenericSet<Data>, IElementaryContinuousGenericSet<Data>, IContinuousGenericInterval<Data>>,
+IElementaryContinuousGenericSet<Data>
+{
+	@Override
+	IContinuousGenericInterval<Data> getSimpleSet();
+}

@@ -12,6 +12,8 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  *
  */
 @NonNullByDefault
-public interface IDynamicProbabilityStrategy
+public interface IDynamicProbabilityStrategy<Data>
 	extends IProbabilityStrategy
-{}
+{
+	int getProbability(Data data);
+}

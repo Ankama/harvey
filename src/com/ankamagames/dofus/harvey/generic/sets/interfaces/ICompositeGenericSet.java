@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.ankamagames.dofus.harvey.generic.sets.interfaces;
 
@@ -14,5 +14,5 @@ import com.ankamagames.dofus.harvey.engine.common.sets.interfaces.ICompositeSet;
  */
 @NonNullByDefault
 public interface ICompositeGenericSet<Data, ChildType extends IGenericSet<Data>>
-	extends IGenericSet<Data>, ICompositeSet<IGenericSet<Data>, ChildType>
+extends ICompositeSet<IGenericSet<Data>, ISimpleGenericSet<Data>, IElementaryGenericSet<Data>, ICompositeGenericSet<Data, ?>, ChildType>, IGenericSet<Data>
 {}

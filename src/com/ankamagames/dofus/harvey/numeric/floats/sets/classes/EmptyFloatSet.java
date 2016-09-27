@@ -1,17 +1,24 @@
 /**
- * 
+ *
  */
 package com.ankamagames.dofus.harvey.numeric.floats.sets.classes;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
-
-import com.ankamagames.dofus.harvey.engine.common.sets.classes.AbstractContinuousEmpty;
-import com.ankamagames.dofus.harvey.engine.numeric.floats.sets.classes.BaseFloatSet;
+import com.ankamagames.dofus.harvey.engine.common.sets.classes.AbstractEmptyContinuousSet;
+import com.ankamagames.dofus.harvey.engine.numeric.floats.sets.classes.interfaces.IFloatBound;
+import com.ankamagames.dofus.harvey.numeric.floats.sets.interfaces.IElementaryFloatSet;
+import com.ankamagames.dofus.harvey.numeric.floats.sets.interfaces.IFloatInterval;
 import com.ankamagames.dofus.harvey.numeric.floats.sets.interfaces.IFloatSet;
+import com.ankamagames.dofus.harvey.numeric.floats.sets.interfaces.ISimpleFloatSet;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
+
+import com.sun.xml.internal.fastinfoset.stax.events.EmptyIterator;
 
 
 /**
@@ -20,35 +27,71 @@ import com.ankamagames.dofus.harvey.numeric.floats.sets.interfaces.IFloatSet;
  */
 @NonNullByDefault
 public final class EmptyFloatSet
-	extends AbstractContinuousEmpty<IFloatSet>
-	implements IFloatSet
+extends AbstractEmptyContinuousSet<IFloatBound, IFloatSet, ISimpleFloatSet, IElementaryFloatSet, IFloatInterval, EmptyFloatSet>
+implements IElementaryFloatSet, IFloatInterval
 {
 	private static EmptyFloatSet _instance = new EmptyFloatSet();
-	
+
 	public static EmptyFloatSet getInstance()
 	{
 		return _instance;
 	}
-	
+
 	private EmptyFloatSet()
 	{}
-	
+
 	@Override
-	protected IFloatSet getThis()
+	public IFloatSet getAsSet()
 	{
 		return this;
 	}
 
 	@Override
-	public float getLowerBound()
+	public IElementaryFloatSet getAsElementarySet()
 	{
-		throw new UnsupportedOperationException();
+		return this;
 	}
 
 	@Override
-	public float getUpperBound()
+	public ISimpleFloatSet getAsSimpleSet()
 	{
-		throw new UnsupportedOperationException();
+		return this;
+	}
+
+	@Override
+	public EmptyFloatSet getAsEmptySet()
+	{
+		return this;
+	}
+
+	@Override
+	public IFloatInterval getAsInterval()
+	{
+		return this;
+	}
+
+	@Override
+	public @Nullable IFloatBound getLowerBound()
+	{
+		return null;
+	}
+
+	@Override
+	public @Nullable IFloatBound getUpperBound()
+	{
+		return null;
+	}
+
+	@Override
+	public Iterator<EmptyFloatSet> iterator()
+	{
+		return EmptyIterator.getInstance();
+	}
+
+	@Override
+	public Iterator<IFloatBound> getBoundIterator()
+	{
+		return EmptyIterator.getInstance();
 	}
 
 	@Override
@@ -74,8 +117,8 @@ public final class EmptyFloatSet
 	}
 
 	@Override
-	public BaseFloatSet<EmptyFloatSet> getMergedSet()
+	public EmptyFloatSet getSimpleSet()
 	{
-		return BaseFloatSet.makeSet();
+		return this;
 	}
 }

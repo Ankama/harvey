@@ -1,12 +1,11 @@
 /**
- * 
+ *
  */
 package com.ankamagames.dofus.harvey.generic.sets.interfaces;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.Nullable;
+import com.ankamagames.dofus.harvey.engine.generic.sets.interfaces.IIGenericSet;
 
-import com.ankamagames.dofus.harvey.engine.common.sets.interfaces.ISet;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 
 
 /**
@@ -15,9 +14,5 @@ import com.ankamagames.dofus.harvey.engine.common.sets.interfaces.ISet;
  */
 @NonNullByDefault
 public interface IGenericSet<Data>
-	extends ISet<IGenericSet<Data>>, Iterable<Data>
-{
-	boolean contains(@Nullable Data value);
-	@Override
-	ICompositeGenericSet<Data, ?> getMergedSet();
-}
+extends IIGenericSet<Data, IGenericSet<Data>, ISimpleGenericSet<Data>, IElementaryGenericSet<Data>>
+{}
