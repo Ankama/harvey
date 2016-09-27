@@ -1,0 +1,846 @@
+<project name="Dofus-Game"
+         basedir="."
+         default="Local - Compilation des sources"
+>	
+
+	<property name="basepath" value="${basedir}" />
+	<property name="sourcepath" 				value="${basepath}/src"/>
+	<property name="outputpath"  			value="${basepath}/bin"/>
+	<property name="resourcepath"			value="${basepath}/resources"/>
+	<property name="libspath" 				value="${basepath}/libs"/>
+	<property name="releasables"				value="${basepath}/releasables"/>
+	<property name="md5"						value="${basepath}/md5"/>
+	<property name="doc"						value="${basepath}/doc"/>
+	<property name="test"						value="${basepath}/tests"/>
+	<property name="sql"						value="${basepath}/sql"/>
+	<property name="sql-functions"				value="${sql}/functions"/>
+	
+	<!-- nom symbolique des jars et méthodes utilitaires -->
+	<!-- c'est ce fichier qu'il faut modifier pour rajouter/modifier une libs -->
+	<include file="${libspath}/dofus_server_libs.ant.xml" />
+	
+	<target name="Local - Builds Classpaths" unless="absolute.classpath" >
+		<!-- extraire les libs utilisées depuis le .classpath -->
+		<extract-dep />
+		<build-classpaths dofuslibs="dofuslibs-fileset" />
+		<echo message="Classpaths :" />
+		<echo message=" * relatif=${relative.unixclasspath}" />
+		<echo message=" * absolu=${absolute.classpath}" />
+	</target>
+	
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<property name="sshkeyfile"			value="${resourcepath}/local/auth/id_rsa_ant_dofus" />
+	<property name="sshpasshphrase"		value="fourmie" />
+		
+	<target name="Local - Check Local - SSH Keyfile exists" unless="sshkeyfile.exists">
+		    <available property="sshkeyfile.exists" file="${sshkeyfile}"/>
+	</target>
+	<target name="Local - SSH Key" depends="Local - Check Local - SSH Keyfile exists" if="${sshkeyfile.exists}">
+		<echo message="Local - SSH Key found : ${sshkeyfile}" />
+	</target>
+	
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<target name="Check Operating System">
+	    <condition property="isWindows" value="true">	<os family="windows" /> </condition>
+	    <condition property="isUnix" value="true">		<os family="unix" />	</condition>
+	</target>
+	
+	<target name="Local - Ajout des infos de build">
+		<antcall target="Local - Ajout des infos de build - Win" />
+		<antcall target="Local - Ajout des infos de build - Unix" />
+	</target>
+	
+	<target name="Local - Ajout des infos de build - Win" depends="Check Operating System" if="isWindows">
+		
+		<echo>[Warn] Les informations de révisions ne sont actuellement pas disponibles sous windows</echo>
+		
+		<echo file="build.info"># Build Info 
+# This file (build.info) is generated via an Ant Task, all changes will be lost 
+
+# The range of first to last commit in this repository 
+commited-range = ?
+
+# The range of current revisions for the files in this repository
+current-range = ?</echo>
+		
+		<tstamp>
+		      <format property="NOW_FR" pattern="dd/MM/yyyy HH:mm" locale="fr,FR"/>
+		</tstamp>
+		<echo file="build.info" append="true">
+# Date of creation of the build.info
+build-date = ${NOW_FR}
+</echo>
+		
+		<echo>Info partielles sauvées dans le fichier build.info</echo>
+	</target>
+			
+	
+	<target name="Local - Ajout des infos de build - Unix" depends="Check Operating System" if="isUnix">
+		
+		<echo file="build.info"># Build Info 
+# This file (build.info) is generated via an Ant Task, all changes will be lost 
+
+# The range of first to last commit in this repository 
+commited-range = </echo>
+		<exec executable="svnversion" output="build.info" append="true">
+			<arg line="-c ." />
+		</exec>	
+		<echo file="build.info" append="true">
+# The range of current revisions for the files in this repository
+current-range = </echo>
+		<exec executable="svnversion" output="build.info" append="true">
+			<arg line="." />
+		</exec>
+		
+		<tstamp>
+		      <format property="NOW_FR" pattern="dd/MM/yyyy HH:mm" locale="fr,FR"/>
+		</tstamp>
+		<echo file="build.info" append="true">
+# Date of creation of the build.info
+build-date = ${NOW_FR}
+</echo>
+
+		<echo>Info sauvées dans le fichier build.info</echo>
+	</target>
+	
+	<target name="Local - Sauvegarde du classpath" depends="Local - Builds Classpaths">
+		<echo>Création du fichier classpath.info - debug</echo>
+		<echo file="classpath.info" message="${relative.unixclasspath}" />	
+		<echo>Info mises dans le fichier classpath.info</echo>
+	</target>
+	
+	<target name="Local - Compilation et Packetage des classes et ressources">		
+			<antcall target="Local - Compilation des sources" />
+			<antcall target="Local - Packetage des classes et ressources" />
+	</target>	
+	
+	<target name="Local - Nettoyage des binaires produits">
+		<delete includeEmptyDirs="true" failonerror="false">
+					<fileset dir="${outputpath}/"
+					         includes="**/*.class"
+					/>
+		</delete>
+	</target>
+	
+	<target name="Local - Compilation des sources" 
+		depends="Local - Builds Classpaths,Local - Nettoyage des binaires produits, Local - Ajout des infos de build, Local - MD5 des librairies">
+			<echo>Début de compilation du code</echo>
+			<mkdir dir="${outputpath}" />
+		
+			<javac srcdir="${sourcepath}"
+			       destdir="${outputpath}"
+			       classpath="${absolute.classpath}"
+			       deprecation="off"
+			       debug="on"				   
+			       encoding="UTF-8"  
+				   compiler="javac1.6"
+					source="1.6"
+					target="1.6"
+			/>
+			<echo>Fin de compilation du code</echo>
+		
+		<antcall target="Local - Sauvegarde du classpath" />
+	</target>
+	
+	<target name="Local - Compilation des sources 1.8" 
+			depends="Local - Builds Classpaths,Local - Nettoyage des binaires produits,Local - Ajout des infos de build, Local - MD5 des librairies">
+				<echo>Début de compilation du code</echo>
+				<mkdir dir="${outputpath}" />
+			
+				<javac srcdir="${sourcepath}"
+				       destdir="${outputpath}"
+				       classpath="${absolute.classpath}"
+				       deprecation="off"
+				       debug="on"				   
+				       encoding="UTF-8"  
+					   compiler="javac1.8"
+						source="1.8"
+						target="1.8"
+				/>
+				<echo>Fin de compilation du code</echo>
+			
+	</target>
+	
+	<target name="Local - MD5 des librairies" depends="Local - Builds Classpaths">
+		
+			<mkdir dir="${md5}" />
+						
+			<checksum algorithm="MD5" format="MD5SUM" forceoverwrite="yes" todir="${md5}">
+				<fileset refid="dofuslibs-fileset" />
+			</checksum>
+
+			<concat destfile = "${md5}/gameserver-libs.md5s" fixlastline="yes" eol="unix" >
+				<fileset dir="${md5}" >
+					<include name="*.MD5" />
+				</fileset>
+			</concat>
+			
+			<delete>
+				<fileset dir="${md5}">
+					<include name="*.MD5" />				
+				</fileset>		
+			</delete>
+				
+	</target>
+
+	<target name="Local - Packetage des classes et ressources" depends="Local - Builds Classpaths">
+		<mkdir dir="${releasables}" />
+		<tar destfile="${releasables}/gameserver.tar.gz"
+		     compression="gzip"
+		>
+			<tarfileset dir="${outputpath}">
+				<include name="**/*.class" />
+				<include name="**/version.nfo" />
+				<exclude name="exporter*.class" />
+				<exclude name="test*.class" />
+				<exclude name="TODO.class" />
+				<exclude name="updater.class" />
+			</tarfileset>
+			<tarfileset dir="${basepath}">
+				<include name="build.info" />
+				<include name="classpath.info" />
+				<include name="BRANCH" />
+				<include name="TRUNK" />
+				<include name="resources/*.txt" />
+				<include name="resources/censor/*.txt" />
+				<include name="resources/required/*.txt" />
+				<include name="resources/scripts/*.js" />
+				<include name="resources/localised/po/*.po*" />
+				<include name="resources/localised/*.txt" />
+				<include name="resources/scoring/*.swf" /> 
+				<include name="resources/local/warning-whitelist.txt" />
+				<include name="resources/production/warning-whitelist.txt" />
+				<include name="www/*.txt" />
+				<!--<include name="snapshots/cacheExpirationDates.txt " />-->
+			</tarfileset>
+			<fileset dir="${md5}">
+			    <include name="gameserver-libs.md5s"/>
+			</fileset>
+		</tar>
+		<jar destfile="${releasables}/gameserver.jar"
+			basedir="${outputpath}"
+		    includes="**/*.class" />
+	</target>
+	
+	<target name="Local - Packetage des fonctions SQL" >
+	
+		<mkdir dir="${releasables}" />
+		
+		<tar destfile="${releasables}/gameserver-sqlfunc.tar.gz" compression="gzip" >
+			
+			<fileset dir="${sql-functions}" />
+		</tar>
+		
+	</target>
+	
+	<target name="Local - Packetage des librairies" depends="Local - Builds Classpaths">
+		
+			<mkdir dir="${releasables}" />
+
+			<tar destfile="${releasables}/gameserver-libs.tar.gz"
+			     compression="gzip" 
+			>
+				<fileset refid="dofuslibs-fileset" />
+			</tar>
+		
+	</target>
+	
+	<!-- ___________________________________________________________________ -->
+	
+	<target name="Foehn - Exporter GameData Dofus2" depends="Local - SSH Key">
+				<sshexec host="foehn"
+				         username="dofus"
+			        keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"
+				         command="/home/dofus/dofus2/export.sh"
+				         trust="true"					
+				/>
+	</target>
+	
+	<target name="Foehn - Exporter Testing Dofus2" depends="Local - SSH Key">
+					<sshexec host="foehn"
+					         username="dofus"
+				        keyfile="${sshkeyfile}"
+						passphrase="${sshpasshphrase}"
+					         command="/home/dofus/dofus2/export-testing.sh"
+					         trust="true"
+					/>
+	</target>
+	
+	<target name="Foehn - Dupliquer Base de Testing vers Prod" depends="Local - SSH Key">
+					<sshexec host="foehn"
+					         username="dofus"
+				        keyfile="${sshkeyfile}"
+						passphrase="${sshpasshphrase}"
+					         command="/home/dofus/dofus2/create_prod_db_from_testing.sh"
+					         trust="true"
+					/>
+	</target>
+	
+	<target name="Foehn - Dupliquer Base de Testing vers Beta" depends="Local - SSH Key">
+					<sshexec host="foehn"
+					         username="dofus"
+				        keyfile="${sshkeyfile}"
+						passphrase="${sshpasshphrase}"
+					         command="/home/dofus/dofus2/create_beta_db_from_testing.sh"
+					         trust="true"
+					/>
+	</target>
+	
+	<!-- ___________________________________________________________________ -->
+	
+	<target name="Foehn - Full Réplication Dofus2 dans Foehn - Dofus2-GameData" depends="Local - SSH Key">
+			<sshexec host="foehn"
+			         username="dofus"
+		        keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			         command="/home/dofus/dofus2/gd.synchro-new.sh"
+			         trust="true"
+			/>
+	</target>
+	
+	<target name="Foehn - Smart Réplication Dofus2 dans Foehn - Dofus2-GameData" depends="Local - SSH Key">
+				<sshexec host="foehn"
+				         username="dofus"
+			        keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"
+				         command="/home/dofus/dofus2/gd.synchro-new.smart.sh"
+				         trust="true"
+				/>
+	</target>
+
+	<target name="Foehn - Full Réplication Dofus2 dans Foehn - Dofus2-GameData-Test" depends="Local - SSH Key">
+			<sshexec host="foehn"
+			         username="dofus"
+		        keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			         command="/home/dofus/dofus2/gd.synchro-new.testing.sh"
+			         trust="true"
+			/>
+	</target>
+	
+	<target name="Foehn - Dévérouiller la réplication" depends="Local - SSH Key">
+			<sshexec host="foehn"
+			         username="dofus"
+		        keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			         command="/home/dofus/dofus2/force-unlock.sh"
+			         trust="true"
+			/>
+	</target>
+	
+	<!-- ___________________________________________________________________ -->
+	
+	<target name="Chacha - Copier classes et ressources ~ Quick"
+			depends="Local - SSH Key,Local - Packetage des classes et ressources, Chacha - Envoyer et installer package code serveur"
+		/>
+
+		<target name="Chacha - Envoyer et installer package code serveur">
+			<scp file="${releasables}/gameserver.tar.gz"
+			     todir="dofus@chacha:/home/dofus/gameserver/installs"
+			     trust="true"
+				 keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			/>
+			<parallel>
+				<sshexec host="chacha"
+				         username="dofus"
+			        keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"
+				         command="/home/dofus/gameserver/bin/aks install"
+				         trust="true"
+				/>
+			</parallel>
+		</target>
+		
+	
+	
+		<target name="Chacha - Récupérer la lib dofus-i18n" depends="Local - SSH Key">
+				<scp file="dofus@chacha:/home/dofus/gameserver/libs/dofus-i18n.jar"
+				     todir="${libspath}"
+				     trust="true"
+					 keyfile="${sshkeyfile}"
+					 passphrase="${sshpasshphrase}"
+					verbose="true"
+				/>
+		</target>
+		
+		<target name="Chacha - Générer la lib dofus-i18n" depends="Local - SSH Key">
+			
+				<sshexec host="chacha"
+						         username="dofus"
+			        keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"
+						         command="/home/dofus/gameserver/bin/aks i18n"
+						         trust="true"								
+				/>
+						
+		</target>
+		
+		<target name="Chacha - Générer et récupérer la lib dofus-i18n" depends="Chacha - Générer la lib dofus-i18n, Chacha - Récupérer la lib dofus-i18n" /> 
+
+		<target name="Chacha - Packetage des librairies" depends="Chacha - Récupérer la lib dofus-i18n">
+			<antcall target="Local - Packetage des librairies" />
+		</target>
+
+		<target name="Chacha - Compresser et envoyer libs"
+		        depends="Local - SSH Key,Chacha - Packetage des librairies"
+		>
+			<sshexec host="chacha"
+						         username="dofus"
+		        keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+						         command="cp /home/dofus/gameserver/installs/gameserver-libs.tar.gz /home/dofus/gameserver/installs/gameserver-libs.previous.tar.gz"
+						         trust="true"
+			/>
+			
+			<scp file="${releasables}/gameserver-libs.tar.gz"
+			     todir="dofus@chacha:/home/dofus/gameserver/installs"
+			     trust="true"
+				 keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			/>
+			
+			<parallel>
+				<sshexec host="chacha"
+				         username="dofus"
+			        keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"
+				         command="/home/dofus/gameserver/bin/aks install-libs"
+				         trust="true"
+				/>
+			</parallel>
+		</target>
+
+		<target name="Chacha - Relance du serveur « Chacha »" depends="Local - SSH Key">
+			<sshexec host="chacha"
+			         username="dofus"
+		        keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			         command="/home/dofus/gameserver/bin/aks restart"
+			         trust="true"
+			/>
+		</target>
+		
+	<target name="Chacha - Stop le « Chacha »" depends="Local - SSH Key">
+			<sshexec host="chacha"
+			         username="dofus"
+		        keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			         command="/home/dofus/gameserver/bin/aks stop"
+			         trust="true"
+			/>
+	</target>
+	
+	<target name="Chacha - Motd redéploiement Jenkins" depends="Local - SSH Key">
+					<sshexec host="chacha"
+					         username="dofus"
+				        keyfile="${sshkeyfile}"
+						passphrase="${sshpasshphrase}"
+					         command="/home/dofus/gameserver/bin/motd.sh &#34;Relance du Serveur en file d'attente de Jenkins&#34;"							 
+					         trust="true"
+							 failonerror="no"
+					/>
+	</target>
+	
+	<target name="Chacha - Broadcast redéploiement" depends="Local - SSH Key">
+				<sshexec host="chacha"
+				         username="dofus"
+			        keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"
+				         command="/home/dofus/gameserver/bin/warn-redeploy.sh"
+				         trust="true"
+						 failonerror="no"
+				/>
+	</target>
+	
+	<target name="Chacha - Broadcast extinction" depends="Local - SSH Key">
+					<sshexec host="chacha"
+					         username="dofus"
+				        keyfile="${sshkeyfile}"
+						passphrase="${sshpasshphrase}"
+					         command="/home/dofus/gameserver/bin/warn-stop.sh"
+					         trust="true"
+							 failonerror="no"
+					/>
+	</target>
+
+	<target name="Chacha - Broadcast réplication avant redéploiement" depends="Local - SSH Key">
+				<sshexec host="chacha"
+				         username="dofus"
+			        keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"
+				         command="/home/dofus/gameserver/bin/warn-replication-before-redeploy.sh"
+				         trust="true"
+						 failonerror="no"
+				/>
+	</target>
+	
+	<target name="Chacha - Redéployer - Debug" 
+		depends="
+		Chacha - Broadcast redéploiement,
+		Local - Compilation et Packetage des classes et ressources,
+		Chacha - Compresser et envoyer libs,
+		Chacha - Envoyer et installer package code serveur,
+		Chacha - Broadcast extinction,
+		Chacha - Relance du serveur « Chacha »
+		" 
+	/>
+	
+	<!-- Serveurs kolizéum -->
+	
+	<target name="Mythik - Redéployer serveur" depends="Local - SSH Key">
+				
+				<scp file="${releasables}/gameserver.tar.gz"
+				     todir="dofus@akrb1do2kol01:/home/dofus/gameserver/installs"
+				     trust="true"
+					 verbose="true"
+ 					keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"		
+				/>
+		
+				<scp file="${releasables}/gameserver-libs.tar.gz"
+					todir="dofus@akrb1do2kol01:/home/dofus/gameserver/installs"
+					trust="true"
+					 verbose="true"
+ 					keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"
+				/>
+		
+				<parallel>
+					<sshexec host="akrb1do2kol01"
+					         username="dofus"
+					         keyfile="${sshkeyfile}"
+							 passphrase="${sshpasshphrase}"
+					         command="/home/dofus/gameserver/bin/redeploy.sh"
+					         trust="true"
+					/>
+				</parallel>			
+	</target>
+	
+	<target name="Kupidon - Redéployer serveur" depends="Local - SSH Key">
+			
+				<scp file="${releasables}/gameserver.tar.gz"
+				     todir="dofus@akrb1do2kol02:/home/dofus/fightserver/installs"
+				     trust="true"
+					 verbose="true"
+ 					keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"		
+				/>
+		
+				<scp file="${releasables}/gameserver-libs.tar.gz"
+					todir="dofus@akrb1do2kol02:/home/dofus/fightserver/installs"
+					trust="true"
+					 verbose="true"
+ 					keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"
+				/>
+		
+				<parallel>
+					<sshexec host="akrb1do2kol02"
+					         username="dofus"
+					         keyfile="${sshkeyfile}"
+							 passphrase="${sshpasshphrase}"
+					         command="/home/dofus/fightserver/bin/redeploy.sh"
+					         trust="true"
+					/>
+				</parallel>			
+	</target>
+	
+	<!-- Tifoux (ex Tchatcha) -->
+	
+	<target name="Tifoux - Redéployer serveur" depends="Local - SSH Key">
+		
+				<scp file="${releasables}/gameserver.tar.gz"
+				     todir="dofus@zephyr:/home/dofus/gameserver3/installs"
+				     trust="true"
+					 verbose="true"
+ 					keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"		
+				/>
+		
+				<scp file="${releasables}/gameserver-libs.tar.gz"
+					todir="dofus@zephyr:/home/dofus/gameserver3/installs"
+					trust="true"
+					 verbose="true"
+ 					keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"
+				/>
+		
+				<parallel>
+					<sshexec host="zephyr"
+					         username="dofus"
+					         keyfile="${sshkeyfile}"
+							 passphrase="${sshpasshphrase}"
+					         command="/home/dofus/gameserver3/restart.sh"
+					         trust="true"
+					/>
+				</parallel>			
+	</target>
+	
+	<target name="Tifoux - Unlock" description="Supprimer les fichiers pid et booting" depends="Local - SSH Key">  
+			<parallel>
+				<sshexec 
+					host="zephyr"
+				    username="dofus"
+					keyfile="${sshkeyfile}"
+					passphrase="${sshpasshphrase}"
+				    command="/home/dofus/gameserver3/bin/unlock.sh"
+				    trust="true"
+				/>
+			</parallel>			
+	</target>
+		
+	<!-- Javadoc -->
+
+	<target name="Local - Nettoyage de la javadoc produite">
+		<delete includeEmptyDirs="true" failonerror="false">
+					<fileset dir="${doc}/"/>
+		</delete>
+	</target>
+		
+	<target name="Local - Javadoc" depends="Local - Builds Classpaths, Local - Nettoyage de la javadoc produite">
+		
+		<mkdir dir="${doc}" />
+		<!-- Il ne faut pas inclure le package par défaut, sinon ça plante -->
+		<javadoc sourcepath="${sourcepath}" 
+		         classpath="${relative.classpath}" 
+		         destdir="${doc}"
+		         packagenames="aks.data.*,aks.gameServer.*,aks.util.*,com.ankamagames.*"  
+				 additionalparam="-J-Xmx784m  -encoding utf8 -docencoding utf8 " 
+		         source="1.6"
+				 access="public"			
+ 			 	 author="true" 
+			     nodeprecated="false" 
+			     nodeprecatedlist="false" 
+			     noindex="false" 
+			     nonavbar="false" 
+			     notree="false" 
+			     splitindex="true"
+			     use="true" 
+			     version="true"
+				 verbose="true"
+		/>
+	</target>
+	
+	<!-- Zephyr -->
+	<target name="Zephyr - Prod Code - Redeploy fantomas server" depends="Local - SSH Key">
+		<sshexec host="zephyr"
+		    username="dofus"
+	        keyfile="${sshkeyfile}"
+			passphrase="${sshpasshphrase}"
+		    command="redeploy-prod-fantomas"
+		    trust="true"
+			failonerror="yes"
+		/>
+	</target>
+		
+	<target name="Zephyr - Staging Code - Redeploy both local servers" depends="Local - SSH Key">
+			<sshexec host="zephyr"
+			    username="dofus"
+		        keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			    command="redeploy-staging"
+			    trust="true"
+				failonerror="yes"
+			/>
+	</target>
+	
+	<target name="Zephyr - Staging Code - Redeploy local testing server" depends="Local - SSH Key">
+			<sshexec host="zephyr"
+			    username="dofus"
+		        keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			    command="redeploy-staging-testing"
+			    trust="true"
+				failonerror="yes"
+			/>
+	</target>
+	
+	<target name="Zephyr - Staging Code - Redeploy local zephyr server" depends="Local - SSH Key">
+			<sshexec host="zephyr"
+			    username="dofus"
+		        keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			    command="redeploy-staging-zephyr"
+			    trust="true"
+				failonerror="yes"
+			/>
+	</target>
+	
+	<target name="Zephyr - Trunk Code - Redeploy both local servers" depends="Local - SSH Key">
+			<sshexec host="zephyr"
+			    username="dofus"
+		        keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			    command="redeploy-trunk"
+			    trust="true"
+				failonerror="yes"
+			/>
+	</target>
+	
+	<target name="Zephyr - Trunk Code - Redeploy local testing server" depends="Local - SSH Key">
+			<sshexec host="zephyr"
+			    username="dofus"
+		        keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			    command="redeploy-trunk-testing"
+			    trust="true"
+				failonerror="yes"
+			/>
+	</target>
+	
+	<target name="Zephyr - Trunk Code - Redeploy local zephyr server" depends="Local - SSH Key">
+			<sshexec host="zephyr"
+			    username="dofus"
+		        keyfile="${sshkeyfile}"
+				passphrase="${sshpasshphrase}"
+			    command="redeploy-trunk-zephyr"
+			    trust="true"
+				failonerror="yes"
+			/>
+	</target>
+	
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<!-- Il faut récupérer le projet http://svn.dofus.lan/dev/dofus2/tools/trunk/findbugs/ -->
+	
+	<property name="findbugs.home" value="${basepath}/../Tools-Findbugs" />
+	
+	<!-- 
+	<target name="Local - FindBugs Generate HTML" depends="Local - Compilation des sources">
+		
+		<path id="findbugs.libs">
+				<fileset dir="${basepath}/../Tools-Findbugs/lib/">
+					<include name="findbugs-ant.jar" />
+				</fileset>
+		</path>
+		<taskdef name="findbugs" classpathref="findbugs.libs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask"/>
+		
+		<mkdir dir="${test}/findbugs/" />
+	    <findbugs home="${findbugs.home}"
+	              output="html"
+	    		  stylesheet="fancy-hist.xsl"
+	              outputFile="${test}/findbugs/gameserver.html"
+	    		  debug="false"
+	    		  timeout="1800000" 
+	    	      effort="default"
+	    		  jvmargs="-Xms1500m -Xmx1500m"
+	    	>
+			<auxClasspath path="${absolute.libsclasspath}" />
+			<sourcePath path="${basedir}/src/" />
+			<class location="${basedir}/bin/" />
+	    	
+	    </findbugs>
+	</target>
+	-->
+	
+	<target name="Local - FindBugs Generate XML" depends="Local - Compilation des sources">
+		
+		<path id="findbugs.libs">
+				<fileset dir="${findbugs.home}/lib/">
+					<include name="findbugs-ant.jar" />
+				</fileset>
+		</path>
+		<taskdef name="findbugs" classpathref="findbugs.libs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask"/>
+		
+		<mkdir dir="${test}/findbugs/" />
+	    <findbugs home="${findbugs.home}"
+	              output="xml:withMessages"
+	              outputFile="${test}/findbugs/gameserver.xml"
+	    		  debug="false"
+	    		  timeout="1800000" 
+	    	      effort="default"
+	    		  jvmargs="-Xms1500m -Xmx1500m"
+	    	>
+			<auxClasspath path="${absolute.libsclasspath}" />
+			<sourcePath path="${basedir}/src/" />
+			<class location="${basedir}/bin/" />
+	    	
+	    </findbugs>
+	</target>
+	
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
+		
+	<target name="Local - Compilation des sources Eclipse Juno" 
+				depends="Local - Builds Classpaths">
+					<echo>Début de compilation du code avec Eclipse Batch Compiler</echo>
+			
+		 			<property name="ecj.properties" value="${basedir}/.settings/org.eclipse.jdt.core.prefs"/>
+		 			
+		
+					<mkdir dir="${outputpath}" />
+					<delete includeEmptyDirs="true" failonerror="false">
+								<fileset dir="${outputpath}/"
+								         includes="**/Test.class"
+								/>
+					</delete>
+		
+					<java 
+			            jar="${libspath}/ecj-4.2.2.jar"
+			            fork="true"
+			            maxmemory="1024m"
+					 	failonerror="true"
+			            >
+			            <arg value="-showversion" />
+			            <arg value="-cp" />
+			            <arg value="${absolute.classpath}" />
+			            <arg value="-d" />
+			            <arg value="none" />
+			            <arg value="-encoding" />
+			            <arg value="UTF-8" />
+			            <arg value="-enableJavadoc" />
+			            <arg value="-1.6" />
+			            <arg value="-properties" />
+			            <arg value="${ecj.properties}" />
+			            <arg value="${sourcepath}" />
+			        </java>
+		
+					
+					<echo>Fin de compilation du code</echo>
+				
+		</target>
+	
+		<target name="Local - Compilation des sources Eclipse Mars" 
+					depends="Local - Builds Classpaths">
+						<echo>Début de compilation du code avec Eclipse Batch Compiler</echo>
+				
+			 			<property name="ecj.properties" value="${basedir}/.settings/org.eclipse.jdt.core.prefs"/>
+			 			
+			
+						<mkdir dir="${outputpath}" />
+						<delete includeEmptyDirs="true" failonerror="false">
+									<fileset dir="${outputpath}/"
+									         includes="**/Test.class"
+									/>
+						</delete>
+			
+						<java 
+				            jar="${libspath}/ecj-4.5.jar"
+				            fork="true"
+				            maxmemory="1024m"
+						 	failonerror="true"
+				            >
+				            <arg value="-showversion" />
+				            <arg value="-cp" />
+				            <arg value="${absolute.classpath}" />
+				            <arg value="-d" />
+				            <arg value="none" />
+				            <arg value="-encoding" />
+				            <arg value="UTF-8" />
+				            <arg value="-enableJavadoc" />
+				            <arg value="-1.6" />
+				            <arg value="-properties" />
+				            <arg value="${ecj.properties}" />
+				            <arg value="${sourcepath}" />
+				        </java>
+			
+						
+						<echo>Fin de compilation du code</echo>
+					
+			</target>
+	
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
+			
+</project>
